@@ -24,6 +24,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly",
       priority: 0.7,
     },
+    // Översikt över alla orter – riktig sida sedan 307-redirecten togs bort.
+    { url: absoluteUrl("/flyttfirma"), changeFrequency: "monthly", priority: 0.7 },
     { url: absoluteUrl("/om-oss"), changeFrequency: "yearly", priority: 0.5 },
     { url: absoluteUrl("/kontakt"), changeFrequency: "yearly", priority: 0.5 },
   ];

@@ -56,6 +56,14 @@ export type Ort = {
   fragor: { fraga: string; svar: string }[];
   /** Närliggande orter att länka till – måste matcha andra slugs i listan. */
   narliggande: string[];
+  /**
+   * Närmaste storstad – styr vilken grupp orten hamnar i på startsidans
+   * ortsväljare. Måste vara slug för en ort med `typ: "storstad"`.
+   *
+   * Detta är en ren geografisk indelning efter närhet, inte ett påstående
+   * om kommun- eller länstillhörighet. Sätts bara på mindre orter.
+   */
+  narmasteStorstad?: string;
 
   // --- Endast storstäder (typ: "storstad") -----------------------------------
   /**
@@ -634,6 +642,7 @@ export const orter: Ort[] = [
       },
     ],
     narliggande: ["kristianstad", "lund", "helsingborg"],
+    narmasteStorstad: "kristianstad",
   },
   {
     slug: "lund",
@@ -768,6 +777,7 @@ export const orter: Ort[] = [
       },
     ],
     narliggande: ["malmo", "lund"],
+    narmasteStorstad: "malmo",
   },
 
   // ---------------------------------------------------------------------------
@@ -820,6 +830,7 @@ export const orter: Ort[] = [
       },
     ],
     narliggande: ["helsingborg", "hittarp", "viken"],
+    narmasteStorstad: "helsingborg",
   },
   {
     slug: "hittarp",
@@ -863,6 +874,7 @@ export const orter: Ort[] = [
       },
     ],
     narliggande: ["helsingborg", "odakra", "viken"],
+    narmasteStorstad: "helsingborg",
   },
   {
     slug: "rydeback",
@@ -906,6 +918,7 @@ export const orter: Ort[] = [
       },
     ],
     narliggande: ["helsingborg", "landskrona", "odakra"],
+    narmasteStorstad: "helsingborg",
   },
   {
     slug: "paarp",
@@ -949,6 +962,7 @@ export const orter: Ort[] = [
       },
     ],
     narliggande: ["helsingborg", "bjuv", "hyllinge"],
+    narmasteStorstad: "helsingborg",
   },
   {
     slug: "barslov",
@@ -992,6 +1006,7 @@ export const orter: Ort[] = [
       },
     ],
     narliggande: ["helsingborg", "paarp", "bjuv"],
+    narmasteStorstad: "helsingborg",
   },
   {
     slug: "viken",
@@ -1035,6 +1050,7 @@ export const orter: Ort[] = [
       },
     ],
     narliggande: ["hoganas", "helsingborg", "hittarp"],
+    narmasteStorstad: "helsingborg",
   },
   {
     slug: "hoganas",
@@ -1078,6 +1094,7 @@ export const orter: Ort[] = [
       },
     ],
     narliggande: ["viken", "helsingborg", "angelholm"],
+    narmasteStorstad: "helsingborg",
   },
   {
     slug: "bjuv",
@@ -1121,6 +1138,7 @@ export const orter: Ort[] = [
       },
     ],
     narliggande: ["billesholm", "ekeby", "astorp"],
+    narmasteStorstad: "helsingborg",
   },
   {
     slug: "billesholm",
@@ -1164,6 +1182,7 @@ export const orter: Ort[] = [
       },
     ],
     narliggande: ["bjuv", "ekeby", "astorp"],
+    narmasteStorstad: "helsingborg",
   },
   {
     slug: "ekeby",
@@ -1207,6 +1226,7 @@ export const orter: Ort[] = [
       },
     ],
     narliggande: ["bjuv", "billesholm", "astorp"],
+    narmasteStorstad: "helsingborg",
   },
   {
     slug: "astorp",
@@ -1250,6 +1270,7 @@ export const orter: Ort[] = [
       },
     ],
     narliggande: ["bjuv", "klippan", "angelholm"],
+    narmasteStorstad: "helsingborg",
   },
   {
     slug: "klippan",
@@ -1293,6 +1314,7 @@ export const orter: Ort[] = [
       },
     ],
     narliggande: ["astorp", "ljungbyhed", "perstorp"],
+    narmasteStorstad: "angelholm",
   },
   {
     slug: "ljungbyhed",
@@ -1336,6 +1358,7 @@ export const orter: Ort[] = [
       },
     ],
     narliggande: ["klippan", "perstorp", "astorp"],
+    narmasteStorstad: "angelholm",
   },
   {
     slug: "perstorp",
@@ -1379,6 +1402,7 @@ export const orter: Ort[] = [
       },
     ],
     narliggande: ["klippan", "hassleholm", "orkelljunga"],
+    narmasteStorstad: "angelholm",
   },
   {
     slug: "orkelljunga",
@@ -1422,6 +1446,7 @@ export const orter: Ort[] = [
       },
     ],
     narliggande: ["perstorp", "angelholm", "munka-ljungby"],
+    narmasteStorstad: "angelholm",
   },
   {
     slug: "bastad",
@@ -1465,6 +1490,7 @@ export const orter: Ort[] = [
       },
     ],
     narliggande: ["forslov", "vejbystrand", "angelholm"],
+    narmasteStorstad: "angelholm",
   },
   {
     slug: "forslov",
@@ -1508,6 +1534,7 @@ export const orter: Ort[] = [
       },
     ],
     narliggande: ["bastad", "vejbystrand", "angelholm"],
+    narmasteStorstad: "angelholm",
   },
   {
     slug: "vejbystrand",
@@ -1551,6 +1578,7 @@ export const orter: Ort[] = [
       },
     ],
     narliggande: ["angelholm", "bastad", "munka-ljungby"],
+    narmasteStorstad: "angelholm",
   },
   {
     slug: "munka-ljungby",
@@ -1594,6 +1622,7 @@ export const orter: Ort[] = [
       },
     ],
     narliggande: ["angelholm", "orkelljunga", "vejbystrand"],
+    narmasteStorstad: "angelholm",
   },
   {
     slug: "hyllinge",
@@ -1637,6 +1666,7 @@ export const orter: Ort[] = [
       },
     ],
     narliggande: ["astorp", "bjuv", "helsingborg"],
+    narmasteStorstad: "helsingborg",
   },
   {
     slug: "dalby",
@@ -1680,6 +1710,7 @@ export const orter: Ort[] = [
       },
     ],
     narliggande: ["lund", "veberod", "sodra-sandby"],
+    narmasteStorstad: "lund",
   },
   {
     slug: "sodra-sandby",
@@ -1723,6 +1754,7 @@ export const orter: Ort[] = [
       },
     ],
     narliggande: ["lund", "dalby", "veberod"],
+    narmasteStorstad: "lund",
   },
   {
     slug: "veberod",
@@ -1766,6 +1798,7 @@ export const orter: Ort[] = [
       },
     ],
     narliggande: ["lund", "dalby", "sjobo"],
+    narmasteStorstad: "lund",
   },
   {
     slug: "genarp",
@@ -1809,6 +1842,7 @@ export const orter: Ort[] = [
       },
     ],
     narliggande: ["lund", "svedala", "dalby"],
+    narmasteStorstad: "lund",
   },
   {
     slug: "staffanstorp",
@@ -1852,6 +1886,7 @@ export const orter: Ort[] = [
       },
     ],
     narliggande: ["lund", "malmo", "hjarup"],
+    narmasteStorstad: "lund",
   },
   {
     slug: "hjarup",
@@ -1895,6 +1930,7 @@ export const orter: Ort[] = [
       },
     ],
     narliggande: ["staffanstorp", "lund", "akarp"],
+    narmasteStorstad: "lund",
   },
   {
     slug: "akarp",
@@ -1938,6 +1974,7 @@ export const orter: Ort[] = [
       },
     ],
     narliggande: ["hjarup", "malmo", "lomma"],
+    narmasteStorstad: "malmo",
   },
   {
     slug: "kavlinge",
@@ -1981,6 +2018,7 @@ export const orter: Ort[] = [
       },
     ],
     narliggande: ["furulund", "loddekopinge", "lomma"],
+    narmasteStorstad: "lund",
   },
   {
     slug: "furulund",
@@ -2024,6 +2062,7 @@ export const orter: Ort[] = [
       },
     ],
     narliggande: ["kavlinge", "loddekopinge", "lomma"],
+    narmasteStorstad: "lund",
   },
   {
     slug: "loddekopinge",
@@ -2067,6 +2106,7 @@ export const orter: Ort[] = [
       },
     ],
     narliggande: ["kavlinge", "lomma", "landskrona"],
+    narmasteStorstad: "landskrona",
   },
   {
     slug: "lomma",
@@ -2110,6 +2150,7 @@ export const orter: Ort[] = [
       },
     ],
     narliggande: ["bjarred", "malmo", "kavlinge"],
+    narmasteStorstad: "malmo",
   },
   {
     slug: "bjarred",
@@ -2153,6 +2194,7 @@ export const orter: Ort[] = [
       },
     ],
     narliggande: ["lomma", "lund", "kavlinge"],
+    narmasteStorstad: "malmo",
   },
   {
     slug: "oxie",
@@ -2196,6 +2238,7 @@ export const orter: Ort[] = [
       },
     ],
     narliggande: ["malmo", "svedala", "trelleborg"],
+    narmasteStorstad: "malmo",
   },
   {
     slug: "bunkeflostrand",
@@ -2239,6 +2282,7 @@ export const orter: Ort[] = [
       },
     ],
     narliggande: ["malmo", "vellinge", "tygelsjo"],
+    narmasteStorstad: "malmo",
   },
   {
     slug: "tygelsjo",
@@ -2282,6 +2326,7 @@ export const orter: Ort[] = [
       },
     ],
     narliggande: ["malmo", "bunkeflostrand", "vellinge"],
+    narmasteStorstad: "malmo",
   },
   {
     slug: "vellinge",
@@ -2325,6 +2370,7 @@ export const orter: Ort[] = [
       },
     ],
     narliggande: ["hollviken", "skanor", "malmo"],
+    narmasteStorstad: "malmo",
   },
   {
     slug: "hollviken",
@@ -2368,6 +2414,7 @@ export const orter: Ort[] = [
       },
     ],
     narliggande: ["skanor", "falsterbo", "ljunghusen", "vellinge"],
+    narmasteStorstad: "malmo",
   },
   {
     slug: "skanor",
@@ -2411,6 +2458,7 @@ export const orter: Ort[] = [
       },
     ],
     narliggande: ["falsterbo", "hollviken", "ljunghusen", "vellinge"],
+    narmasteStorstad: "malmo",
   },
   {
     slug: "falsterbo",
@@ -2454,6 +2502,7 @@ export const orter: Ort[] = [
       },
     ],
     narliggande: ["skanor", "hollviken", "ljunghusen", "vellinge"],
+    narmasteStorstad: "malmo",
   },
   {
     slug: "svedala",
@@ -2497,6 +2546,7 @@ export const orter: Ort[] = [
       },
     ],
     narliggande: ["malmo", "skurup", "oxie"],
+    narmasteStorstad: "malmo",
   },
   {
     slug: "bara",
@@ -2540,6 +2590,7 @@ export const orter: Ort[] = [
       },
     ],
     narliggande: ["svedala", "malmo", "staffanstorp"],
+    narmasteStorstad: "malmo",
   },
   {
     slug: "skurup",
@@ -2583,6 +2634,7 @@ export const orter: Ort[] = [
       },
     ],
     narliggande: ["svedala", "ystad", "trelleborg"],
+    narmasteStorstad: "malmo",
   },
   {
     slug: "ystad",
@@ -2626,6 +2678,7 @@ export const orter: Ort[] = [
       },
     ],
     narliggande: ["simrishamn", "tomelilla", "skurup"],
+    narmasteStorstad: "kristianstad",
   },
   {
     slug: "simrishamn",
@@ -2669,6 +2722,7 @@ export const orter: Ort[] = [
       },
     ],
     narliggande: ["tomelilla", "ystad", "kristianstad"],
+    narmasteStorstad: "kristianstad",
   },
   {
     slug: "tomelilla",
@@ -2712,6 +2766,7 @@ export const orter: Ort[] = [
       },
     ],
     narliggande: ["simrishamn", "ystad", "sjobo"],
+    narmasteStorstad: "kristianstad",
   },
   {
     slug: "sjobo",
@@ -2755,6 +2810,7 @@ export const orter: Ort[] = [
       },
     ],
     narliggande: ["veberod", "tomelilla", "horby"],
+    narmasteStorstad: "lund",
   },
   {
     slug: "horby",
@@ -2798,6 +2854,7 @@ export const orter: Ort[] = [
       },
     ],
     narliggande: ["hoor", "sjobo", "eslov"],
+    narmasteStorstad: "lund",
   },
   {
     slug: "hoor",
@@ -2841,6 +2898,7 @@ export const orter: Ort[] = [
       },
     ],
     narliggande: ["horby", "eslov", "hassleholm"],
+    narmasteStorstad: "lund",
   },
   {
     slug: "eslov",
@@ -2884,6 +2942,7 @@ export const orter: Ort[] = [
       },
     ],
     narliggande: ["lund", "hoor", "kavlinge"],
+    narmasteStorstad: "lund",
   },
   {
     slug: "svalov",
@@ -2927,6 +2986,7 @@ export const orter: Ort[] = [
       },
     ],
     narliggande: ["landskrona", "klippan", "kavlinge"],
+    narmasteStorstad: "landskrona",
   },
   {
     slug: "ahus",
@@ -2970,6 +3030,7 @@ export const orter: Ort[] = [
       },
     ],
     narliggande: ["kristianstad", "hammar", "tollarp"],
+    narmasteStorstad: "kristianstad",
   },
   {
     slug: "hammar",
@@ -3013,6 +3074,7 @@ export const orter: Ort[] = [
       },
     ],
     narliggande: ["kristianstad", "ahus", "tollarp"],
+    narmasteStorstad: "kristianstad",
   },
   {
     slug: "tollarp",
@@ -3056,6 +3118,7 @@ export const orter: Ort[] = [
       },
     ],
     narliggande: ["kristianstad", "hammar", "horby"],
+    narmasteStorstad: "kristianstad",
   },
   {
     slug: "bromolla",
@@ -3099,6 +3162,7 @@ export const orter: Ort[] = [
       },
     ],
     narliggande: ["kristianstad", "knislinge", "osby"],
+    narmasteStorstad: "kristianstad",
   },
   {
     slug: "knislinge",
@@ -3142,6 +3206,7 @@ export const orter: Ort[] = [
       },
     ],
     narliggande: ["broby", "kristianstad", "hassleholm"],
+    narmasteStorstad: "kristianstad",
   },
   {
     slug: "broby",
@@ -3185,6 +3250,7 @@ export const orter: Ort[] = [
       },
     ],
     narliggande: ["knislinge", "osby", "hassleholm"],
+    narmasteStorstad: "kristianstad",
   },
   {
     slug: "osby",
@@ -3228,6 +3294,7 @@ export const orter: Ort[] = [
       },
     ],
     narliggande: ["broby", "hassleholm", "bromolla"],
+    narmasteStorstad: "kristianstad",
   },
   {
     slug: "bjarnum",
@@ -3271,6 +3338,7 @@ export const orter: Ort[] = [
       },
     ],
     narliggande: ["hassleholm", "vinslov", "tyringe"],
+    narmasteStorstad: "kristianstad",
   },
   {
     slug: "tyringe",
@@ -3314,6 +3382,7 @@ export const orter: Ort[] = [
       },
     ],
     narliggande: ["hassleholm", "bjarnum", "perstorp"],
+    narmasteStorstad: "kristianstad",
   },
   {
     slug: "vinslov",
@@ -3357,6 +3426,7 @@ export const orter: Ort[] = [
       },
     ],
     narliggande: ["hassleholm", "kristianstad", "bjarnum"],
+    narmasteStorstad: "kristianstad",
   },
   {
     slug: "haljarp",
@@ -3400,6 +3470,7 @@ export const orter: Ort[] = [
       },
     ],
     narliggande: ["landskrona", "kavlinge", "furulund"],
+    narmasteStorstad: "landskrona",
   },
   {
     slug: "hofterup",
@@ -3443,6 +3514,7 @@ export const orter: Ort[] = [
       },
     ],
     narliggande: ["kavlinge", "loddekopinge", "landskrona"],
+    narmasteStorstad: "landskrona",
   },
   {
     slug: "ljunghusen",
@@ -3486,6 +3558,7 @@ export const orter: Ort[] = [
       },
     ],
     narliggande: ["hollviken", "skanor", "vellinge"],
+    narmasteStorstad: "malmo",
   },
 ];
 
@@ -3520,6 +3593,20 @@ export function ortPath(ort: Pick<Ort, "slug" | "typ">): string {
  */
 export function mindreOrterNara(slug: string): Ort[] {
   return mindreOrter.filter((o) => o.narliggande.includes(slug));
+}
+
+/**
+ * Mindre orter grupperade under sin närmaste storstad.
+ *
+ * Driver ortsväljaren på startsidan. Storstäder utan mindre orter i
+ * närheten (t.ex. Halmstad, som ligger i Hallands län utanför
+ * Skåne-klustret) får en tom lista och utelämnas av anropande kod.
+ */
+export function orterPerStorstad(): { storstad: Ort; mindre: Ort[] }[] {
+  return storstader.map((storstad) => ({
+    storstad,
+    mindre: mindreOrter.filter((o) => o.narmasteStorstad === storstad.slug),
+  }));
 }
 
 /** Slugs i den ordning de ska visas. Används av sitemap. */
