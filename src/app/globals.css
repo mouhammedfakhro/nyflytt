@@ -1,26 +1,134 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/*
+  Nyflytt designsystem.
+  Varm korall/orange accent, nästan svart text, varm ljus bakgrund. Inget blått.
+  Färgerna är definierade i oklch för jämn upplevd ljushet mellan stegen.
+*/
+@theme {
+  /* Accent – korall/orange */
+  --color-korall-50: oklch(0.971 0.017 40);
+  --color-korall-100: oklch(0.942 0.037 41);
+  --color-korall-200: oklch(0.889 0.071 41);
+  --color-korall-300: oklch(0.822 0.110 39);
+  --color-korall-400: oklch(0.747 0.160 36);
+  --color-korall-500: oklch(0.672 0.196 33);
+  --color-korall-600: oklch(0.601 0.203 30);
+  --color-korall-700: oklch(0.517 0.182 29);
+  --color-korall-800: oklch(0.445 0.15 29);
+  --color-korall-900: oklch(0.391 0.124 30);
+
+  /* Neutral – varm gråskala, aldrig kall/blå */
+  --color-sand-50: oklch(0.991 0.003 60);
+  --color-sand-100: oklch(0.973 0.006 63);
+  --color-sand-200: oklch(0.936 0.009 67);
+  --color-sand-300: oklch(0.874 0.011 67);
+  --color-sand-400: oklch(0.716 0.013 66);
+  --color-sand-500: oklch(0.573 0.013 66);
+  --color-sand-600: oklch(0.467 0.012 62);
+  --color-sand-700: oklch(0.385 0.011 60);
+  --color-sand-800: oklch(0.271 0.009 57);
+  --color-sand-900: oklch(0.195 0.008 54);
+  --color-sand-950: oklch(0.145 0.007 52);
+
+  --color-background: var(--color-sand-50);
+  --color-foreground: var(--color-sand-950);
+
+  --font-sans: var(--font-sora), ui-sans-serif, system-ui, sans-serif;
+  --font-body: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+
+  /* Mjuka, varma skuggor istället för hårda svarta */
+  --shadow-mjuk: 0 1px 2px oklch(0.195 0.008 54 / 0.04), 0 4px 12px oklch(0.195 0.008 54 / 0.05);
+  --shadow-lyft: 0 2px 4px oklch(0.195 0.008 54 / 0.05), 0 12px 32px oklch(0.195 0.008 54 / 0.08);
+
+  --ease-mjuk: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-body);
+    /* Tabular-lining siffror i t.ex. prisuppgifter och telefonnummer */
+    font-variant-numeric: lining-nums;
+  }
+
+  /* Rubriker får display-fonten och tightare spärrning */
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-sans);
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  /* Synlig, konsekvent fokusmarkering för tangentbordsnavigering */
+  :focus-visible {
+    outline: 2px solid var(--color-korall-600);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+
+  /* Ta bort fokusring för musklick men behåll för tangentbord */
+  :focus:not(:focus-visible) {
+    outline: none;
+  }
+
+  /* Ankarnavigering ska inte hamna under den klistrade headern */
+  :target {
+    scroll-margin-top: 6rem;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer utilities {
+  /* Standardbredd för innehåll – används av alla sektioner */
+  .behallare {
+    width: 100%;
+    margin-inline: auto;
+    max-width: 75rem;
+    padding-inline: 1.25rem;
+  }
+
+  @media (min-width: 640px) {
+    .behallare {
+      padding-inline: 2rem;
+    }
+  }
+
+  /* Diskret uppåtglidning vid inladdning. Respekterar reduced motion nedan. */
+  .glid-in {
+    animation: glid-in 0.6s var(--ease-mjuk) both;
+  }
+}
+
+@keyframes glid-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Tillgänglighet: stäng av rörelse för den som valt det i systemet */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
