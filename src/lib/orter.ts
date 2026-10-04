@@ -2367,7 +2367,7 @@ export const orter: Ort[] = [
         svar: "Efterfrågan är högst då. Skicka förfrågan i god tid om du har ett bestämt datum.",
       },
     ],
-    narliggande: ["skanor", "falsterbo", "vellinge"],
+    narliggande: ["skanor", "falsterbo", "ljunghusen", "vellinge"],
   },
   {
     slug: "skanor",
@@ -2410,7 +2410,7 @@ export const orter: Ort[] = [
         svar: "Transportsträckan är en av faktorerna. Ange båda adresserna så blir offerten rätt.",
       },
     ],
-    narliggande: ["falsterbo", "hollviken", "vellinge"],
+    narliggande: ["falsterbo", "hollviken", "ljunghusen", "vellinge"],
   },
   {
     slug: "falsterbo",
@@ -2453,7 +2453,7 @@ export const orter: Ort[] = [
         svar: "Ange dem under särskilda föremål i förfrågan så bedöms de separat.",
       },
     ],
-    narliggande: ["skanor", "hollviken", "vellinge"],
+    narliggande: ["skanor", "hollviken", "ljunghusen", "vellinge"],
   },
   {
     slug: "svedala",
@@ -3508,6 +3508,18 @@ export function ortPath(ort: Pick<Ort, "slug" | "typ">): string {
   return ort.typ === "storstad"
     ? `/flyttfirma-${ort.slug}`
     : `/flyttfirma/${ort.slug}`;
+}
+
+/**
+ * Mindre orter som anger `slug` bland sina närliggande orter.
+ *
+ * Används av storstadssidorna för att länka nedåt till de mindre orterna.
+ * Footern listar bara storstäderna, och de mindre orternas `narliggande`
+ * pekar uppåt mot storstäderna – utan den här länken finns ingen väg in
+ * till de mindre sidorna och de blir föräldralösa.
+ */
+export function mindreOrterNara(slug: string): Ort[] {
+  return mindreOrter.filter((o) => o.narliggande.includes(slug));
 }
 
 /** Slugs i den ordning de ska visas. Används av sitemap. */

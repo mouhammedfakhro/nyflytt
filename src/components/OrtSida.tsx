@@ -9,7 +9,13 @@ import { OffertCta } from "@/components/OffertCta";
 import { Processteg } from "@/components/Processteg";
 import { Sektion, SektionsRubrik } from "@/components/Sektion";
 import { vanligaFragor } from "@/lib/faq";
-import { hittaOrt, type Ort, ortPath, storstader } from "@/lib/orter";
+import {
+  hittaOrt,
+  mindreOrterNara,
+  type Ort,
+  ortPath,
+  storstader,
+} from "@/lib/orter";
 import { brodsmulaSchema, faqSchema, tjanstSchema } from "@/lib/schema";
 import { aktivaTjanster } from "@/lib/tjanster";
 
@@ -39,6 +45,16 @@ export function OrtSida({ ort }: { ort: Ort }) {
   const narliggande = ort.narliggande
     .map((slug) => hittaOrt(slug))
     .filter((o): o is Ort => Boolean(o));
+
+  // Storstadssidorna länkar nedåt till de mindre orter som räknar denna
+  // stad som närliggande. Footern listar bara storstäderna, så det här är
+  // den primära vägen in till de mindre sidorna – utan den blir de
+  // föräldralösa. Orter som redan ligger i `narliggande` filtreras bort.
+  const mindreNara = arStorstad
+    ? mindreOrterNara(ort.slug).filter(
+        (o) => !narliggande.some((n) => n.slug === o.slug),
+      )
+    : [];
 
   const brodsmulor = [
     { namn: "Start", path: "/" },
@@ -326,6 +342,26 @@ export function OrtSida({ ort }: { ort: Ort }) {
               </li>
             ))}
           </ul>
+        ) : null}
+
+        {mindreNara.length > 0 ? (
+          <div className="mt-10 border-t border-sand-200 pt-8">
+            <h3 className="font-sans text-sm font-semibold uppercase tracking-[0.12em] text-sand-500">
+              Mindre orter i närheten
+            </h3>
+            <ul className="mt-3.5 flex flex-wrap gap-2">
+              {mindreNara.map((o) => (
+                <li key={o.slug}>
+                  <Link
+                    href={ortPath(o)}
+                    className="inline-flex min-h-9 items-center rounded-full bg-white px-3.5 text-[0.9375rem] font-medium text-sand-700 ring-1 ring-sand-200 transition-all hover:text-korall-700 hover:ring-korall-400"
+                  >
+                    {o.namn}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
         ) : null}
 
         <div className="mt-10 border-t border-sand-200 pt-8">

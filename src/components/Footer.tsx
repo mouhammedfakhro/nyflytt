@@ -2,7 +2,7 @@ import Link from "next/link";
 import { Ikon } from "@/components/Ikon";
 import { Logo } from "@/components/Logo";
 import { footerNav } from "@/lib/navigation";
-import { ortPath, orter } from "@/lib/orter";
+import { ortPath, storstader } from "@/lib/orter";
 import { siteConfig } from "@/lib/site";
 
 export function Footer() {
@@ -62,7 +62,9 @@ export function Footer() {
           ))}
         </div>
 
-        {/* Ortslänkar – hjälper både besökare och internlänkning */}
+        {/* Ortslänkar – bara storstäder. De mindre orterna når man via
+            respektive storstadssida och sitemapen, så footern inte sväller
+            till 80+ länkar på varje sida. */}
         <nav aria-labelledby="footer-orter" className="mt-12 border-t border-sand-800 pt-8">
           <h2
             id="footer-orter"
@@ -71,7 +73,7 @@ export function Footer() {
             Orter vi arbetar i
           </h2>
           <ul className="mt-4 flex flex-wrap gap-x-5 gap-y-2.5 text-[0.9375rem]">
-            {orter.map((ort) => (
+            {storstader.map((ort) => (
               <li key={ort.slug}>
                 <Link
                   href={ortPath(ort)}
