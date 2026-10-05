@@ -1,5 +1,12 @@
 import type { MetadataRoute } from "next";
-import { orter, orterMedStad, ortPath, stadPath } from "@/lib/orter";
+import {
+  foretagPath,
+  orter,
+  orterMedStad,
+  ortPath,
+  stadPath,
+  storstaderMedForetag,
+} from "@/lib/orter";
 import { absoluteUrl } from "@/lib/site";
 import { aktivaTjanster } from "@/lib/tjanster";
 
@@ -50,7 +57,21 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.8,
   }));
 
-  return [...statiska, ...tjanstSidor, ...ortSidor, ...stadOrtSidor].map((post) => ({
+  // Företagsflyttssidor. Bara storstäder – de mindre orterna saknar
+  // dokumenterad verksamhetsbas och har därför ingen företagssida.
+  const foretagSidor: MetadataRoute.Sitemap = storstaderMedForetag.map((o) => ({
+    url: absoluteUrl(foretagPath(o)),
+    changeFrequency: "monthly",
+    priority: 0.7,
+  }));
+
+  return [
+    ...statiska,
+    ...tjanstSidor,
+    ...ortSidor,
+    ...stadOrtSidor,
+    ...foretagSidor,
+  ].map((post) => ({
     ...post,
     lastModified: nu,
   }));

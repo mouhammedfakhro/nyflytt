@@ -76,6 +76,28 @@ export type Ort = {
    *
    * Saknas fältet byggs ingen städsida för orten (se generateStaticParams).
    */
+  /**
+   * Företagsflyttssidan för orten: /foretag-<slug> respektive
+   * /foretag/<slug>. Se `src/app/[ortSegment]/page.tsx`.
+   *
+   * Innehållet ska handla om VERKSAMHETER – kontorslägen, lastzoner,
+   * tillträde utanför kontorstid – inte om bostäder. Sätts bara på orter
+   * där det finns faktiska förhållanden att beskriva; saknas fältet byggs
+   * ingen företagssida för orten.
+   */
+  foretag?: {
+    /** Metadescription – unik per ort. */
+    metaBeskrivning: string;
+    /** Ingress under H1. Unik per ort. */
+    ingress: string;
+    /** 2–3 stycken om vad som präglar en företagsflytt just här. */
+    omFlytten: string[];
+    /** Praktiska förhållanden som påverkar kontorsflytten i orten. */
+    praktiskt: { rubrik: string; text: string }[];
+    /** Ortsspecifika frågor om företagsflytt. */
+    fragor: { fraga: string; svar: string }[];
+  };
+
   stad?: {
     /** Metadescription – unik per ort. */
     metaBeskrivning: string;
@@ -188,6 +210,41 @@ export const orter: Ort[] = [
       },
     ],
     narliggande: ["landskrona", "angelholm", "lund"],
+    foretag: {
+      metaBeskrivning:
+        "Företagsflytt i Helsingborg – flytt av kontor och verksamhet med tidsplan och kort driftstopp. Beskriv verksamheten och få en offert.",
+      ingress:
+        "Ska ni flytta kontor eller verksamhet i Helsingborg? Beskriv verksamheten och önskade tider, så tas ett upplägg fram.",
+      omFlytten: [
+        "Kontorslägena i Helsingborg skiljer sig kraftigt åt. I de centrala kvarteren kring Stortorget och Drottninggatan ligger många kontor i äldre fastigheter med smala trapphus, begränsad hiss och gator där flyttbilen inte kan stå länge. I Berga och Väla är förutsättningarna de motsatta: lastkaj, markplan och gott om uppställningsyta.",
+        "Höjdskillnaden upp mot landborgen är värd att planera för. Branta och smala tvärgator gör att bilen ibland måste stå en bit bort, och bärsträckan blir längre än kartan antyder. För tunga arkivskåp och serverrack påverkar det både tidsåtgång och bemanning.",
+        "Hamnen och närheten till Danmark gör att en del verksamheter har logistik- eller lagerdelar utöver kontoret. Lager och kontor har olika förutsättningar och behöver beskrivas var för sig i förfrågan.",
+      ],
+      praktiskt: [
+        {
+          rubrik: "Lastzon i centrum",
+          text: "I de centrala kvarteren är uppställningstiden begränsad. Ange adressen så att behovet av tillstånd kan bedömas i förväg.",
+        },
+        {
+          rubrik: "Hiss och trapphus",
+          text: "Äldre kontorsfastigheter har ofta liten hiss. Ange våningsplan och om det finns varuhiss – det styr bemanningen.",
+        },
+        {
+          rubrik: "Kväll eller helg",
+          text: "Tidsplanen kan läggas utanför kontorstid för att korta driftstoppet. Ange vilka tider verksamheten kan stå still.",
+        },
+      ],
+      fragor: [
+        {
+          fraga: "Kan ni flytta vårt kontor i innerstaden utan lastkaj?",
+          svar: "Ja, men det påverkar upplägget. Ange adress och våningsplan i förfrågan så att bärsträcka, hiss och eventuellt tillstånd för uppställning kan bedömas innan offert lämnas.",
+        },
+        {
+          fraga: "Vi har både kontor och lager – kan båda flyttas?",
+          svar: "Beskriv dem var för sig i förfrågan. Förutsättningarna skiljer sig åt, och ett lager bedöms på volym och utrustning snarare än antal arbetsplatser.",
+        },
+      ],
+    },
     stad: {
       metaBeskrivning:
         "Flyttstädning i Helsingborg inför överlämning och besiktning. Beskriv bostaden och ditt datum och få en tydlig offert från Nyflytt.",
@@ -309,6 +366,41 @@ export const orter: Ort[] = [
       },
     ],
     narliggande: ["lund", "trelleborg", "landskrona"],
+    foretag: {
+      metaBeskrivning:
+        "Företagsflytt i Malmö – flytt av kontor och verksamhet med tidsplan och kort driftstopp. Beskriv verksamheten och få en offert.",
+      ingress:
+        "Ska ni flytta kontor eller verksamhet i Malmö? Beskriv verksamheten och önskade tider, så tas ett upplägg fram.",
+      omFlytten: [
+        "Malmö har störst spännvidd mellan kontorslägena. Västra Hamnen och Hyllie är byggda för verksamheter: lastzoner, rymliga varuhissar och markplan som går att köra fram till. I innerstadens äldre fastigheter kring Gamla Väster och Möllevången är det i stället trånga trapphus, liten hiss och gator med kort uppställningstid.",
+        "Tillträdet är ofta det som styr tidsplanen mer än flytten i sig. I moderna kontorshus krävs tagg eller kod, och bokning av varuhiss och lastzon kan behöva göras hos fastighetsägaren i förväg. Det gäller särskilt för flytt på kväll eller helg, när reception och vaktmästeri inte är bemannade.",
+        "Närheten till Lund och Köpenhamn gör att verksamheter ofta flyttar mellan orterna. Vid flytt över Öresund tillkommer tullhantering och andra regler – det behöver framgå av förfrågan så att det kan bedömas innan offert.",
+      ],
+      praktiskt: [
+        {
+          rubrik: "Boka hiss och lastzon",
+          text: "I kontorshus behöver varuhiss och lastzon ofta bokas hos fastighetsägaren. Ange om ni redan har en tid.",
+        },
+        {
+          rubrik: "Tillträde utanför kontorstid",
+          text: "Kväll och helg kräver att någon kan släppa in. Ange hur tillträdet fungerar när receptionen är obemannad.",
+        },
+        {
+          rubrik: "Flytt över Öresund",
+          text: "Flytt till eller från Danmark innebär andra regler. Ange det i förfrågan så bedöms det separat.",
+        },
+      ],
+      fragor: [
+        {
+          fraga: "Kan flytten ske på helgen så vi slipper driftstopp?",
+          svar: "Ja, tidsplanen kan läggas på kväll eller helg. Det förutsätter att tillträde går att ordna när receptionen är obemannad – ange i förfrågan hur det fungerar hos er.",
+        },
+        {
+          fraga: "Vad behöver ni veta om vår IT-utrustning?",
+          svar: "Ange vilken utrustning som finns, särskilt servrar och nätverksutrustning. Känslig IT hanteras i samråd, och en del behöver ofta kopplas ned och upp av er egen IT-funktion.",
+        },
+      ],
+    },
     stad: {
       metaBeskrivning:
         "Flyttstädning i Malmö inför överlämning och besiktning. Beskriv bostaden och ditt datum och få en tydlig offert från Nyflytt.",
@@ -430,6 +522,41 @@ export const orter: Ort[] = [
       },
     ],
     narliggande: ["helsingborg", "lund", "malmo"],
+    foretag: {
+      metaBeskrivning:
+        "Företagsflytt i Landskrona – flytt av kontor och verksamhet med tidsplan och kort driftstopp. Beskriv verksamheten och få en offert.",
+      ingress:
+        "Ska ni flytta kontor eller verksamhet i Landskrona? Beskriv verksamheten och önskade tider, så tas ett upplägg fram.",
+      omFlytten: [
+        "Landskrona är kompakt, och avstånden inom staden är korta. För en företagsflytt betyder det att transporttiden sällan är det som avgör – det är i stället tillträdet, bärvägen och hur länge verksamheten kan stå still som styr upplägget.",
+        "Verksamhetslokalerna finns dels i centrum, dels i hamn- och industriområdena. De skiljer sig åt: i hamnområdet finns lastkaj och uppställningsyta, medan kontor i de äldre centrumfastigheterna kan ha smalare trapphus och begränsad hiss.",
+        "Ven är en särskild förutsättning. Flytt till eller från ön innebär färjetransport med fasta turer och begränsad kapacitet, vilket måste planeras in i tidsschemat och påverkar vilka tider som är möjliga.",
+      ],
+      praktiskt: [
+        {
+          rubrik: "Färja till Ven",
+          text: "Flytt till eller från Ven styrs av färjans turer och kapacitet. Ange det tidigt – det påverkar hela tidsplanen.",
+        },
+        {
+          rubrik: "Centrum eller hamnområde",
+          text: "Lastkaj finns i hamnområdet men sällan i centrum. Ange adress och våningsplan.",
+        },
+        {
+          rubrik: "Kort driftstopp",
+          text: "Korta avstånd gör att flytten ofta kan göras på en dag. Ange vilka tider verksamheten kan stå still.",
+        },
+      ],
+      fragor: [
+        {
+          fraga: "Vi flyttar verksamhet till Ven – hur fungerar det?",
+          svar: "Färjan har fasta turer och begränsad kapacitet, så transporten behöver planeras in i tidsschemat. Ange det i förfrågan så tas hänsyn till det redan i upplägget.",
+        },
+        {
+          fraga: "Hur snabbt kan en kontorsflytt göras här?",
+          svar: "Avstånden inom staden är korta, så flytten kan ofta göras på en dag. Det avgörs av antal arbetsplatser, utrustning och tillträdet till båda adresserna.",
+        },
+      ],
+    },
     stad: {
       metaBeskrivning:
         "Flyttstädning i Landskrona inför överlämning och besiktning. Beskriv bostaden och ditt datum och få en tydlig offert från Nyflytt.",
@@ -551,6 +678,41 @@ export const orter: Ort[] = [
       },
     ],
     narliggande: ["helsingborg", "halmstad", "landskrona"],
+    foretag: {
+      metaBeskrivning:
+        "Företagsflytt i Ängelholm – flytt av kontor och verksamhet med tidsplan och kort driftstopp. Beskriv verksamheten och få en offert.",
+      ingress:
+        "Ska ni flytta kontor eller verksamhet i Ängelholm? Beskriv verksamheten och önskade tider, så tas ett upplägg fram.",
+      omFlytten: [
+        "Verksamheterna i Ängelholm ligger till stor del i markplan – i företagsområdena vid Åkerslund och längs infarterna finns lokaler med egen lastport och uppställningsyta intill. Det gör en företagsflytt mer förutsägbar än i en tät innerstad, eftersom bärvägen är kort och bilen kan stå nära.",
+        "I centrum finns i stället mindre kontor i lägre flerbostadshus, där hiss förekommer men inte är självklart. Där blir våningsplanet och trapphusets bredd avgörande för bemanning och tidsåtgång.",
+        "Läget vid E6 gör att verksamheter ofta flyttar mellan Ängelholm och Helsingborg eller Halmstad. Transportsträckan är då en tydlig del av uppdraget och påverkar hur tidsplanen kan läggas.",
+      ],
+      praktiskt: [
+        {
+          rubrik: "Lastport i företagsområdena",
+          text: "Lokaler med egen lastport gör flytten mer förutsägbar. Ange om det finns lastport eller bara entré.",
+        },
+        {
+          rubrik: "Våningsplan i centrum",
+          text: "Hiss är inte självklart i de äldre centrumfastigheterna. Ange våningsplan.",
+        },
+        {
+          rubrik: "Flytt längs E6",
+          text: "Flytt mot Helsingborg eller Halmstad innebär en tydlig transportsträcka. Ange båda adresserna.",
+        },
+      ],
+      fragor: [
+        {
+          fraga: "Vi har en lokal med lastport – underlättar det?",
+          svar: "Ja, påtagligt. Kort bärväg och möjlighet att backa fram till porten minskar både tidsåtgång och bemanning. Ange det i förfrågan.",
+        },
+        {
+          fraga: "Kan flytten göras utanför öppettiderna?",
+          svar: "Ja, tidsplanen kan läggas på kväll eller helg. Ange vilka tider verksamheten kan stå still och hur tillträdet fungerar då.",
+        },
+      ],
+    },
     stad: {
       metaBeskrivning:
         "Flyttstädning i Ängelholm inför överlämning och besiktning. Beskriv bostaden och ditt datum och få en tydlig offert från Nyflytt.",
@@ -672,6 +834,41 @@ export const orter: Ort[] = [
       },
     ],
     narliggande: ["angelholm", "helsingborg"],
+    foretag: {
+      metaBeskrivning:
+        "Företagsflytt i Halmstad – flytt av kontor och verksamhet med tidsplan och kort driftstopp. Beskriv verksamheten och få en offert.",
+      ingress:
+        "Ska ni flytta kontor eller verksamhet i Halmstad? Beskriv verksamheten och önskade tider, så tas ett upplägg fram.",
+      omFlytten: [
+        "Halmstad är vår enda ort i Hallands län, och avståndet märks vid flytt söderut. En företagsflytt härifrån till Malmö eller Helsingborg innebär en transportsträcka som behöver planeras in – tidsplanen kan inte läggas lika tätt som vid en flytt inom staden.",
+        "Kontorslägena varierar. I centrum ligger en del verksamheter i äldre fastigheter där hiss förekommer men inte är regel, medan företagsområdena utanför centrum har lokaler i markplan med lastport och uppställningsyta.",
+        "Högskolan och hamnen ger ett inslag av verksamheter med utrustning utöver vanlig kontorsinredning. Finns det instrument, verkstadsutrustning eller lager behöver det beskrivas separat, eftersom det bedöms på annat sätt än arbetsplatser.",
+      ],
+      praktiskt: [
+        {
+          rubrik: "Transportsträcka söderut",
+          text: "Flytt till Skåne innebär längre transport. Ange båda adresserna så kommer sträckan med i bedömningen.",
+        },
+        {
+          rubrik: "Markplan eller våning",
+          text: "Lokaler i företagsområden har ofta lastport. I centrum styr våningsplan och hiss bemanningen.",
+        },
+        {
+          rubrik: "Utrustning utöver kontor",
+          text: "Verkstad, lager eller instrument bedöms separat. Lista det i förfrågan.",
+        },
+      ],
+      fragor: [
+        {
+          fraga: "Vi flyttar verksamheten till Skåne – hur påverkar det?",
+          svar: "Transportsträckan blir en tydlig del av uppdraget och påverkar tidsplanen. Ange båda adresserna i förfrågan så att sträckan kommer med i underlaget.",
+        },
+        {
+          fraga: "Hur bedöms omfattningen av vår flytt?",
+          svar: "Inte i kvadratmeter, utan i antal arbetsplatser, mängd möbler och förvaring samt vilken utrustning som ska med. Finns lager eller verkstad beskrivs det separat.",
+        },
+      ],
+    },
     stad: {
       metaBeskrivning:
         "Flyttstädning i Halmstad inför överlämning och besiktning. Beskriv bostaden och ditt datum och få en tydlig offert från Nyflytt.",
@@ -793,6 +990,41 @@ export const orter: Ort[] = [
       },
     ],
     narliggande: ["hassleholm", "malmo", "lund"],
+    foretag: {
+      metaBeskrivning:
+        "Företagsflytt i Kristianstad – flytt av kontor och verksamhet med tidsplan och kort driftstopp. Beskriv verksamheten och få en offert.",
+      ingress:
+        "Ska ni flytta kontor eller verksamhet i Kristianstad? Beskriv verksamheten och önskade tider, så tas ett upplägg fram.",
+      omFlytten: [
+        "Kristianstad ligger i östra Skåne, vilket gör transportsträckorna annorlunda än för orterna längs västkusten. En företagsflytt till Malmö eller Helsingborg går tvärs över Skåne, och transporttiden blir en tydlig del av uppdraget som måste in i tidsplanen.",
+        "Centrum har en rutnätsstruktur från 1600-talet med raka men delvis smala gator. Kontor i de äldre fastigheterna kan ha begränsad hiss och gator där uppställningstiden är kort, medan verksamhetsområdena utanför centrum har lokaler i markplan med lastport.",
+        "Till kommunen hör flera tätorter, bland annat Åhus och Tollarp. Avståndet till centralorten räknas in i uppdraget, så ange alltid den faktiska adressen och inte bara kommunen.",
+      ],
+      praktiskt: [
+        {
+          rubrik: "Transport tvärs över Skåne",
+          text: "Flytt västerut innebär en tydlig transportsträcka. Ange båda adresserna så kommer den med.",
+        },
+        {
+          rubrik: "Smala gator i rutnätsstaden",
+          text: "Uppställningstiden i centrum kan vara begränsad. Ange adress och våningsplan.",
+        },
+        {
+          rubrik: "Ange faktisk adress",
+          text: "Kommunen rymmer flera tätorter. Avståndet till centralorten påverkar uppdraget.",
+        },
+      ],
+      fragor: [
+        {
+          fraga: "Vi flyttar till västra Skåne – hur lång tid tar det?",
+          svar: "Transportsträckan tvärs över Skåne är en tydlig del av uppdraget. Ange båda adresserna i förfrågan, så kan tidsplanen läggas med marginal för transporten.",
+        },
+        {
+          fraga: "Gäller det även verksamhet i Åhus eller Tollarp?",
+          svar: "Ja. Ange den faktiska adressen i förfrågan – avståndet till centralorten påverkar både tidsplan och offert.",
+        },
+      ],
+    },
     stad: {
       metaBeskrivning:
         "Flyttstädning i Kristianstad inför överlämning och besiktning. Beskriv bostaden och ditt datum och få en tydlig offert från Nyflytt.",
@@ -998,6 +1230,41 @@ export const orter: Ort[] = [
       },
     ],
     narliggande: ["malmo", "landskrona", "helsingborg"],
+    foretag: {
+      metaBeskrivning:
+        "Företagsflytt i Lund – flytt av kontor, labb och verksamhet med tidsplan och kort driftstopp. Beskriv verksamheten och få en offert.",
+      ingress:
+        "Ska ni flytta kontor eller verksamhet i Lund? Beskriv verksamheten och önskade tider, så tas ett upplägg fram.",
+      omFlytten: [
+        "Lunds näringsliv präglas av universitetet och forskningsanläggningarna. Kontor i forskningsnära miljöer kring Ideon och Brunnshög har ofta utrustning som inte är vanlig kontorsinredning – instrument, labbmöbler eller mätutrustning som kräver egen hantering och ibland transport av leverantören.",
+        "Den medeltida stadskärnan ställer logistiska krav. Kvarteren kring Domkyrkan har gågator och trafikbegränsningar, vilket gör att flyttbilen sällan kan stå vid porten. Dispens eller tillstånd kan behövas, och det bör ordnas i god tid.",
+        "Terminsrytmen märks även för verksamheter. Kring terminsstart är trycket på transporter och uppställningsytor i staden högre, vilket är värt att ta med när ett datum väljs.",
+      ],
+      praktiskt: [
+        {
+          rubrik: "Gågator och trafikbegränsningar",
+          text: "I stadskärnan krävs ofta tillstånd för att komma fram med flyttbil. Ange adressen tidigt så hinner det ordnas.",
+        },
+        {
+          rubrik: "Labb- och specialutrustning",
+          text: "Instrument och labbinredning kräver egen bedömning. Lista utrustningen i förfrågan.",
+        },
+        {
+          rubrik: "Undvik terminsstart",
+          text: "Trycket i staden är högre kring terminsstart. Ett datum utanför de veckorna ger mer flexibilitet.",
+        },
+      ],
+      fragor: [
+        {
+          fraga: "Vi har labbutrustning – kan den flyttas?",
+          svar: "Beskriv utrustningen i förfrågan. Instrument och labbinredning bedöms separat, och viss utrustning behöver hanteras av leverantör eller er egen personal.",
+        },
+        {
+          fraga: "Kommer flyttbilen fram i centrum?",
+          svar: "I kvarteren med gågator krävs ofta tillstånd eller dispens. Ange adressen i förfrågan så kan behovet bedömas innan flyttdagen.",
+        },
+      ],
+    },
     stad: {
       metaBeskrivning:
         "Flyttstädning i Lund inför överlämning och besiktning. Beskriv bostaden och ditt datum och få en tydlig offert från Nyflytt.",
@@ -6141,6 +6408,21 @@ export function stadPath(ort: Pick<Ort, "slug" | "typ">): string {
     ? `/flyttstadning-${ort.slug}`
     : `/flyttstadning/${ort.slug}`;
 }
+
+/**
+ * URL till en orts FÖRETAGSFLYTTS-sida: /foretag-<slug>.
+ *
+ * Till skillnad från flytt och flyttstädning finns företagssidor BARA för
+ * storstäderna. De mindre orterna beskrivs i ortsdatat som bostadsorter
+ * utan dokumenterad verksamhetsbas – att skriva ortssidor om deras
+ * näringsliv hade krävt påhittade uppgifter.
+ */
+export function foretagPath(ort: Pick<Ort, "slug">): string {
+  return `/foretag-${ort.slug}`;
+}
+
+/** Storstäder med företagsinnehåll och därmed en egen företagsflyttssida. */
+export const storstaderMedForetag = storstader.filter((o) => o.foretag);
 
 /** Orter som har städinnehåll och därmed en egen flyttstädningssida. */
 export const orterMedStad = orter.filter((o) => o.stad);

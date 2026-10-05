@@ -1,15 +1,23 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { ForetagOrtSida } from "@/components/ForetagOrtSida";
 import { OrtSida } from "@/components/OrtSida";
 import { StadOrtSida } from "@/components/StadOrtSida";
-import { hittaOrt, type Ort, storstader, storstaderMedStad } from "@/lib/orter";
+import {
+  hittaOrt,
+  type Ort,
+  storstader,
+  storstaderMedForetag,
+  storstaderMedStad,
+} from "@/lib/orter";
 import { buildMetadata } from "@/lib/seo";
 
 /**
- * Ortssidor för STORSTÄDER, båda tjänsterna:
+ * Ortssidor för STORSTÄDER, tre tjänster:
  *
- *   /flyttfirma-<slug>     flytt       (OrtSida)
+ *   /flyttfirma-<slug>     flytt         (OrtSida)
  *   /flyttstadning-<slug>  flyttstädning (StadOrtSida)
+ *   /foretag-<slug>        företagsflytt (ForetagOrtSida)
  *
  * Båda mönstren ligger i samma route eftersom Next.js bara tillåter ETT
  * dynamiskt segment direkt i rooten – två separata mappar ger
@@ -29,11 +37,15 @@ import { buildMetadata } from "@/lib/seo";
 
 const FLYTT = "flyttfirma-";
 const STAD = "flyttstadning-";
+const FORETAG = "foretag-";
 
 export function generateStaticParams() {
   return [
     ...storstader.map((ort) => ({ ortSegment: `${FLYTT}${ort.slug}` })),
     ...storstaderMedStad.map((ort) => ({ ortSegment: `${STAD}${ort.slug}` })),
+    ...storstaderMedForetag.map((ort) => ({
+      ortSegment: `${FORETAG}${ort.slug}`,
+    })),
   ];
 }
 
@@ -42,6 +54,7 @@ export const dynamicParams = false;
 type Traff =
   | { sort: "flytt"; ort: Ort }
   | { sort: "stad"; ort: Ort }
+  | { sort: "foretag"; ort: Ort }
   | null;
 
 /**
@@ -51,6 +64,14 @@ type Traff =
  * förväxlas, men ordningen gör avsikten tydlig om fler prefix tillkommer.
  */
 function tolka(segment: string): Traff {
+  if (segment.startsWith(FORETAG)) {
+    const ort = hittaOrt(segment.slice(FORETAG.length));
+    // Företagssidor finns bara för storstäder med företagsinnehåll.
+    return ort?.typ === "storstad" && ort.foretag
+      ? { sort: "foretag", ort }
+      : null;
+  }
+
   if (segment.startsWith(STAD)) {
     const ort = hittaOrt(segment.slice(STAD.length));
     // Städsida kräver att ortens städinnehåll faktiskt är ifyllt.
@@ -74,6 +95,14 @@ export async function generateMetadata(
   if (!traff) return {};
   const { ort } = traff;
 
+  if (traff.sort === "foretag") {
+    return buildMetadata({
+      title: `Företagsflytt ${ort.iOrt} – kontor och verksamhet`,
+      description: ort.foretag!.metaBeskrivning,
+      path: `/${FORETAG}${ort.slug}`,
+    });
+  }
+
   if (traff.sort === "stad") {
     return buildMetadata({
       title: `Flyttstädning ${ort.iOrt} – inför överlämning`,
@@ -95,9 +124,7 @@ export default async function Sida(props: PageProps<"/[ortSegment]">) {
 
   if (!traff) notFound();
 
-  return traff.sort === "stad" ? (
-    <StadOrtSida ort={traff.ort} />
-  ) : (
-    <OrtSida ort={traff.ort} />
-  );
+  if (traff.sort === "foretag") return <ForetagOrtSida ort={traff.ort} />;
+  if (traff.sort === "stad") return <StadOrtSida ort={traff.ort} />;
+  return <OrtSida ort={traff.ort} />;
 }

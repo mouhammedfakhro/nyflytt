@@ -6,7 +6,14 @@ import { useEffect, useRef, useState } from "react";
 import { Ikon } from "@/components/Ikon";
 import { KnappLank } from "@/components/Knapp";
 import { Logo } from "@/components/Logo";
-import { type Ort, ortPath, stadPath, storstader } from "@/lib/orter";
+import {
+  foretagPath,
+  type Ort,
+  ortPath,
+  stadPath,
+  storstader,
+  storstaderMedForetag,
+} from "@/lib/orter";
 
 /**
  * Sajtheader.
@@ -21,7 +28,7 @@ import { type Ort, ortPath, stadPath, storstader } from "@/lib/orter";
  * nå orterna, därför är rubriken en riktig knapp med aria-expanded.
  */
 
-type MenyId = "bohagsflytt" | "flyttstadning";
+type MenyId = "bohagsflytt" | "flyttstadning" | "foretagsflytt";
 
 const tjansteMenyer: {
   id: MenyId;
@@ -31,6 +38,8 @@ const tjansteMenyer: {
   beskrivning: string;
   /** Bygger ortslänken för just den här tjänsten. */
   ortLank: (ort: Ort) => string;
+  /** Orterna som visas i menyn. Företagsflytt har bara storstäder. */
+  orter: Ort[];
 }[] = [
   {
     id: "bohagsflytt",
@@ -38,6 +47,7 @@ const tjansteMenyer: {
     sidPath: "/bohagsflytt",
     beskrivning: "Bärhjälp, transport och lastsäkring för hela bohaget.",
     ortLank: ortPath,
+    orter: storstader,
   },
   {
     id: "flyttstadning",
@@ -45,12 +55,20 @@ const tjansteMenyer: {
     sidPath: "/flyttstadning",
     beskrivning: "Städning av hela bostaden inför överlämning.",
     ortLank: stadPath,
+    orter: storstader,
+  },
+  {
+    id: "foretagsflytt",
+    text: "Företagsflytt",
+    sidPath: "/foretagsflytt",
+    beskrivning: "Flytt av kontor och verksamhet med kort driftstopp.",
+    ortLank: foretagPath,
+    orter: storstaderMedForetag,
   },
 ];
 
 const ovrigNav = [
   { href: "/flytt-och-stad", text: "Flytt och städ" },
-  { href: "/foretagsflytt", text: "Företagsflytt" },
   { href: "/sa-fungerar-det", text: "Så fungerar det" },
   { href: "/om-oss", text: "Om oss" },
   { href: "/kontakt", text: "Kontakt" },
@@ -206,7 +224,7 @@ export function Header() {
                         Välj ort
                       </p>
                       <ul className="grid grid-cols-3 gap-0.5">
-                        {storstader.map((ort) => {
+                        {meny.orter.map((ort) => {
                           // Flyttmenyn länkar till /flyttfirma-<ort>,
                           // städmenyn till /flyttstadning-<ort>.
                           const href = meny.ortLank(ort);

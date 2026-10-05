@@ -1,5 +1,9 @@
 import type { Metadata } from "next";
+import Link from "next/link";
+import { Ikon } from "@/components/Ikon";
+import { Sektion, SektionsRubrik } from "@/components/Sektion";
 import { TjanstSida } from "@/components/TjanstSida";
+import { foretagPath, storstaderMedForetag } from "@/lib/orter";
 import { buildMetadata } from "@/lib/seo";
 import { hittaTjanst } from "@/lib/tjanster";
 
@@ -30,6 +34,51 @@ const egnaFragor = [
   },
 ];
 
+/**
+ * Ortslänkar. Företagssidorna finns bara för storstäderna, så listan är
+ * kort – men utan den vore sidorna nåbara enbart via headerns meny.
+ */
+function Ortslankar() {
+  return (
+    <Sektion bakgrund="ljus" labelledBy="foretag-orter-rubrik">
+      <SektionsRubrik
+        id="foretag-orter-rubrik"
+        rubrik="Företagsflytt i din ort"
+        ingress="Läs om vad som påverkar en kontorsflytt där verksamheten finns."
+      />
+      <ul className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {storstaderMedForetag.map((ort) => (
+          <li key={ort.slug}>
+            <Link
+              href={foretagPath(ort)}
+              className="group flex items-center justify-between gap-4 rounded-2xl bg-white p-5 ring-1 ring-sand-200 transition-all hover:ring-korall-300"
+            >
+              <span>
+                <span className="block font-sans font-bold text-sand-950">
+                  {ort.namn}
+                </span>
+                <span className="mt-0.5 block text-sm text-sand-500">
+                  {ort.lan}
+                </span>
+              </span>
+              <Ikon
+                namn="pil"
+                className="size-5 shrink-0 text-korall-600 transition-transform group-hover:translate-x-0.5"
+              />
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </Sektion>
+  );
+}
+
 export default function Sida() {
-  return <TjanstSida tjanst={tjanst} egnaFragor={egnaFragor} />;
+  return (
+    <TjanstSida
+      tjanst={tjanst}
+      egnaFragor={egnaFragor}
+      extra={<Ortslankar />}
+    />
+  );
 }
