@@ -21,7 +21,7 @@ import { buildMetadata } from "@/lib/seo";
 export const metadata: Metadata = buildMetadata({
   title: "Orter vi arbetar i",
   description:
-    "Alla orter där du kan boka flytthjälp och flyttstädning via Nyflytt, grupperade efter närmaste större stad. Välj din ort för att läsa vad som är bra att veta inför flytten där.",
+    "Alla orter där du kan boka flytthjälp och flyttstädning via Nyflytt, grupperade efter närmaste större stad. Välj din ort och läs mer.",
   path: "/flyttfirma",
 });
 

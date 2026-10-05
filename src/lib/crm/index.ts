@@ -105,22 +105,29 @@ export function byggForfragan(
 }
 
 /**
- * Referensnummer i formatet NF-ÅÅMMDD-XXXX.
- * Slumpdelen använder crypto så två samtidiga förfrågningar inte kolliderar.
+ * Referensnummer – fem siffror, t.ex. "48217".
+ *
+ * Kunden ska kunna läsa upp numret i telefon eller skriva det i ett mejl
+ * utan att stava bokstäver. Därför bara siffror och inget datumprefix:
+ * det tidigare formatet (NF-ÅÅMMDD-XXXX, 14 tecken) var för långt för det.
+ *
+ * `crypto` används så att två samtidiga förfrågningar inte får samma nummer.
+ * Fem siffror ger 90 000 möjliga värden (10000–99999). Numret är ett
+ * kundvänligt referensnummer, INTE en unik nyckel – CRM:et har sitt eget id
+ * (`crmId`). Vid den volym det handlar om är risken för dubblett liten, men
+ * bygg inte logik som förutsätter att numret är unikt över tid.
  */
 export function skapaReferens(): string {
-  const nu = new Date();
-  const datumdel = [
-    String(nu.getFullYear()).slice(2),
-    String(nu.getMonth() + 1).padStart(2, "0"),
-    String(nu.getDate()).padStart(2, "0"),
-  ].join("");
+  // Avvisar värden som skulle ge en ojämn fördelning (modulo-bias).
+  const span = 90000;
+  const tak = Math.floor(0xffffffff / span) * span;
 
-  const tecken = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"; // utan lätt förväxlade tecken
-  const bytes = crypto.getRandomValues(new Uint8Array(4));
-  const slump = Array.from(bytes, (b) => tecken[b % tecken.length]).join("");
+  let tal: number;
+  do {
+    tal = crypto.getRandomValues(new Uint32Array(1))[0];
+  } while (tal >= tak);
 
-  return `NF-${datumdel}-${slump}`;
+  return String(10000 + (tal % span));
 }
 
 /** Väljer adapter utifrån miljövariabel. Default är mock. */

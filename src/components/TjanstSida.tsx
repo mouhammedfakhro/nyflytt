@@ -19,9 +19,15 @@ export function TjanstSida({
   tjanst,
   /** Tjänstespecifika frågor som läggs före de generella. */
   egnaFragor = [],
+  /**
+   * Extra innehåll som läggs in före CTA:n, t.ex. ortslänkar.
+   * Används av flyttstädningssidan för att länka till ortssidorna.
+   */
+  extra,
 }: {
   tjanst: Tjanst;
   egnaFragor?: { fraga: string; svar: string }[];
+  extra?: React.ReactNode;
 }) {
   const path = `/${tjanst.slug}`;
   // Ett urval generella frågor + tjänstens egna. Samma lista går till schemat.
@@ -195,6 +201,8 @@ export function TjanstSida({
           ))}
         </ul>
       </Sektion>
+
+      {extra}
 
       <OffertCta href={`/offert?tjanst=${tjanst.offertTyp}`} />
     </>

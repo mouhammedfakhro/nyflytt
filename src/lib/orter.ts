@@ -65,6 +65,30 @@ export type Ort = {
    */
   narmasteStorstad?: string;
 
+  /**
+   * Flyttstädningssidan för orten: /flyttstad-<slug> respektive
+   * /flyttstad/<slug>. Se `src/app/[flyttstadStad]/page.tsx`.
+   *
+   * Innehållet MÅSTE vara städspecifikt – bostadsbestånd som påverkar
+   * städningen, besiktningspraxis, vad som är vanligt just här. Att
+   * återanvända flyttsidans text skulle ge near-duplicate content och
+   * riskera hela domänens trovärdighet hos Google.
+   *
+   * Saknas fältet byggs ingen städsida för orten (se generateStaticParams).
+   */
+  stad?: {
+    /** Metadescription – unik per ort. */
+    metaBeskrivning: string;
+    /** Ingress under H1. Unik per ort. */
+    ingress: string;
+    /** 2–3 stycken om vad som präglar en flyttstädning just här. */
+    omStadningen: string[];
+    /** Praktiska förhållanden som påverkar städningen i orten. */
+    praktiskt: { rubrik: string; text: string }[];
+    /** Ortsspecifika städfrågor. Generella ligger i lib/faq.ts. */
+    fragor: { fraga: string; svar: string }[];
+  };
+
   // --- Endast storstäder (typ: "storstad") -----------------------------------
   /**
    * Stadsdelar och områden med kort text om vad som kännetecknar en flytt där.
@@ -164,6 +188,41 @@ export const orter: Ort[] = [
       },
     ],
     narliggande: ["landskrona", "angelholm", "lund"],
+    stad: {
+      metaBeskrivning:
+        "Flyttstädning i Helsingborg inför överlämning och besiktning. Beskriv bostaden och ditt datum och få en tydlig offert från Nyflytt.",
+      ingress:
+        "Ska du flyttstäda i Helsingborg? Beskriv bostaden och datumet och få en offert där omfattningen framgår.",
+      omStadningen: [
+        "Helsingborgs centrala kvarter har mycket sekelskiftesbebyggelse, och det märks i städningen. Höga socklar, spegeldörrar med foder, djupa fönsternischer och originalparkett tar längre tid än motsvarande ytor i ett nybyggt hus. Boytan ensam säger därför inte så mycket om hur lång tid en flyttstädning tar här.",
+        "Fönstren är ofta den avgörande posten. I äldre fastigheter är det vanligt med kopplade bågar i två eller tre luft, som ska putsas både in- och utvändigt och mellan rutorna. Antalet fönster och hur de är konstruerade påverkar omfattningen mer än de flesta räknar med.",
+        "I villa- och radhusområdena längre ut tillkommer ytor som inte finns i en lägenhet: garage, förråd, pannrum och inglasade uteplatser. Vad som ska ingå av det behöver framgå av förfrågan, eftersom det inte är självklart att allt räknas som flyttstädning.",
+      ],
+      praktiskt: [
+        {
+          rubrik: "Äldre fastigheter tar längre tid",
+          text: "Sekelskifteslägenheter har fler detaljytor än boytan antyder – socklar, foder, nischer. Ange byggår om du vet det, så blir bedömningen mer träffsäker.",
+        },
+        {
+          rubrik: "Fönstren styr omfattningen",
+          text: "Kopplade bågar i flera luft är vanligt i centrum. Ange gärna antal fönster och om de går att öppna, så kommer fönsterputsen med rätt i offerten.",
+        },
+        {
+          rubrik: "Tömt före städning",
+          text: "Städningen kan inte göras ordentligt om bohag står kvar. Planera flytten så att bostaden är tom – särskilt i trapphus utan hiss, där utflytten lätt drar ut i tiden.",
+        },
+      ],
+      fragor: [
+        {
+          fraga: "Hur mycket längre tid tar en sekelskifteslägenhet?",
+          svar: "Det beror på antalet detaljytor snarare än boytan. Ange byggår och antal fönster i förfrågan, så bedöms omfattningen utifrån bostaden i stället för en schablon per kvadratmeter.",
+        },
+        {
+          fraga: "Ingår garage och förråd i villaområdena?",
+          svar: "Inte automatiskt. Ange i förfrågan vilka utrymmen som ska städas, så framgår det av offerten vad som ingår.",
+        },
+      ],
+    },
   },
   {
     slug: "malmo",
@@ -250,6 +309,41 @@ export const orter: Ort[] = [
       },
     ],
     narliggande: ["lund", "trelleborg", "landskrona"],
+    stad: {
+      metaBeskrivning:
+        "Flyttstädning i Malmö inför överlämning och besiktning. Beskriv bostaden och ditt datum och få en tydlig offert från Nyflytt.",
+      ingress:
+        "Ska du flyttstäda i Malmö? Beskriv bostaden och datumet och få en offert där omfattningen framgår.",
+      omStadningen: [
+        "Malmös bostadsbestånd är ovanligt blandat, och det påverkar flyttstädningen direkt. En sekelskiftesvåning i Gamla Väster och en nyproducerad lägenhet i Hyllie eller Västra Hamnen kräver olika mycket arbete även vid samma boyta – den äldre har fler detaljytor, den nyare ofta mer glas och fler blanka ytor som visar varje strimma.",
+        "I de stora hyresrättsområdena är överlämningen ofta mer formaliserad. Hyresvärden har vanligen en checklista för besiktningen, och den listan är det som avgör om städningen godkänns. Har du fått ett sådant underlag är det värt att läsa innan du beskriver uppdraget, så att omfattningen matchar vad som faktiskt kommer kontrolleras.",
+        "Nyproduktionen har sina egna moment. Golvbrunnar med avtagbara insatser, duschväggar i glas och vitvaror som ska dras ut kräver att man vet hur de monteras. Köksfläkt med filter och kyl eller frys som ska rengöras bakom hör också dit.",
+      ],
+      praktiskt: [
+        {
+          rubrik: "Checklistan från hyresvärden styr",
+          text: "I hyresrättsområdena finns ofta en besiktningslista. Nämn i förfrågan att du har en, så kan omfattningen stämmas av mot den i stället för mot en generell standard.",
+        },
+        {
+          rubrik: "Nytt och gammalt kräver olika saker",
+          text: "Nyproduktion betyder mer glas och blanka ytor; äldre innerstad betyder fler detaljytor. Ange byggår eller område, så blir bedömningen rätt.",
+        },
+        {
+          rubrik: "Tömt före städning",
+          text: "Städningen behöver en tömd bostad för att hålla vid besiktning. I höga hus med en hiss kan utflytten ta längre tid än väntat – lägg marginal mellan flytt och städning.",
+        },
+      ],
+      fragor: [
+        {
+          fraga: "Vi har en besiktningslista från hyresvärden – kan den följas?",
+          svar: "Ange i förfrågan att du har en lista och vad som står i den. Omfattningen i offerten kan då stämmas av mot den, så att du inte betalar för moment som inte krävs eller saknar moment som kontrolleras.",
+        },
+        {
+          fraga: "Skiljer sig städningen i nyproduktion?",
+          svar: "Ja, tyngdpunkten flyttas. Mindre detaljsnickerier, men mer glas, blanka ytor och vitvaror som ska rengöras på baksidan. Ange området eller byggåret i förfrågan.",
+        },
+      ],
+    },
   },
   {
     slug: "landskrona",
@@ -336,6 +430,41 @@ export const orter: Ort[] = [
       },
     ],
     narliggande: ["helsingborg", "lund", "malmo"],
+    stad: {
+      metaBeskrivning:
+        "Flyttstädning i Landskrona inför överlämning och besiktning. Beskriv bostaden och ditt datum och få en tydlig offert från Nyflytt.",
+      ingress:
+        "Ska du flyttstäda i Landskrona? Beskriv bostaden och datumet och få en offert där omfattningen framgår.",
+      omStadningen: [
+        "Landskrona har en stor andel flerbostadshus från 1950- till 1970-talet, och de är i städsammanhang tacksamma: raka ytor, släta dörrar och fönster som oftast går att öppna och putsa på båda sidor. Tidsåtgången följer boytan tätare här än i städer med mer sekelskiftesbebyggelse.",
+        "I de äldre centrumfastigheterna ser det annorlunda ut, med mer snickerier och äldre fönsterkonstruktioner. Skillnaden mellan de två bestånden är stor nog att det är värt att ange byggår eller adress i förfrågan.",
+        "Villaområdena i utkanten innebär fler utrymmen än en lägenhet – förråd, garage och uteplats. Vilka av dem som ska städas behöver stå i förfrågan, eftersom det inte ingår automatiskt.",
+      ],
+      praktiskt: [
+        {
+          rubrik: "1950–70-talsbestånd är förutsägbart",
+          text: "Raka ytor och öppningsbara fönster gör omfattningen lättare att bedöma. Ange boyta och antal rum, så räcker det långt.",
+        },
+        {
+          rubrik: "Äldre centrumfastigheter skiljer sig",
+          text: "Mer snickerier och äldre fönster tar längre tid. Ange byggår om du vet det.",
+        },
+        {
+          rubrik: "Hiss påverkar utflytten, inte städningen",
+          text: "Hiss finns i stora delar av beståndet. Det påverkar hur snabbt bostaden blir tömd, vilket i sin tur avgör när städningen kan börja.",
+        },
+      ],
+      fragor: [
+        {
+          fraga: "Går det att boka städning samma dag som flytten?",
+          svar: "Det förutsätter att bostaden är helt tömd när städningen börjar. Ange önskad ordning i förfrågan, så planeras tiderna efter varandra i stället för parallellt.",
+        },
+        {
+          fraga: "Ingår förråd och garage?",
+          svar: "Inte automatiskt. Ange vilka utrymmen som ska ingå, så framgår det av offerten.",
+        },
+      ],
+    },
   },
   {
     slug: "angelholm",
@@ -422,6 +551,41 @@ export const orter: Ort[] = [
       },
     ],
     narliggande: ["helsingborg", "halmstad", "landskrona"],
+    stad: {
+      metaBeskrivning:
+        "Flyttstädning i Ängelholm inför överlämning och besiktning. Beskriv bostaden och ditt datum och få en tydlig offert från Nyflytt.",
+      ingress:
+        "Ska du flyttstäda i Ängelholm? Beskriv bostaden och datumet och få en offert där omfattningen framgår.",
+      omStadningen: [
+        "Ängelholm domineras av villor och radhus, och det gör flyttstädningen till ett annat uppdrag än i en lägenhetsstad. Ett hus har fler rum, fler fönster, ofta två våningar och dessutom utrymmen som inte räknas som boyta: garage, förråd, pannrum och tvättstuga.",
+        "Fönsterputsen blir därför en större post än i en lägenhet. Ett normalstort hus kan ha betydligt fler fönster än en trerumslägenhet med samma antal boende, och i två våningar tillkommer frågan om hur de övre nås säkert utifrån.",
+        "Mot kusten finns en del fritidsbebyggelse. Ett hus som stått obebott en period har ofta mer damm och ibland fukt eller mögelpåväxt, vilket inte är flyttstädning utan behöver bedömas för sig.",
+      ],
+      praktiskt: [
+        {
+          rubrik: "Räkna utrymmen, inte bara boyta",
+          text: "I ett hus ligger en stor del av arbetet utanför boytan. Ange antal rum, våningar och vilka biutrymmen som ska ingå.",
+        },
+        {
+          rubrik: "Fönster i två våningar",
+          text: "Antalet fönster och åtkomsten utifrån påverkar omfattningen. Ange gärna ungefärligt antal och om det finns svåråtkomliga partier.",
+        },
+        {
+          rubrik: "Fritidshus kan kräva mer",
+          text: "Har huset stått obebott kan det behövas mer än en flyttstädning. Beskriv läget i förfrågan så bedöms det innan offerten lämnas.",
+        },
+      ],
+      fragor: [
+        {
+          fraga: "Hur anger jag storleken på en villa?",
+          svar: "Ange boyta, antal rum och antal våningar, och lista biutrymmena separat – garage, förråd, pannrum, tvättstuga. Det ger ett mer träffsäkert underlag än boytan ensam.",
+        },
+        {
+          fraga: "Räknas städning av ett länge obebott hus som flyttstädning?",
+          svar: "Inte alltid. Har huset stått tomt länge kan det krävas mer omfattande rengöring. Beskriv förutsättningarna i förfrågan så bedöms det separat.",
+        },
+      ],
+    },
   },
   {
     slug: "halmstad",
@@ -508,6 +672,41 @@ export const orter: Ort[] = [
       },
     ],
     narliggande: ["angelholm", "helsingborg"],
+    stad: {
+      metaBeskrivning:
+        "Flyttstädning i Halmstad inför överlämning och besiktning. Beskriv bostaden och ditt datum och få en tydlig offert från Nyflytt.",
+      ingress:
+        "Ska du flyttstäda i Halmstad? Beskriv bostaden och datumet och få en offert där omfattningen framgår.",
+      omStadningen: [
+        "Halmstad är en studentstad, och det syns i städbehovet kring terminsskiftena. Studentbostäder och mindre lägenheter har koncentrerat slitage på få kvadratmeter – kokvrå, dusch och golv – och många byten sker samtidigt, vilket gör juni och augusti till de mest efterfrågade perioderna.",
+        "I de vanliga flerbostadshusen i centrum och ytterområdena är överlämningen mer standardiserad, med besiktning mot hyresvärdens lista. Villaområdena mot kusten innebär i stället fler utrymmen och fler fönster.",
+        "Kustläget har en praktisk konsekvens för fönsterputsen: salt från havsluften lägger sig på utsidan och syns tydligt i motljus. Fönstren bör putsas nära överlämningen snarare än veckan före.",
+      ],
+      praktiskt: [
+        {
+          rubrik: "Boka tidigt kring terminsskiftet",
+          text: "Juni och augusti är hårt belastade i en studentstad. Är du bunden till ett datum vid terminsstart, skicka förfrågan i god tid.",
+        },
+        {
+          rubrik: "Litet men slitet",
+          text: "I studentbostäder sitter arbetet i kokvrå, dusch och golv snarare än i ytan. Beskriv bostadens skick, inte bara antal kvadratmeter.",
+        },
+        {
+          rubrik: "Salt på fönstren",
+          text: "Nära kusten blir fönstrens utsida snabbt smutsig igen. Lägg fönsterputsen nära överlämningsdagen.",
+        },
+      ],
+      fragor: [
+        {
+          fraga: "Hur tidigt behöver jag boka inför terminsstart?",
+          svar: "Så tidigt du kan. Juni och augusti är de mest efterfrågade månaderna här, och är du bunden till ett bestämt datum är marginalen liten. Skicka förfrågan så snart datumet är känt.",
+        },
+        {
+          fraga: "Räcker en standardstädning för ett studentrum?",
+          svar: "Ofta, men slitaget är koncentrerat till kokvrå och dusch. Beskriv skicket i förfrågan så att omfattningen stämmer med vad som faktiskt behöver göras.",
+        },
+      ],
+    },
   },
   {
     slug: "kristianstad",
@@ -594,6 +793,41 @@ export const orter: Ort[] = [
       },
     ],
     narliggande: ["hassleholm", "malmo", "lund"],
+    stad: {
+      metaBeskrivning:
+        "Flyttstädning i Kristianstad inför överlämning och besiktning. Beskriv bostaden och ditt datum och få en tydlig offert från Nyflytt.",
+      ingress:
+        "Ska du flyttstäda i Kristianstad? Beskriv bostaden och datumet och få en offert där omfattningen framgår.",
+      omStadningen: [
+        "Kristianstads rutnätsstad har blandad bebyggelse, och i städsammanhang betyder det att två adresser några kvarter isär kan kräva olika mycket arbete. Äldre fastigheter med snickerier och originalgolv ligger intill nyare hus med släta ytor, så byggår säger mer om tidsåtgången än läget i centrum gör.",
+        "I ytterområdenas flerbostadshus är överlämningen mer enhetlig, med besiktning mot hyresvärdens checklista. Villorna i utkanten innebär i stället garage, förråd och uteplats som behöver anges separat.",
+        "Mot Åhus finns fritidsbebyggelse. Ett hus som använts sommartid och stått stängt över vintern har ofta mer damm, och ibland fukt, än ett permanentbebott hus – det behöver bedömas innan omfattningen sätts.",
+      ],
+      praktiskt: [
+        {
+          rubrik: "Byggår säger mer än adressen",
+          text: "I rutnätsstaden varierar beståndet kvarter för kvarter. Ange byggår eller beskriv snickerier och golv, så blir bedömningen träffsäker.",
+        },
+        {
+          rubrik: "Checklista vid hyresrätt",
+          text: "Har du fått en besiktningslista, nämn det i förfrågan så kan omfattningen stämmas av mot den.",
+        },
+        {
+          rubrik: "Fritidshus mot Åhus",
+          text: "Hus som stått stängda över vintern kan kräva mer än en flyttstädning. Beskriv förutsättningarna i förfrågan.",
+        },
+      ],
+      fragor: [
+        {
+          fraga: "Spelar det roll vilket kvarter i centrum bostaden ligger i?",
+          svar: "Mindre än byggåret. Beståndet är blandat, så ange byggår eller beskriv golv och snickerier – det påverkar tidsåtgången mer än adressen.",
+        },
+        {
+          fraga: "Vi har ett sommarhus mot Åhus – gäller flyttstädning där?",
+          svar: "Beskriv läget i förfrågan. Har huset stått stängt en längre tid kan det behövas mer omfattande rengöring än en flyttstädning, och det bedöms innan offerten lämnas.",
+        },
+      ],
+    },
   },
   {
     slug: "hassleholm",
@@ -643,6 +877,41 @@ export const orter: Ort[] = [
     ],
     narliggande: ["kristianstad", "lund", "helsingborg"],
     narmasteStorstad: "kristianstad",
+    stad: {
+      metaBeskrivning:
+        "Flyttstädning i Hässleholm inför överlämning och besiktning. Beskriv bostaden och ditt datum och få en tydlig offert från Nyflytt.",
+      ingress:
+        "Ska du flyttstäda i Hässleholm? Beskriv bostaden och datumet och få en offert där omfattningen framgår.",
+      omStadningen: [
+        "Bebyggelsen i Hässleholm beskrivs som flerbostadshus från mitten av 1900-talet i centrum, villabebyggelse strax utanför, samt flera tätorter i kommunen. Ett bestånd från 1900-talet är i städsammanhang förhållandevis tacksamt: släta dörrar, raka socklar och fönster som oftast går att öppna och putsa från båda sidor. Tidsåtgången för en flyttstädning följer därför boytan tätare än i hus med mycket snickerier.",
+        "Eftersom beståndet i Hässleholm är blandat kan två adresser i samma ort kräva olika mycket. Ange bostadstyp tillsammans med boytan: för hus behöver det framgå vilka biutrymmen som ska ingå, för lägenhet är det kök, badrum, fönster och golv som styr omfattningen.",
+        "Vanliga flyttsträckor här går inom orten och mot Kristianstad och Lund och Hässleholm. Ska flyttstädningen göras nära flyttdagen behöver tidsplanen ta hänsyn till transporten, eftersom bostaden måste vara tömd innan städningen kan börja.",
+      ],
+      praktiskt: [
+        {
+          rubrik: "Bestånd från 1900-talet",
+          text: "Raka ytor och öppningsbara fönster gör omfattningen lättare att bedöma. Ange boyta och antal rum, så räcker det långt.",
+        },
+        {
+          rubrik: "Räkna utrymmen, inte bara boyta",
+          text: "Ange antal rum, våningar och vilka biutrymmen som ska ingå.",
+        },
+        {
+          rubrik: "Sträckor mot Kristianstad",
+          text: "Ange den exakta adressen så att transportsträckan kommer med i bedömningen.",
+        },
+      ],
+      fragor: [
+        {
+          fraga: "Vad behöver jag ange för en bostad i Hässleholm?",
+          svar: "Bostadstyp, boyta och antal rum. Är det ett hus: även antal våningar och vilka biutrymmen som ska städas.",
+        },
+        {
+          fraga: "Kan jag boka både flytt och flyttstädning?",
+          svar: "Ja, och det är oftast smidigast. Välj flytt och städ i formuläret, då planeras städningen efter att bostaden är tömd.",
+        },
+      ],
+    },
   },
   {
     slug: "lund",
@@ -729,6 +998,41 @@ export const orter: Ort[] = [
       },
     ],
     narliggande: ["malmo", "landskrona", "helsingborg"],
+    stad: {
+      metaBeskrivning:
+        "Flyttstädning i Lund inför överlämning och besiktning. Beskriv bostaden och ditt datum och få en tydlig offert från Nyflytt.",
+      ingress:
+        "Ska du flyttstäda i Lund? Beskriv bostaden och datumet och få en offert där omfattningen framgår.",
+      omStadningen: [
+        "Lund har Sveriges mest koncentrerade studentbostadsmarknad, och det präglar flyttstädningen. Kring terminsskiftena byter många bostad samma vecka, och korridorrum och mindre studentlägenheter har sina egna besiktningsrutiner – ofta en checklista från stiftelsen eller nationen som avgör om städningen godkänns.",
+        "Den medeltida stadskärnan har äldre fastigheter med fler detaljytor: höga socklar, spegeldörrar, djupa fönsternischer och ibland originalgolv som inte tål vilka medel som helst. Boytan är ofta liten men arbetet per kvadratmeter större än i ett nyare hus.",
+        "I ytterområdenas flerbostadshus med hiss är förhållandena mer standardiserade. Där följer tidsåtgången boytan tätare, och utflytten går snabbare, vilket gör det lättare att lägga städningen direkt efter flytten.",
+      ],
+      praktiskt: [
+        {
+          rubrik: "Terminsskiftet är flaskhalsen",
+          text: "Kring terminsstart och terminsslut sker många byten samtidigt. Är du bunden till ett datum i juni eller augusti, skicka förfrågan tidigt.",
+        },
+        {
+          rubrik: "Checklista för studentbostad",
+          text: "Korridorrum och studentlägenheter besiktigas ofta mot en egen lista. Nämn att du har en, så kan omfattningen stämmas av mot den.",
+        },
+        {
+          rubrik: "Äldre stadskärna, känsliga ytor",
+          text: "Originalgolv och äldre snickerier tål inte alla medel. Nämn om bostaden har sådana ytor, så tas det med i bedömningen.",
+        },
+      ],
+      fragor: [
+        {
+          fraga: "Jag flyttar ut från ett korridorrum – gäller samma städning?",
+          svar: "Omfattningen är mindre, men besiktningen följer ofta hyresvärdens eller stiftelsens egen checklista. Ange i förfrågan vilken typ av boende det är och om du har fått en lista.",
+        },
+        {
+          fraga: "När bör jag boka inför terminsskiftet?",
+          svar: "Så snart datumet är känt. Juni och augusti är de mest efterfrågade perioderna i Lund, och utrymmet att flytta en bokning är litet.",
+        },
+      ],
+    },
   },
   {
     slug: "trelleborg",
@@ -778,6 +1082,41 @@ export const orter: Ort[] = [
     ],
     narliggande: ["malmo", "lund"],
     narmasteStorstad: "malmo",
+    stad: {
+      metaBeskrivning:
+        "Flyttstädning i Trelleborg inför överlämning och besiktning. Beskriv bostaden och ditt datum och få en tydlig offert från Nyflytt.",
+      ingress:
+        "Ska du flyttstäda i Trelleborg? Beskriv bostaden och datumet och få en offert där omfattningen framgår.",
+      omStadningen: [
+        "Bebyggelsen i Trelleborg beskrivs som lägre flerbostadshus i centrum, villaområden norrut och längs kusten. Det avgör vad en flyttstädning omfattar – ett hus har utrymmen utanför boytan, som garage och förråd, medan en lägenhet har mer förutsägbara ytor där kök och badrum väger tyngst.",
+        "Läget nära kusten har en praktisk följd för fönsterputsen: salt från havsluften lägger sig på utsidan och syns tydligt i motljus. Putsa därför fönstren nära överlämningsdagen snarare än veckan före. Har bostaden använts som fritidshus och stått stängd en period finns ofta mer damm, och ibland fukt – fuktsanering är inte flyttstädning utan bedöms separat.",
+        "Vanliga flyttsträckor här går inom orten och mot Malmö och Lund. Ska flyttstädningen göras nära flyttdagen behöver tidsplanen ta hänsyn till transporten, eftersom bostaden måste vara tömd innan städningen kan börja.",
+      ],
+      praktiskt: [
+        {
+          rubrik: "Ange bostadstyp, inte bara yta",
+          text: "Beståndet i Trelleborg är blandat – lägenhet och hus kräver olika mycket även vid samma boyta.",
+        },
+        {
+          rubrik: "Salt på fönstren",
+          text: "Nära havet blir fönstrens utsida snabbt smutsig igen. Lägg fönsterputsen nära överlämningen.",
+        },
+        {
+          rubrik: "Sträckor mot Malmö",
+          text: "Ange den exakta adressen så att transportsträckan kommer med i bedömningen.",
+        },
+      ],
+      fragor: [
+        {
+          fraga: "När bör fönsterputsen göras?",
+          svar: "Så nära överlämningen som möjligt. I kustläge lägger sig salt på utsidan inom kort tid och syns tydligt i motljus.",
+        },
+        {
+          fraga: "Räknas städning av ett länge obebott hus som flyttstädning?",
+          svar: "Inte alltid. Har huset stått stängt länge kan mer omfattande rengöring krävas. Beskriv förutsättningarna så bedöms det innan offerten lämnas.",
+        },
+      ],
+    },
   },
 
   // ---------------------------------------------------------------------------
@@ -795,7 +1134,7 @@ export const orter: Ort[] = [
     iOrt: "Ödåkra",
     lan: "Skåne län",
     metaBeskrivning:
-      "Flyttfirma Ödåkra – boka bohagsflytt och flyttstädning via Nyflytt. Beskriv din bostad och ditt datum och få en tydlig offert. Uppdraget utförs av en samarbetspartner.",
+      "Flyttfirma Ödåkra – boka bohagsflytt och flyttstädning via Nyflytt. Beskriv din bostad och ditt datum och få en tydlig offert.",
     ingress:
       "Ska du flytta i Ödåkra? Beskriv bostaden och ditt datum, så får du en offert med tydlig omfattning.",
     omOrten: [
@@ -831,6 +1170,41 @@ export const orter: Ort[] = [
     ],
     narliggande: ["helsingborg", "hittarp", "viken"],
     narmasteStorstad: "helsingborg",
+    stad: {
+      metaBeskrivning:
+        "Flyttstädning i Ödåkra inför överlämning och besiktning. Beskriv bostaden och ditt datum och få en tydlig offert från Nyflytt.",
+      ingress:
+        "Ska du flyttstäda i Ödåkra? Beskriv bostaden och datumet och få en offert där omfattningen framgår.",
+      omStadningen: [
+        "Bebyggelsen i Ödåkra beskrivs som övervägande villor och radhus, med inslag av flerbostadshus nära stationen. Det avgör vad en flyttstädning omfattar – ett hus har utrymmen utanför boytan, som garage och förråd, medan en lägenhet har mer förutsägbara ytor där kök och badrum väger tyngst.",
+        "Eftersom beståndet i Ödåkra är blandat kan två adresser i samma ort kräva olika mycket. Ange bostadstyp tillsammans med boytan: för hus behöver det framgå vilka biutrymmen som ska ingå, för lägenhet är det kök, badrum, fönster och golv som styr omfattningen.",
+        "Ödåkra har stationsläge, och en del av flyttarna här är pendlingsflyttar. Ska städningen ske i anslutning till flyttdagen måste bostaden vara tömd först – lägg marginal mellan de två momenten så att städningen inte behöver avbrytas halvvägs.",
+      ],
+      praktiskt: [
+        {
+          rubrik: "Ange bostadstyp, inte bara yta",
+          text: "Beståndet i Ödåkra är blandat – lägenhet och hus kräver olika mycket även vid samma boyta.",
+        },
+        {
+          rubrik: "Räkna utrymmen, inte bara boyta",
+          text: "Ange antal rum, våningar och vilka biutrymmen som ska ingå.",
+        },
+        {
+          rubrik: "Pendlingsflytt",
+          text: "Vid flytt till annan ort behöver städningen läggas efter att bostaden är tömd. Ange önskad ordning i förfrågan.",
+        },
+      ],
+      fragor: [
+        {
+          fraga: "Vad behöver jag ange för en bostad i Ödåkra?",
+          svar: "Bostadstyp, boyta och antal rum. Är det ett hus: även antal våningar och vilka biutrymmen som ska städas.",
+        },
+        {
+          fraga: "Kan jag boka både flytt och flyttstädning?",
+          svar: "Ja, och det är oftast smidigast. Välj flytt och städ i formuläret, då planeras städningen efter att bostaden är tömd.",
+        },
+      ],
+    },
   },
   {
     slug: "hittarp",
@@ -839,7 +1213,7 @@ export const orter: Ort[] = [
     iOrt: "Hittarp",
     lan: "Skåne län",
     metaBeskrivning:
-      "Flyttfirma Hittarp – boka bohagsflytt och flyttstädning via Nyflytt. Beskriv din bostad och ditt datum och få en tydlig offert. Uppdraget utförs av en samarbetspartner.",
+      "Flyttfirma Hittarp – boka bohagsflytt och flyttstädning via Nyflytt. Beskriv din bostad och ditt datum och få en tydlig offert.",
     ingress:
       "Ska du flytta i Hittarp? Beskriv bostaden och ditt datum, så får du en offert med tydlig omfattning.",
     omOrten: [
@@ -875,6 +1249,41 @@ export const orter: Ort[] = [
     ],
     narliggande: ["helsingborg", "odakra", "viken"],
     narmasteStorstad: "helsingborg",
+    stad: {
+      metaBeskrivning:
+        "Flyttstädning i Hittarp inför överlämning och besiktning. Beskriv bostaden och ditt datum och få en tydlig offert från Nyflytt.",
+      ingress:
+        "Ska du flyttstäda i Hittarp? Beskriv bostaden och datumet och få en offert där omfattningen framgår.",
+      omStadningen: [
+        "Bebyggelsen i Hittarp beskrivs som kustnära villabebyggelse, delvis med äldre sommarhus som byggts om till permanentboende. Äldre hus har fler detaljytor än boytan antyder – höga socklar, dörrfoder, djupa fönsternischer och ibland originalgolv som inte tål vilka medel som helst. Två bostäder med samma yta kan därför kräva olika mycket arbete.",
+        "Läget nära kusten har en praktisk följd för fönsterputsen: salt från havsluften lägger sig på utsidan och syns tydligt i motljus. Putsa därför fönstren nära överlämningsdagen snarare än veckan före. Har bostaden använts som fritidshus och stått stängd en period finns ofta mer damm, och ibland fukt – fuktsanering är inte flyttstädning utan bedöms separat.",
+        "Vanliga flyttsträckor här går inom orten och mot Helsingborg. Ska flyttstädningen göras nära flyttdagen behöver tidsplanen ta hänsyn till transporten, eftersom bostaden måste vara tömd innan städningen kan börja.",
+      ],
+      praktiskt: [
+        {
+          rubrik: "Äldre hus tar längre tid",
+          text: "Socklar, foder och nischer är fler än boytan antyder. Ange byggår om du vet det.",
+        },
+        {
+          rubrik: "Salt på fönstren",
+          text: "Nära havet blir fönstrens utsida snabbt smutsig igen. Lägg fönsterputsen nära överlämningen.",
+        },
+        {
+          rubrik: "Sträckor mot Helsingborg",
+          text: "Ange den exakta adressen så att transportsträckan kommer med i bedömningen.",
+        },
+      ],
+      fragor: [
+        {
+          fraga: "När bör fönsterputsen göras?",
+          svar: "Så nära överlämningen som möjligt. I kustläge lägger sig salt på utsidan inom kort tid och syns tydligt i motljus.",
+        },
+        {
+          fraga: "Räknas städning av ett länge obebott hus som flyttstädning?",
+          svar: "Inte alltid. Har huset stått stängt länge kan mer omfattande rengöring krävas. Beskriv förutsättningarna så bedöms det innan offerten lämnas.",
+        },
+      ],
+    },
   },
   {
     slug: "rydeback",
@@ -883,7 +1292,7 @@ export const orter: Ort[] = [
     iOrt: "Rydebäck",
     lan: "Skåne län",
     metaBeskrivning:
-      "Flyttfirma Rydebäck – boka bohagsflytt och flyttstädning via Nyflytt. Beskriv din bostad och ditt datum och få en tydlig offert. Uppdraget utförs av en samarbetspartner.",
+      "Flyttfirma Rydebäck – boka bohagsflytt och flyttstädning via Nyflytt. Beskriv din bostad och ditt datum och få en tydlig offert.",
     ingress:
       "Ska du flytta i Rydebäck? Beskriv bostaden och ditt datum, så får du en offert med tydlig omfattning.",
     omOrten: [
@@ -919,6 +1328,41 @@ export const orter: Ort[] = [
     ],
     narliggande: ["helsingborg", "landskrona", "odakra"],
     narmasteStorstad: "helsingborg",
+    stad: {
+      metaBeskrivning:
+        "Flyttstädning i Rydebäck inför överlämning och besiktning. Beskriv bostaden och ditt datum och få en tydlig offert från Nyflytt.",
+      ingress:
+        "Ska du flyttstäda i Rydebäck? Beskriv bostaden och datumet och få en offert där omfattningen framgår.",
+      omStadningen: [
+        "Bebyggelsen i Rydebäck beskrivs som planerat villasamhälle från 1960- och 70-talet med inslag av radhus och nyare bebyggelse. Ett bestånd från 1960-talet är i städsammanhang förhållandevis tacksamt: släta dörrar, raka socklar och fönster som oftast går att öppna och putsa från båda sidor. Tidsåtgången för en flyttstädning följer därför boytan tätare än i hus med mycket snickerier.",
+        "I ett hus ligger en stor del av arbetet utanför boytan. Garage, förråd, pannrum och tvättstuga är egna utrymmen som inte ingår automatiskt, och fönstren är fler än i en lägenhet. Ange antal våningar och vilka biutrymmen som ska städas, så framgår omfattningen av offerten.",
+        "Rydebäck har stationsläge, och en del av flyttarna här är pendlingsflyttar. Ska städningen ske i anslutning till flyttdagen måste bostaden vara tömd först – lägg marginal mellan de två momenten så att städningen inte behöver avbrytas halvvägs.",
+      ],
+      praktiskt: [
+        {
+          rubrik: "Bestånd från 1960-talet",
+          text: "Raka ytor och öppningsbara fönster gör omfattningen lättare att bedöma. Ange boyta och antal rum, så räcker det långt.",
+        },
+        {
+          rubrik: "Biutrymmen ingår inte automatiskt",
+          text: "Garage, förråd och uteplats behöver anges separat för att komma med i offerten.",
+        },
+        {
+          rubrik: "Pendlingsflytt",
+          text: "Vid flytt till annan ort behöver städningen läggas efter att bostaden är tömd. Ange önskad ordning i förfrågan.",
+        },
+      ],
+      fragor: [
+        {
+          fraga: "Ingår garage och förråd i Rydebäck?",
+          svar: "Inte automatiskt. Ange i förfrågan vilka utrymmen som ska städas, så framgår det av offerten vad som ingår.",
+        },
+        {
+          fraga: "Hur anger jag storleken på ett hus?",
+          svar: "Ange boyta, antal rum och antal våningar, och lista biutrymmena separat. Det ger ett bättre underlag än boytan ensam.",
+        },
+      ],
+    },
   },
   {
     slug: "paarp",
@@ -927,7 +1371,7 @@ export const orter: Ort[] = [
     iOrt: "Påarp",
     lan: "Skåne län",
     metaBeskrivning:
-      "Flyttfirma Påarp – boka bohagsflytt och flyttstädning via Nyflytt. Beskriv din bostad och ditt datum och få en tydlig offert. Uppdraget utförs av en samarbetspartner.",
+      "Flyttfirma Påarp – boka bohagsflytt och flyttstädning via Nyflytt. Beskriv din bostad och ditt datum och få en tydlig offert.",
     ingress:
       "Ska du flytta i Påarp? Beskriv bostaden och ditt datum, så får du en offert med tydlig omfattning.",
     omOrten: [
@@ -963,6 +1407,41 @@ export const orter: Ort[] = [
     ],
     narliggande: ["helsingborg", "bjuv", "hyllinge"],
     narmasteStorstad: "helsingborg",
+    stad: {
+      metaBeskrivning:
+        "Flyttstädning i Påarp inför överlämning och besiktning. Beskriv bostaden och ditt datum och få en tydlig offert från Nyflytt.",
+      ingress:
+        "Ska du flyttstäda i Påarp? Beskriv bostaden och datumet och få en offert där omfattningen framgår.",
+      omStadningen: [
+        "Bebyggelsen i Påarp beskrivs som villabebyggelse och mindre flerbostadshus kring stationen. Det avgör vad en flyttstädning omfattar – ett hus har utrymmen utanför boytan, som garage och förråd, medan en lägenhet har mer förutsägbara ytor där kök och badrum väger tyngst.",
+        "Eftersom beståndet i Påarp är blandat kan två adresser i samma ort kräva olika mycket. Ange bostadstyp tillsammans med boytan: för hus behöver det framgå vilka biutrymmen som ska ingå, för lägenhet är det kök, badrum, fönster och golv som styr omfattningen.",
+        "Påarp har stationsläge, och en del av flyttarna här är pendlingsflyttar. Ska städningen ske i anslutning till flyttdagen måste bostaden vara tömd först – lägg marginal mellan de två momenten så att städningen inte behöver avbrytas halvvägs.",
+      ],
+      praktiskt: [
+        {
+          rubrik: "Ange bostadstyp, inte bara yta",
+          text: "Beståndet i Påarp är blandat – lägenhet och hus kräver olika mycket även vid samma boyta.",
+        },
+        {
+          rubrik: "Räkna utrymmen, inte bara boyta",
+          text: "Ange antal rum, våningar och vilka biutrymmen som ska ingå.",
+        },
+        {
+          rubrik: "Pendlingsflytt",
+          text: "Vid flytt till annan ort behöver städningen läggas efter att bostaden är tömd. Ange önskad ordning i förfrågan.",
+        },
+      ],
+      fragor: [
+        {
+          fraga: "Vad behöver jag ange för en bostad i Påarp?",
+          svar: "Bostadstyp, boyta och antal rum. Är det ett hus: även antal våningar och vilka biutrymmen som ska städas.",
+        },
+        {
+          fraga: "Kan jag boka både flytt och flyttstädning?",
+          svar: "Ja, och det är oftast smidigast. Välj flytt och städ i formuläret, då planeras städningen efter att bostaden är tömd.",
+        },
+      ],
+    },
   },
   {
     slug: "barslov",
@@ -971,7 +1450,7 @@ export const orter: Ort[] = [
     iOrt: "Bårslöv",
     lan: "Skåne län",
     metaBeskrivning:
-      "Flyttfirma Bårslöv – boka bohagsflytt och flyttstädning via Nyflytt. Beskriv din bostad och ditt datum och få en tydlig offert. Uppdraget utförs av en samarbetspartner.",
+      "Flyttfirma Bårslöv – boka bohagsflytt och flyttstädning via Nyflytt. Beskriv din bostad och ditt datum och få en tydlig offert.",
     ingress:
       "Ska du flytta i Bårslöv? Beskriv bostaden och ditt datum, så får du en offert med tydlig omfattning.",
     omOrten: [
@@ -1007,6 +1486,41 @@ export const orter: Ort[] = [
     ],
     narliggande: ["helsingborg", "paarp", "bjuv"],
     narmasteStorstad: "helsingborg",
+    stad: {
+      metaBeskrivning:
+        "Flyttstädning i Bårslöv inför överlämning och besiktning. Beskriv bostaden och ditt datum och få en tydlig offert från Nyflytt.",
+      ingress:
+        "Ska du flyttstäda i Bårslöv? Beskriv bostaden och datumet och få en offert där omfattningen framgår.",
+      omStadningen: [
+        "Bebyggelsen i Bårslöv beskrivs som mindre tätort med övervägande villor och radhus. Det avgör vad en flyttstädning omfattar – ett hus har utrymmen utanför boytan, som garage och förråd, medan en lägenhet har mer förutsägbara ytor där kök och badrum väger tyngst.",
+        "I ett hus ligger en stor del av arbetet utanför boytan. Garage, förråd, pannrum och tvättstuga är egna utrymmen som inte ingår automatiskt, och fönstren är fler än i en lägenhet. Ange antal våningar och vilka biutrymmen som ska städas, så framgår omfattningen av offerten.",
+        "Vanliga flyttsträckor här går inom orten och mot Helsingborg. Ska flyttstädningen göras nära flyttdagen behöver tidsplanen ta hänsyn till transporten, eftersom bostaden måste vara tömd innan städningen kan börja.",
+      ],
+      praktiskt: [
+        {
+          rubrik: "Ange bostadstyp, inte bara yta",
+          text: "Beståndet i Bårslöv är blandat – lägenhet och hus kräver olika mycket även vid samma boyta.",
+        },
+        {
+          rubrik: "Biutrymmen ingår inte automatiskt",
+          text: "Garage, förråd och uteplats behöver anges separat för att komma med i offerten.",
+        },
+        {
+          rubrik: "Sträckor mot Helsingborg",
+          text: "Ange den exakta adressen så att transportsträckan kommer med i bedömningen.",
+        },
+      ],
+      fragor: [
+        {
+          fraga: "Ingår garage och förråd i Bårslöv?",
+          svar: "Inte automatiskt. Ange i förfrågan vilka utrymmen som ska städas, så framgår det av offerten vad som ingår.",
+        },
+        {
+          fraga: "Hur anger jag storleken på ett hus?",
+          svar: "Ange boyta, antal rum och antal våningar, och lista biutrymmena separat. Det ger ett bättre underlag än boytan ensam.",
+        },
+      ],
+    },
   },
   {
     slug: "viken",
@@ -1015,7 +1529,7 @@ export const orter: Ort[] = [
     iOrt: "Viken",
     lan: "Skåne län",
     metaBeskrivning:
-      "Flyttfirma Viken – boka bohagsflytt och flyttstädning via Nyflytt. Beskriv din bostad och ditt datum och få en tydlig offert. Uppdraget utförs av en samarbetspartner.",
+      "Flyttfirma Viken – boka bohagsflytt och flyttstädning via Nyflytt. Beskriv din bostad och ditt datum och få en tydlig offert.",
     ingress:
       "Ska du flytta i Viken? Beskriv bostaden och ditt datum, så får du en offert med tydlig omfattning.",
     omOrten: [
@@ -1051,6 +1565,41 @@ export const orter: Ort[] = [
     ],
     narliggande: ["hoganas", "helsingborg", "hittarp"],
     narmasteStorstad: "helsingborg",
+    stad: {
+      metaBeskrivning:
+        "Flyttstädning i Viken inför överlämning och besiktning. Beskriv bostaden och ditt datum och få en tydlig offert från Nyflytt.",
+      ingress:
+        "Ska du flyttstäda i Viken? Beskriv bostaden och datumet och få en offert där omfattningen framgår.",
+      omStadningen: [
+        "Bebyggelsen i Viken beskrivs som gammal fiskeby med tät äldre bebyggelse i kärnan och villaområden runtomkring. Äldre hus har fler detaljytor än boytan antyder – höga socklar, dörrfoder, djupa fönsternischer och ibland originalgolv som inte tål vilka medel som helst. Två bostäder med samma yta kan därför kräva olika mycket arbete.",
+        "I ett hus ligger en stor del av arbetet utanför boytan. Garage, förråd, pannrum och tvättstuga är egna utrymmen som inte ingår automatiskt, och fönstren är fler än i en lägenhet. Ange antal våningar och vilka biutrymmen som ska städas, så framgår omfattningen av offerten.",
+        "Vanliga flyttsträckor här går inom orten och mot Höganäs. Ska flyttstädningen göras nära flyttdagen behöver tidsplanen ta hänsyn till transporten, eftersom bostaden måste vara tömd innan städningen kan börja.",
+      ],
+      praktiskt: [
+        {
+          rubrik: "Äldre hus tar längre tid",
+          text: "Socklar, foder och nischer är fler än boytan antyder. Ange byggår om du vet det.",
+        },
+        {
+          rubrik: "Biutrymmen ingår inte automatiskt",
+          text: "Garage, förråd och uteplats behöver anges separat för att komma med i offerten.",
+        },
+        {
+          rubrik: "Sträckor mot Höganäs",
+          text: "Ange den exakta adressen så att transportsträckan kommer med i bedömningen.",
+        },
+      ],
+      fragor: [
+        {
+          fraga: "Ingår garage och förråd i Viken?",
+          svar: "Inte automatiskt. Ange i förfrågan vilka utrymmen som ska städas, så framgår det av offerten vad som ingår.",
+        },
+        {
+          fraga: "Hur anger jag storleken på ett hus?",
+          svar: "Ange boyta, antal rum och antal våningar, och lista biutrymmena separat. Det ger ett bättre underlag än boytan ensam.",
+        },
+      ],
+    },
   },
   {
     slug: "hoganas",
@@ -1059,7 +1608,7 @@ export const orter: Ort[] = [
     iOrt: "Höganäs",
     lan: "Skåne län",
     metaBeskrivning:
-      "Flyttfirma Höganäs – boka bohagsflytt och flyttstädning via Nyflytt. Beskriv din bostad och ditt datum och få en tydlig offert. Uppdraget utförs av en samarbetspartner.",
+      "Flyttfirma Höganäs – boka bohagsflytt och flyttstädning via Nyflytt. Beskriv din bostad och ditt datum och få en tydlig offert.",
     ingress:
       "Ska du flytta i Höganäs? Beskriv bostaden och ditt datum, så får du en offert med tydlig omfattning.",
     omOrten: [
@@ -1095,6 +1644,41 @@ export const orter: Ort[] = [
     ],
     narliggande: ["viken", "helsingborg", "angelholm"],
     narmasteStorstad: "helsingborg",
+    stad: {
+      metaBeskrivning:
+        "Flyttstädning i Höganäs inför överlämning och besiktning. Beskriv bostaden och ditt datum och få en tydlig offert från Nyflytt.",
+      ingress:
+        "Ska du flyttstäda i Höganäs? Beskriv bostaden och datumet och få en offert där omfattningen framgår.",
+      omStadningen: [
+        "Bebyggelsen i Höganäs beskrivs som blandad bebyggelse med flerbostadshus i centrum och villaområden utanför, samt äldre bruksbebyggelse. Äldre hus har fler detaljytor än boytan antyder – höga socklar, dörrfoder, djupa fönsternischer och ibland originalgolv som inte tål vilka medel som helst. Två bostäder med samma yta kan därför kräva olika mycket arbete.",
+        "Eftersom beståndet i Höganäs är blandat kan två adresser i samma ort kräva olika mycket. Ange bostadstyp tillsammans med boytan: för hus behöver det framgå vilka biutrymmen som ska ingå, för lägenhet är det kök, badrum, fönster och golv som styr omfattningen.",
+        "Vanliga flyttsträckor här går inom orten och mot Viken. Ska flyttstädningen göras nära flyttdagen behöver tidsplanen ta hänsyn till transporten, eftersom bostaden måste vara tömd innan städningen kan börja.",
+      ],
+      praktiskt: [
+        {
+          rubrik: "Äldre hus tar längre tid",
+          text: "Socklar, foder och nischer är fler än boytan antyder. Ange byggår om du vet det.",
+        },
+        {
+          rubrik: "Räkna utrymmen, inte bara boyta",
+          text: "Ange antal rum, våningar och vilka biutrymmen som ska ingå.",
+        },
+        {
+          rubrik: "Sträckor mot Viken",
+          text: "Ange den exakta adressen så att transportsträckan kommer med i bedömningen.",
+        },
+      ],
+      fragor: [
+        {
+          fraga: "Vad behöver jag ange för en bostad i Höganäs?",
+          svar: "Bostadstyp, boyta och antal rum. Är det ett hus: även antal våningar och vilka biutrymmen som ska städas.",
+        },
+        {
+          fraga: "Kan jag boka både flytt och flyttstädning?",
+          svar: "Ja, och det är oftast smidigast. Välj flytt och städ i formuläret, då planeras städningen efter att bostaden är tömd.",
+        },
+      ],
+    },
   },
   {
     slug: "bjuv",
@@ -1139,6 +1723,41 @@ export const orter: Ort[] = [
     ],
     narliggande: ["billesholm", "ekeby", "astorp"],
     narmasteStorstad: "helsingborg",
+    stad: {
+      metaBeskrivning:
+        "Flyttstädning i Bjuv inför överlämning och besiktning. Beskriv bostaden och ditt datum och få en tydlig offert från Nyflytt.",
+      ingress:
+        "Ska du flyttstäda i Bjuv? Beskriv bostaden och datumet och få en offert där omfattningen framgår.",
+      omStadningen: [
+        "Bebyggelsen i Bjuv beskrivs som tidigare gruv- och industriort med flerbostadshus i centrum och villaområden runtomkring. Ett bestånd från 1900-talet är i städsammanhang förhållandevis tacksamt: släta dörrar, raka socklar och fönster som oftast går att öppna och putsa från båda sidor. Tidsåtgången för en flyttstädning följer därför boytan tätare än i hus med mycket snickerier.",
+        "Eftersom beståndet i Bjuv är blandat kan två adresser i samma ort kräva olika mycket. Ange bostadstyp tillsammans med boytan: för hus behöver det framgå vilka biutrymmen som ska ingå, för lägenhet är det kök, badrum, fönster och golv som styr omfattningen.",
+        "Bjuv har stationsläge, och en del av flyttarna här är pendlingsflyttar. Ska städningen ske i anslutning till flyttdagen måste bostaden vara tömd först – lägg marginal mellan de två momenten så att städningen inte behöver avbrytas halvvägs.",
+      ],
+      praktiskt: [
+        {
+          rubrik: "Bestånd från 1900-talet",
+          text: "Raka ytor och öppningsbara fönster gör omfattningen lättare att bedöma. Ange boyta och antal rum, så räcker det långt.",
+        },
+        {
+          rubrik: "Räkna utrymmen, inte bara boyta",
+          text: "Ange antal rum, våningar och vilka biutrymmen som ska ingå.",
+        },
+        {
+          rubrik: "Pendlingsflytt",
+          text: "Vid flytt till annan ort behöver städningen läggas efter att bostaden är tömd. Ange önskad ordning i förfrågan.",
+        },
+      ],
+      fragor: [
+        {
+          fraga: "Vad behöver jag ange för en bostad i Bjuv?",
+          svar: "Bostadstyp, boyta och antal rum. Är det ett hus: även antal våningar och vilka biutrymmen som ska städas.",
+        },
+        {
+          fraga: "Kan jag boka både flytt och flyttstädning?",
+          svar: "Ja, och det är oftast smidigast. Välj flytt och städ i formuläret, då planeras städningen efter att bostaden är tömd.",
+        },
+      ],
+    },
   },
   {
     slug: "billesholm",
@@ -1147,7 +1766,7 @@ export const orter: Ort[] = [
     iOrt: "Billesholm",
     lan: "Skåne län",
     metaBeskrivning:
-      "Flyttfirma Billesholm – boka bohagsflytt och flyttstädning via Nyflytt. Beskriv din bostad och ditt datum och få en tydlig offert. Uppdraget utförs av en samarbetspartner.",
+      "Flyttfirma Billesholm – boka bohagsflytt och flyttstädning via Nyflytt. Beskriv din bostad och ditt datum och få en tydlig offert.",
     ingress:
       "Ska du flytta i Billesholm? Beskriv bostaden och ditt datum, så får du en offert med tydlig omfattning.",
     omOrten: [
@@ -1183,6 +1802,41 @@ export const orter: Ort[] = [
     ],
     narliggande: ["bjuv", "ekeby", "astorp"],
     narmasteStorstad: "helsingborg",
+    stad: {
+      metaBeskrivning:
+        "Flyttstädning i Billesholm inför överlämning och besiktning. Beskriv bostaden och ditt datum och få en tydlig offert från Nyflytt.",
+      ingress:
+        "Ska du flyttstäda i Billesholm? Beskriv bostaden och datumet och få en offert där omfattningen framgår.",
+      omStadningen: [
+        "Bebyggelsen i Billesholm beskrivs som mindre tätort med villor och enstaka flerbostadshus, präglad av sin gruvhistoria. Det avgör vad en flyttstädning omfattar – ett hus har utrymmen utanför boytan, som garage och förråd, medan en lägenhet har mer förutsägbara ytor där kök och badrum väger tyngst.",
+        "I lägenhet är det köket och badrummet som avgör om städningen godkänns vid besiktning. Vitvarorna ska rengöras in- och utvändigt och dras ut där det går, och badrummet avkalkas med golvbrunnen rengjord. Hyr du bostaden finns ofta en checklista från hyresvärden som besiktningen följer.",
+        "Billesholm har stationsläge, och en del av flyttarna här är pendlingsflyttar. Ska städningen ske i anslutning till flyttdagen måste bostaden vara tömd först – lägg marginal mellan de två momenten så att städningen inte behöver avbrytas halvvägs.",
+      ],
+      praktiskt: [
+        {
+          rubrik: "Ange bostadstyp, inte bara yta",
+          text: "Beståndet i Billesholm är blandat – lägenhet och hus kräver olika mycket även vid samma boyta.",
+        },
+        {
+          rubrik: "Checklista från hyresvärden",
+          text: "Har du fått en besiktningslista, nämn det i förfrågan så kan omfattningen stämmas av mot den.",
+        },
+        {
+          rubrik: "Pendlingsflytt",
+          text: "Vid flytt till annan ort behöver städningen läggas efter att bostaden är tömd. Ange önskad ordning i förfrågan.",
+        },
+      ],
+      fragor: [
+        {
+          fraga: "Vi har en besiktningslista – kan den följas?",
+          svar: "Ange i förfrågan att du har en och vad som står i den. Omfattningen kan då stämmas av mot listan i stället för mot en generell standard.",
+        },
+        {
+          fraga: "Ingår fönsterputs?",
+          svar: "Ja, in- och utvändigt samt mellan rutorna där konstruktionen tillåter att fönstret öppnas. Fasta partier putsas på insidan.",
+        },
+      ],
+    },
   },
   {
     slug: "ekeby",
@@ -1191,7 +1845,7 @@ export const orter: Ort[] = [
     iOrt: "Ekeby",
     lan: "Skåne län",
     metaBeskrivning:
-      "Flyttfirma Ekeby – boka bohagsflytt och flyttstädning via Nyflytt. Beskriv din bostad och ditt datum och få en tydlig offert. Uppdraget utförs av en samarbetspartner.",
+      "Flyttfirma Ekeby – boka bohagsflytt och flyttstädning via Nyflytt. Beskriv din bostad och ditt datum och få en tydlig offert.",
     ingress:
       "Ska du flytta i Ekeby? Beskriv bostaden och ditt datum, så får du en offert med tydlig omfattning.",
     omOrten: [
@@ -1227,6 +1881,41 @@ export const orter: Ort[] = [
     ],
     narliggande: ["bjuv", "billesholm", "astorp"],
     narmasteStorstad: "helsingborg",
+    stad: {
+      metaBeskrivning:
+        "Flyttstädning i Ekeby inför överlämning och besiktning. Beskriv bostaden och ditt datum och få en tydlig offert från Nyflytt.",
+      ingress:
+        "Ska du flyttstäda i Ekeby? Beskriv bostaden och datumet och få en offert där omfattningen framgår.",
+      omStadningen: [
+        "Bebyggelsen i Ekeby beskrivs som liten tätort med övervägande villabebyggelse. Det avgör vad en flyttstädning omfattar – ett hus har utrymmen utanför boytan, som garage och förråd, medan en lägenhet har mer förutsägbara ytor där kök och badrum väger tyngst.",
+        "I ett hus ligger en stor del av arbetet utanför boytan. Garage, förråd, pannrum och tvättstuga är egna utrymmen som inte ingår automatiskt, och fönstren är fler än i en lägenhet. Ange antal våningar och vilka biutrymmen som ska städas, så framgår omfattningen av offerten.",
+        "Vanliga flyttsträckor här går inom orten och mot Bjuv. Ska flyttstädningen göras nära flyttdagen behöver tidsplanen ta hänsyn till transporten, eftersom bostaden måste vara tömd innan städningen kan börja.",
+      ],
+      praktiskt: [
+        {
+          rubrik: "Ange bostadstyp, inte bara yta",
+          text: "Beståndet i Ekeby är blandat – lägenhet och hus kräver olika mycket även vid samma boyta.",
+        },
+        {
+          rubrik: "Biutrymmen ingår inte automatiskt",
+          text: "Garage, förråd och uteplats behöver anges separat för att komma med i offerten.",
+        },
+        {
+          rubrik: "Sträckor mot Bjuv",
+          text: "Ange den exakta adressen så att transportsträckan kommer med i bedömningen.",
+        },
+      ],
+      fragor: [
+        {
+          fraga: "Ingår garage och förråd i Ekeby?",
+          svar: "Inte automatiskt. Ange i förfrågan vilka utrymmen som ska städas, så framgår det av offerten vad som ingår.",
+        },
+        {
+          fraga: "Hur anger jag storleken på ett hus?",
+          svar: "Ange boyta, antal rum och antal våningar, och lista biutrymmena separat. Det ger ett bättre underlag än boytan ensam.",
+        },
+      ],
+    },
   },
   {
     slug: "astorp",
@@ -1235,7 +1924,7 @@ export const orter: Ort[] = [
     iOrt: "Åstorp",
     lan: "Skåne län",
     metaBeskrivning:
-      "Flyttfirma Åstorp – boka bohagsflytt och flyttstädning via Nyflytt. Beskriv din bostad och ditt datum och få en tydlig offert. Uppdraget utförs av en samarbetspartner.",
+      "Flyttfirma Åstorp – boka bohagsflytt och flyttstädning via Nyflytt. Beskriv din bostad och ditt datum och få en tydlig offert.",
     ingress:
       "Ska du flytta i Åstorp? Beskriv bostaden och ditt datum, så får du en offert med tydlig omfattning.",
     omOrten: [
@@ -1271,6 +1960,41 @@ export const orter: Ort[] = [
     ],
     narliggande: ["bjuv", "klippan", "angelholm"],
     narmasteStorstad: "helsingborg",
+    stad: {
+      metaBeskrivning:
+        "Flyttstädning i Åstorp inför överlämning och besiktning. Beskriv bostaden och ditt datum och få en tydlig offert från Nyflytt.",
+      ingress:
+        "Ska du flyttstäda i Åstorp? Beskriv bostaden och datumet och få en offert där omfattningen framgår.",
+      omStadningen: [
+        "Bebyggelsen i Åstorp beskrivs som centralort med flerbostadshus kring stationen och villaområden utanför. Det avgör vad en flyttstädning omfattar – ett hus har utrymmen utanför boytan, som garage och förråd, medan en lägenhet har mer förutsägbara ytor där kök och badrum väger tyngst.",
+        "Eftersom beståndet i Åstorp är blandat kan två adresser i samma ort kräva olika mycket. Ange bostadstyp tillsammans med boytan: för hus behöver det framgå vilka biutrymmen som ska ingå, för lägenhet är det kök, badrum, fönster och golv som styr omfattningen.",
+        "Åstorp har stationsläge, och en del av flyttarna här är pendlingsflyttar. Ska städningen ske i anslutning till flyttdagen måste bostaden vara tömd först – lägg marginal mellan de två momenten så att städningen inte behöver avbrytas halvvägs.",
+      ],
+      praktiskt: [
+        {
+          rubrik: "Ange bostadstyp, inte bara yta",
+          text: "Beståndet i Åstorp är blandat – lägenhet och hus kräver olika mycket även vid samma boyta.",
+        },
+        {
+          rubrik: "Räkna utrymmen, inte bara boyta",
+          text: "Ange antal rum, våningar och vilka biutrymmen som ska ingå.",
+        },
+        {
+          rubrik: "Pendlingsflytt",
+          text: "Vid flytt till annan ort behöver städningen läggas efter att bostaden är tömd. Ange önskad ordning i förfrågan.",
+        },
+      ],
+      fragor: [
+        {
+          fraga: "Vad behöver jag ange för en bostad i Åstorp?",
+          svar: "Bostadstyp, boyta och antal rum. Är det ett hus: även antal våningar och vilka biutrymmen som ska städas.",
+        },
+        {
+          fraga: "Kan jag boka både flytt och flyttstädning?",
+          svar: "Ja, och det är oftast smidigast. Välj flytt och städ i formuläret, då planeras städningen efter att bostaden är tömd.",
+        },
+      ],
+    },
   },
   {
     slug: "klippan",
@@ -1279,7 +2003,7 @@ export const orter: Ort[] = [
     iOrt: "Klippan",
     lan: "Skåne län",
     metaBeskrivning:
-      "Flyttfirma Klippan – boka bohagsflytt och flyttstädning via Nyflytt. Beskriv din bostad och ditt datum och få en tydlig offert. Uppdraget utförs av en samarbetspartner.",
+      "Flyttfirma Klippan – boka bohagsflytt och flyttstädning via Nyflytt. Beskriv din bostad och ditt datum och få en tydlig offert.",
     ingress:
       "Ska du flytta i Klippan? Beskriv bostaden och ditt datum, så får du en offert med tydlig omfattning.",
     omOrten: [
@@ -1315,6 +2039,41 @@ export const orter: Ort[] = [
     ],
     narliggande: ["astorp", "ljungbyhed", "perstorp"],
     narmasteStorstad: "angelholm",
+    stad: {
+      metaBeskrivning:
+        "Flyttstädning i Klippan inför överlämning och besiktning. Beskriv bostaden och ditt datum och få en tydlig offert från Nyflytt.",
+      ingress:
+        "Ska du flyttstäda i Klippan? Beskriv bostaden och datumet och få en offert där omfattningen framgår.",
+      omStadningen: [
+        "Bebyggelsen i Klippan beskrivs som centralort med blandad bebyggelse: flerbostadshus i centrum, villor utanför. I nyare hus ligger tyngdpunkten på glas och blanka ytor snarare än på snickerier: duschväggar, vitvaror som ska dras ut och golvbrunnar med avtagbara insatser är det som tar tid.",
+        "I lägenhet är det köket och badrummet som avgör om städningen godkänns vid besiktning. Vitvarorna ska rengöras in- och utvändigt och dras ut där det går, och badrummet avkalkas med golvbrunnen rengjord. Hyr du bostaden finns ofta en checklista från hyresvärden som besiktningen följer.",
+        "Vanliga flyttsträckor här går inom orten och mot Åstorp. Ska flyttstädningen göras nära flyttdagen behöver tidsplanen ta hänsyn till transporten, eftersom bostaden måste vara tömd innan städningen kan börja.",
+      ],
+      praktiskt: [
+        {
+          rubrik: "Glas och blanka ytor",
+          text: "I nyare bostäder är det duschväggar, vitvaror och blanka ytor som tar tid, inte snickerier.",
+        },
+        {
+          rubrik: "Checklista från hyresvärden",
+          text: "Har du fått en besiktningslista, nämn det i förfrågan så kan omfattningen stämmas av mot den.",
+        },
+        {
+          rubrik: "Sträckor mot Åstorp",
+          text: "Ange den exakta adressen så att transportsträckan kommer med i bedömningen.",
+        },
+      ],
+      fragor: [
+        {
+          fraga: "Vi har en besiktningslista – kan den följas?",
+          svar: "Ange i förfrågan att du har en och vad som står i den. Omfattningen kan då stämmas av mot listan i stället för mot en generell standard.",
+        },
+        {
+          fraga: "Ingår fönsterputs?",
+          svar: "Ja, in- och utvändigt samt mellan rutorna där konstruktionen tillåter att fönstret öppnas. Fasta partier putsas på insidan.",
+        },
+      ],
+    },
   },
   {
     slug: "ljungbyhed",
@@ -1323,7 +2082,7 @@ export const orter: Ort[] = [
     iOrt: "Ljungbyhed",
     lan: "Skåne län",
     metaBeskrivning:
-      "Flyttfirma Ljungbyhed – boka bohagsflytt och flyttstädning via Nyflytt. Beskriv din bostad och ditt datum och få en tydlig offert. Uppdraget utförs av en samarbetspartner.",
+      "Flyttfirma Ljungbyhed – boka bohagsflytt och flyttstädning via Nyflytt. Beskriv din bostad och ditt datum och få en tydlig offert.",
     ingress:
       "Ska du flytta i Ljungbyhed? Beskriv bostaden och ditt datum, så får du en offert med tydlig omfattning.",
     omOrten: [
@@ -1359,6 +2118,41 @@ export const orter: Ort[] = [
     ],
     narliggande: ["klippan", "perstorp", "astorp"],
     narmasteStorstad: "angelholm",
+    stad: {
+      metaBeskrivning:
+        "Flyttstädning i Ljungbyhed inför överlämning och besiktning. Beskriv bostaden och ditt datum och få en tydlig offert från Nyflytt.",
+      ingress:
+        "Ska du flyttstäda i Ljungbyhed? Beskriv bostaden och datumet och få en offert där omfattningen framgår.",
+      omStadningen: [
+        "Bebyggelsen i Ljungbyhed beskrivs som mindre tätort med villor och bebyggelse kopplad till den tidigare flygflottiljen. Äldre hus har fler detaljytor än boytan antyder – höga socklar, dörrfoder, djupa fönsternischer och ibland originalgolv som inte tål vilka medel som helst. Två bostäder med samma yta kan därför kräva olika mycket arbete.",
+        "Eftersom beståndet i Ljungbyhed är blandat kan två adresser i samma ort kräva olika mycket. Ange bostadstyp tillsammans med boytan: för hus behöver det framgå vilka biutrymmen som ska ingå, för lägenhet är det kök, badrum, fönster och golv som styr omfattningen.",
+        "Vanliga flyttsträckor här går inom orten och mot Klippan. Ska flyttstädningen göras nära flyttdagen behöver tidsplanen ta hänsyn till transporten, eftersom bostaden måste vara tömd innan städningen kan börja.",
+      ],
+      praktiskt: [
+        {
+          rubrik: "Äldre hus tar längre tid",
+          text: "Socklar, foder och nischer är fler än boytan antyder. Ange byggår om du vet det.",
+        },
+        {
+          rubrik: "Räkna utrymmen, inte bara boyta",
+          text: "Ange antal rum, våningar och vilka biutrymmen som ska ingå.",
+        },
+        {
+          rubrik: "Sträckor mot Klippan",
+          text: "Ange den exakta adressen så att transportsträckan kommer med i bedömningen.",
+        },
+      ],
+      fragor: [
+        {
+          fraga: "Vad behöver jag ange för en bostad i Ljungbyhed?",
+          svar: "Bostadstyp, boyta och antal rum. Är det ett hus: även antal våningar och vilka biutrymmen som ska städas.",
+        },
+        {
+          fraga: "Kan jag boka både flytt och flyttstädning?",
+          svar: "Ja, och det är oftast smidigast. Välj flytt och städ i formuläret, då planeras städningen efter att bostaden är tömd.",
+        },
+      ],
+    },
   },
   {
     slug: "perstorp",
@@ -1367,7 +2161,7 @@ export const orter: Ort[] = [
     iOrt: "Perstorp",
     lan: "Skåne län",
     metaBeskrivning:
-      "Flyttfirma Perstorp – boka bohagsflytt och flyttstädning via Nyflytt. Beskriv din bostad och ditt datum och få en tydlig offert. Uppdraget utförs av en samarbetspartner.",
+      "Flyttfirma Perstorp – boka bohagsflytt och flyttstädning via Nyflytt. Beskriv din bostad och ditt datum och få en tydlig offert.",
     ingress:
       "Ska du flytta i Perstorp? Beskriv bostaden och ditt datum, så får du en offert med tydlig omfattning.",
     omOrten: [
@@ -1403,6 +2197,41 @@ export const orter: Ort[] = [
     ],
     narliggande: ["klippan", "hassleholm", "orkelljunga"],
     narmasteStorstad: "angelholm",
+    stad: {
+      metaBeskrivning:
+        "Flyttstädning i Perstorp inför överlämning och besiktning. Beskriv bostaden och ditt datum och få en tydlig offert från Nyflytt.",
+      ingress:
+        "Ska du flyttstäda i Perstorp? Beskriv bostaden och datumet och få en offert där omfattningen framgår.",
+      omStadningen: [
+        "Bebyggelsen i Perstorp beskrivs som industriort med flerbostadshus i centrum och villaområden runtomkring. Ett bestånd från 1900-talet är i städsammanhang förhållandevis tacksamt: släta dörrar, raka socklar och fönster som oftast går att öppna och putsa från båda sidor. Tidsåtgången för en flyttstädning följer därför boytan tätare än i hus med mycket snickerier.",
+        "Eftersom beståndet i Perstorp är blandat kan två adresser i samma ort kräva olika mycket. Ange bostadstyp tillsammans med boytan: för hus behöver det framgå vilka biutrymmen som ska ingå, för lägenhet är det kök, badrum, fönster och golv som styr omfattningen.",
+        "Perstorp har stationsläge, och en del av flyttarna här är pendlingsflyttar. Ska städningen ske i anslutning till flyttdagen måste bostaden vara tömd först – lägg marginal mellan de två momenten så att städningen inte behöver avbrytas halvvägs.",
+      ],
+      praktiskt: [
+        {
+          rubrik: "Bestånd från 1900-talet",
+          text: "Raka ytor och öppningsbara fönster gör omfattningen lättare att bedöma. Ange boyta och antal rum, så räcker det långt.",
+        },
+        {
+          rubrik: "Räkna utrymmen, inte bara boyta",
+          text: "Ange antal rum, våningar och vilka biutrymmen som ska ingå.",
+        },
+        {
+          rubrik: "Pendlingsflytt",
+          text: "Vid flytt till annan ort behöver städningen läggas efter att bostaden är tömd. Ange önskad ordning i förfrågan.",
+        },
+      ],
+      fragor: [
+        {
+          fraga: "Vad behöver jag ange för en bostad i Perstorp?",
+          svar: "Bostadstyp, boyta och antal rum. Är det ett hus: även antal våningar och vilka biutrymmen som ska städas.",
+        },
+        {
+          fraga: "Kan jag boka både flytt och flyttstädning?",
+          svar: "Ja, och det är oftast smidigast. Välj flytt och städ i formuläret, då planeras städningen efter att bostaden är tömd.",
+        },
+      ],
+    },
   },
   {
     slug: "orkelljunga",
@@ -1411,7 +2240,7 @@ export const orter: Ort[] = [
     iOrt: "Örkelljunga",
     lan: "Skåne län",
     metaBeskrivning:
-      "Flyttfirma Örkelljunga – boka bohagsflytt och flyttstädning via Nyflytt. Beskriv din bostad och ditt datum och få en tydlig offert. Uppdraget utförs av en samarbetspartner.",
+      "Flyttfirma Örkelljunga – boka bohagsflytt och flyttstädning via Nyflytt. Beskriv din bostad och ditt datum och få en tydlig offert.",
     ingress:
       "Ska du flytta i Örkelljunga? Beskriv bostaden och ditt datum, så får du en offert med tydlig omfattning.",
     omOrten: [
@@ -1447,6 +2276,41 @@ export const orter: Ort[] = [
     ],
     narliggande: ["perstorp", "angelholm", "munka-ljungby"],
     narmasteStorstad: "angelholm",
+    stad: {
+      metaBeskrivning:
+        "Flyttstädning i Örkelljunga inför överlämning och besiktning. Beskriv bostaden och ditt datum och få en tydlig offert från Nyflytt.",
+      ingress:
+        "Ska du flyttstäda i Örkelljunga? Beskriv bostaden och datumet och få en offert där omfattningen framgår.",
+      omStadningen: [
+        "Bebyggelsen i Örkelljunga beskrivs som centralort med villabebyggelse och mindre flerbostadshus. Det avgör vad en flyttstädning omfattar – ett hus har utrymmen utanför boytan, som garage och förråd, medan en lägenhet har mer förutsägbara ytor där kök och badrum väger tyngst.",
+        "Eftersom beståndet i Örkelljunga är blandat kan två adresser i samma ort kräva olika mycket. Ange bostadstyp tillsammans med boytan: för hus behöver det framgå vilka biutrymmen som ska ingå, för lägenhet är det kök, badrum, fönster och golv som styr omfattningen.",
+        "Vanliga flyttsträckor här går inom orten och mot Perstorp. Ska flyttstädningen göras nära flyttdagen behöver tidsplanen ta hänsyn till transporten, eftersom bostaden måste vara tömd innan städningen kan börja.",
+      ],
+      praktiskt: [
+        {
+          rubrik: "Ange bostadstyp, inte bara yta",
+          text: "Beståndet i Örkelljunga är blandat – lägenhet och hus kräver olika mycket även vid samma boyta.",
+        },
+        {
+          rubrik: "Räkna utrymmen, inte bara boyta",
+          text: "Ange antal rum, våningar och vilka biutrymmen som ska ingå.",
+        },
+        {
+          rubrik: "Sträckor mot Perstorp",
+          text: "Ange den exakta adressen så att transportsträckan kommer med i bedömningen.",
+        },
+      ],
+      fragor: [
+        {
+          fraga: "Vad behöver jag ange för en bostad i Örkelljunga?",
+          svar: "Bostadstyp, boyta och antal rum. Är det ett hus: även antal våningar och vilka biutrymmen som ska städas.",
+        },
+        {
+          fraga: "Kan jag boka både flytt och flyttstädning?",
+          svar: "Ja, och det är oftast smidigast. Välj flytt och städ i formuläret, då planeras städningen efter att bostaden är tömd.",
+        },
+      ],
+    },
   },
   {
     slug: "bastad",
@@ -1455,7 +2319,7 @@ export const orter: Ort[] = [
     iOrt: "Båstad",
     lan: "Skåne län",
     metaBeskrivning:
-      "Flyttfirma Båstad – boka bohagsflytt och flyttstädning via Nyflytt. Beskriv din bostad och ditt datum och få en tydlig offert. Uppdraget utförs av en samarbetspartner.",
+      "Flyttfirma Båstad – boka bohagsflytt och flyttstädning via Nyflytt. Beskriv din bostad och ditt datum och få en tydlig offert.",
     ingress:
       "Ska du flytta i Båstad? Beskriv bostaden och ditt datum, så får du en offert med tydlig omfattning.",
     omOrten: [
@@ -1491,6 +2355,41 @@ export const orter: Ort[] = [
     ],
     narliggande: ["forslov", "vejbystrand", "angelholm"],
     narmasteStorstad: "angelholm",
+    stad: {
+      metaBeskrivning:
+        "Flyttstädning i Båstad inför överlämning och besiktning. Beskriv bostaden och ditt datum och få en tydlig offert från Nyflytt.",
+      ingress:
+        "Ska du flyttstäda i Båstad? Beskriv bostaden och datumet och få en offert där omfattningen framgår.",
+      omStadningen: [
+        "Bebyggelsen i Båstad beskrivs som blandad bebyggelse med äldre villor, fritidshus och nyare bostadsområden. Äldre hus har fler detaljytor än boytan antyder – höga socklar, dörrfoder, djupa fönsternischer och ibland originalgolv som inte tål vilka medel som helst. Två bostäder med samma yta kan därför kräva olika mycket arbete.",
+        "Läget nära kusten har en praktisk följd för fönsterputsen: salt från havsluften lägger sig på utsidan och syns tydligt i motljus. Putsa därför fönstren nära överlämningsdagen snarare än veckan före. Har bostaden använts som fritidshus och stått stängd en period finns ofta mer damm, och ibland fukt – fuktsanering är inte flyttstädning utan bedöms separat.",
+        "Vanliga flyttsträckor här går inom orten och mot Förslöv. Ska flyttstädningen göras nära flyttdagen behöver tidsplanen ta hänsyn till transporten, eftersom bostaden måste vara tömd innan städningen kan börja.",
+      ],
+      praktiskt: [
+        {
+          rubrik: "Äldre hus tar längre tid",
+          text: "Socklar, foder och nischer är fler än boytan antyder. Ange byggår om du vet det.",
+        },
+        {
+          rubrik: "Salt på fönstren",
+          text: "Nära havet blir fönstrens utsida snabbt smutsig igen. Lägg fönsterputsen nära överlämningen.",
+        },
+        {
+          rubrik: "Sträckor mot Förslöv",
+          text: "Ange den exakta adressen så att transportsträckan kommer med i bedömningen.",
+        },
+      ],
+      fragor: [
+        {
+          fraga: "När bör fönsterputsen göras?",
+          svar: "Så nära överlämningen som möjligt. I kustläge lägger sig salt på utsidan inom kort tid och syns tydligt i motljus.",
+        },
+        {
+          fraga: "Räknas städning av ett länge obebott hus som flyttstädning?",
+          svar: "Inte alltid. Har huset stått stängt länge kan mer omfattande rengöring krävas. Beskriv förutsättningarna så bedöms det innan offerten lämnas.",
+        },
+      ],
+    },
   },
   {
     slug: "forslov",
@@ -1499,7 +2398,7 @@ export const orter: Ort[] = [
     iOrt: "Förslöv",
     lan: "Skåne län",
     metaBeskrivning:
-      "Flyttfirma Förslöv – boka bohagsflytt och flyttstädning via Nyflytt. Beskriv din bostad och ditt datum och få en tydlig offert. Uppdraget utförs av en samarbetspartner.",
+      "Flyttfirma Förslöv – boka bohagsflytt och flyttstädning via Nyflytt. Beskriv din bostad och ditt datum och få en tydlig offert.",
     ingress:
       "Ska du flytta i Förslöv? Beskriv bostaden och ditt datum, så får du en offert med tydlig omfattning.",
     omOrten: [
@@ -1535,6 +2434,41 @@ export const orter: Ort[] = [
     ],
     narliggande: ["bastad", "vejbystrand", "angelholm"],
     narmasteStorstad: "angelholm",
+    stad: {
+      metaBeskrivning:
+        "Flyttstädning i Förslöv inför överlämning och besiktning. Beskriv bostaden och ditt datum och få en tydlig offert från Nyflytt.",
+      ingress:
+        "Ska du flyttstäda i Förslöv? Beskriv bostaden och datumet och få en offert där omfattningen framgår.",
+      omStadningen: [
+        "Bebyggelsen i Förslöv beskrivs som mindre tätort med övervägande villabebyggelse. I nyare hus ligger tyngdpunkten på glas och blanka ytor snarare än på snickerier: duschväggar, vitvaror som ska dras ut och golvbrunnar med avtagbara insatser är det som tar tid.",
+        "I ett hus ligger en stor del av arbetet utanför boytan. Garage, förråd, pannrum och tvättstuga är egna utrymmen som inte ingår automatiskt, och fönstren är fler än i en lägenhet. Ange antal våningar och vilka biutrymmen som ska städas, så framgår omfattningen av offerten.",
+        "Förslöv har stationsläge, och en del av flyttarna här är pendlingsflyttar. Ska städningen ske i anslutning till flyttdagen måste bostaden vara tömd först – lägg marginal mellan de två momenten så att städningen inte behöver avbrytas halvvägs.",
+      ],
+      praktiskt: [
+        {
+          rubrik: "Glas och blanka ytor",
+          text: "I nyare bostäder är det duschväggar, vitvaror och blanka ytor som tar tid, inte snickerier.",
+        },
+        {
+          rubrik: "Biutrymmen ingår inte automatiskt",
+          text: "Garage, förråd och uteplats behöver anges separat för att komma med i offerten.",
+        },
+        {
+          rubrik: "Pendlingsflytt",
+          text: "Vid flytt till annan ort behöver städningen läggas efter att bostaden är tömd. Ange önskad ordning i förfrågan.",
+        },
+      ],
+      fragor: [
+        {
+          fraga: "Ingår garage och förråd i Förslöv?",
+          svar: "Inte automatiskt. Ange i förfrågan vilka utrymmen som ska städas, så framgår det av offerten vad som ingår.",
+        },
+        {
+          fraga: "Hur anger jag storleken på ett hus?",
+          svar: "Ange boyta, antal rum och antal våningar, och lista biutrymmena separat. Det ger ett bättre underlag än boytan ensam.",
+        },
+      ],
+    },
   },
   {
     slug: "vejbystrand",
@@ -1543,7 +2477,7 @@ export const orter: Ort[] = [
     iOrt: "Vejbystrand",
     lan: "Skåne län",
     metaBeskrivning:
-      "Flyttfirma Vejbystrand – boka bohagsflytt och flyttstädning via Nyflytt. Beskriv din bostad och ditt datum och få en tydlig offert. Uppdraget utförs av en samarbetspartner.",
+      "Flyttfirma Vejbystrand – boka bohagsflytt och flyttstädning via Nyflytt. Beskriv din bostad och ditt datum och få en tydlig offert.",
     ingress:
       "Ska du flytta i Vejbystrand? Beskriv bostaden och ditt datum, så får du en offert med tydlig omfattning.",
     omOrten: [
@@ -1579,6 +2513,41 @@ export const orter: Ort[] = [
     ],
     narliggande: ["angelholm", "bastad", "munka-ljungby"],
     narmasteStorstad: "angelholm",
+    stad: {
+      metaBeskrivning:
+        "Flyttstädning i Vejbystrand inför överlämning och besiktning. Beskriv bostaden och ditt datum och få en tydlig offert från Nyflytt.",
+      ingress:
+        "Ska du flyttstäda i Vejbystrand? Beskriv bostaden och datumet och få en offert där omfattningen framgår.",
+      omStadningen: [
+        "Bebyggelsen i Vejbystrand beskrivs som kustsamhälle med stort inslag av fritidshus och villor. Det avgör vad en flyttstädning omfattar – ett hus har utrymmen utanför boytan, som garage och förråd, medan en lägenhet har mer förutsägbara ytor där kök och badrum väger tyngst.",
+        "Läget nära kusten har en praktisk följd för fönsterputsen: salt från havsluften lägger sig på utsidan och syns tydligt i motljus. Putsa därför fönstren nära överlämningsdagen snarare än veckan före. Har bostaden använts som fritidshus och stått stängd en period finns ofta mer damm, och ibland fukt – fuktsanering är inte flyttstädning utan bedöms separat.",
+        "Vanliga flyttsträckor här går inom orten och mot Angelholm. Ska flyttstädningen göras nära flyttdagen behöver tidsplanen ta hänsyn till transporten, eftersom bostaden måste vara tömd innan städningen kan börja.",
+      ],
+      praktiskt: [
+        {
+          rubrik: "Ange bostadstyp, inte bara yta",
+          text: "Beståndet i Vejbystrand är blandat – lägenhet och hus kräver olika mycket även vid samma boyta.",
+        },
+        {
+          rubrik: "Salt på fönstren",
+          text: "Nära havet blir fönstrens utsida snabbt smutsig igen. Lägg fönsterputsen nära överlämningen.",
+        },
+        {
+          rubrik: "Sträckor mot Angelholm",
+          text: "Ange den exakta adressen så att transportsträckan kommer med i bedömningen.",
+        },
+      ],
+      fragor: [
+        {
+          fraga: "När bör fönsterputsen göras?",
+          svar: "Så nära överlämningen som möjligt. I kustläge lägger sig salt på utsidan inom kort tid och syns tydligt i motljus.",
+        },
+        {
+          fraga: "Räknas städning av ett länge obebott hus som flyttstädning?",
+          svar: "Inte alltid. Har huset stått stängt länge kan mer omfattande rengöring krävas. Beskriv förutsättningarna så bedöms det innan offerten lämnas.",
+        },
+      ],
+    },
   },
   {
     slug: "munka-ljungby",
@@ -1587,7 +2556,7 @@ export const orter: Ort[] = [
     iOrt: "Munka-Ljungby",
     lan: "Skåne län",
     metaBeskrivning:
-      "Flyttfirma Munka-Ljungby – boka bohagsflytt och flyttstädning via Nyflytt. Beskriv din bostad och ditt datum och få en tydlig offert. Uppdraget utförs av en samarbetspartner.",
+      "Flyttfirma Munka-Ljungby – boka bohagsflytt och flyttstädning via Nyflytt. Beskriv din bostad och ditt datum och få en tydlig offert.",
     ingress:
       "Ska du flytta i Munka-Ljungby? Beskriv bostaden och ditt datum, så får du en offert med tydlig omfattning.",
     omOrten: [
@@ -1623,6 +2592,41 @@ export const orter: Ort[] = [
     ],
     narliggande: ["angelholm", "orkelljunga", "vejbystrand"],
     narmasteStorstad: "angelholm",
+    stad: {
+      metaBeskrivning:
+        "Flyttstädning i Munka-Ljungby inför överlämning och besiktning. Beskriv bostaden och ditt datum och få en tydlig offert från Nyflytt.",
+      ingress:
+        "Ska du flyttstäda i Munka-Ljungby? Beskriv bostaden och datumet och få en offert där omfattningen framgår.",
+      omStadningen: [
+        "Bebyggelsen i Munka-Ljungby beskrivs som tätort med villabebyggelse och mindre flerbostadshus. Det avgör vad en flyttstädning omfattar – ett hus har utrymmen utanför boytan, som garage och förråd, medan en lägenhet har mer förutsägbara ytor där kök och badrum väger tyngst.",
+        "Eftersom beståndet i Munka-Ljungby är blandat kan två adresser i samma ort kräva olika mycket. Ange bostadstyp tillsammans med boytan: för hus behöver det framgå vilka biutrymmen som ska ingå, för lägenhet är det kök, badrum, fönster och golv som styr omfattningen.",
+        "Vanliga flyttsträckor här går inom orten och mot Munka och Ljungby. Ska flyttstädningen göras nära flyttdagen behöver tidsplanen ta hänsyn till transporten, eftersom bostaden måste vara tömd innan städningen kan börja.",
+      ],
+      praktiskt: [
+        {
+          rubrik: "Ange bostadstyp, inte bara yta",
+          text: "Beståndet i Munka-Ljungby är blandat – lägenhet och hus kräver olika mycket även vid samma boyta.",
+        },
+        {
+          rubrik: "Räkna utrymmen, inte bara boyta",
+          text: "Ange antal rum, våningar och vilka biutrymmen som ska ingå.",
+        },
+        {
+          rubrik: "Sträckor mot Munka",
+          text: "Ange den exakta adressen så att transportsträckan kommer med i bedömningen.",
+        },
+      ],
+      fragor: [
+        {
+          fraga: "Vad behöver jag ange för en bostad i Munka-Ljungby?",
+          svar: "Bostadstyp, boyta och antal rum. Är det ett hus: även antal våningar och vilka biutrymmen som ska städas.",
+        },
+        {
+          fraga: "Kan jag boka både flytt och flyttstädning?",
+          svar: "Ja, och det är oftast smidigast. Välj flytt och städ i formuläret, då planeras städningen efter att bostaden är tömd.",
+        },
+      ],
+    },
   },
   {
     slug: "hyllinge",
@@ -1631,7 +2635,7 @@ export const orter: Ort[] = [
     iOrt: "Hyllinge",
     lan: "Skåne län",
     metaBeskrivning:
-      "Flyttfirma Hyllinge – boka bohagsflytt och flyttstädning via Nyflytt. Beskriv din bostad och ditt datum och få en tydlig offert. Uppdraget utförs av en samarbetspartner.",
+      "Flyttfirma Hyllinge – boka bohagsflytt och flyttstädning via Nyflytt. Beskriv din bostad och ditt datum och få en tydlig offert.",
     ingress:
       "Ska du flytta i Hyllinge? Beskriv bostaden och ditt datum, så får du en offert med tydlig omfattning.",
     omOrten: [
@@ -1667,6 +2671,41 @@ export const orter: Ort[] = [
     ],
     narliggande: ["astorp", "bjuv", "helsingborg"],
     narmasteStorstad: "helsingborg",
+    stad: {
+      metaBeskrivning:
+        "Flyttstädning i Hyllinge inför överlämning och besiktning. Beskriv bostaden och ditt datum och få en tydlig offert från Nyflytt.",
+      ingress:
+        "Ska du flyttstäda i Hyllinge? Beskriv bostaden och datumet och få en offert där omfattningen framgår.",
+      omStadningen: [
+        "Bebyggelsen i Hyllinge beskrivs som mindre tätort med villor och radhus. Det avgör vad en flyttstädning omfattar – ett hus har utrymmen utanför boytan, som garage och förråd, medan en lägenhet har mer förutsägbara ytor där kök och badrum väger tyngst.",
+        "I ett hus ligger en stor del av arbetet utanför boytan. Garage, förråd, pannrum och tvättstuga är egna utrymmen som inte ingår automatiskt, och fönstren är fler än i en lägenhet. Ange antal våningar och vilka biutrymmen som ska städas, så framgår omfattningen av offerten.",
+        "Vanliga flyttsträckor här går inom orten och mot Åstorp. Ska flyttstädningen göras nära flyttdagen behöver tidsplanen ta hänsyn till transporten, eftersom bostaden måste vara tömd innan städningen kan börja.",
+      ],
+      praktiskt: [
+        {
+          rubrik: "Ange bostadstyp, inte bara yta",
+          text: "Beståndet i Hyllinge är blandat – lägenhet och hus kräver olika mycket även vid samma boyta.",
+        },
+        {
+          rubrik: "Biutrymmen ingår inte automatiskt",
+          text: "Garage, förråd och uteplats behöver anges separat för att komma med i offerten.",
+        },
+        {
+          rubrik: "Sträckor mot Åstorp",
+          text: "Ange den exakta adressen så att transportsträckan kommer med i bedömningen.",
+        },
+      ],
+      fragor: [
+        {
+          fraga: "Ingår garage och förråd i Hyllinge?",
+          svar: "Inte automatiskt. Ange i förfrågan vilka utrymmen som ska städas, så framgår det av offerten vad som ingår.",
+        },
+        {
+          fraga: "Hur anger jag storleken på ett hus?",
+          svar: "Ange boyta, antal rum och antal våningar, och lista biutrymmena separat. Det ger ett bättre underlag än boytan ensam.",
+        },
+      ],
+    },
   },
   {
     slug: "dalby",
@@ -1675,7 +2714,7 @@ export const orter: Ort[] = [
     iOrt: "Dalby",
     lan: "Skåne län",
     metaBeskrivning:
-      "Flyttfirma Dalby – boka bohagsflytt och flyttstädning via Nyflytt. Beskriv din bostad och ditt datum och få en tydlig offert. Uppdraget utförs av en samarbetspartner.",
+      "Flyttfirma Dalby – boka bohagsflytt och flyttstädning via Nyflytt. Beskriv din bostad och ditt datum och få en tydlig offert.",
     ingress:
       "Ska du flytta i Dalby? Beskriv bostaden och ditt datum, så får du en offert med tydlig omfattning.",
     omOrten: [
@@ -1711,6 +2750,41 @@ export const orter: Ort[] = [
     ],
     narliggande: ["lund", "veberod", "sodra-sandby"],
     narmasteStorstad: "lund",
+    stad: {
+      metaBeskrivning:
+        "Flyttstädning i Dalby inför överlämning och besiktning. Beskriv bostaden och ditt datum och få en tydlig offert från Nyflytt.",
+      ingress:
+        "Ska du flyttstäda i Dalby? Beskriv bostaden och datumet och få en offert där omfattningen framgår.",
+      omStadningen: [
+        "Bebyggelsen i Dalby beskrivs som tätort med blandad bebyggelse: villor, radhus och mindre flerbostadshus. Äldre hus har fler detaljytor än boytan antyder – höga socklar, dörrfoder, djupa fönsternischer och ibland originalgolv som inte tål vilka medel som helst. Två bostäder med samma yta kan därför kräva olika mycket arbete.",
+        "Eftersom beståndet i Dalby är blandat kan två adresser i samma ort kräva olika mycket. Ange bostadstyp tillsammans med boytan: för hus behöver det framgå vilka biutrymmen som ska ingå, för lägenhet är det kök, badrum, fönster och golv som styr omfattningen.",
+        "Vanliga flyttsträckor här går inom orten och mot Lund. Ska flyttstädningen göras nära flyttdagen behöver tidsplanen ta hänsyn till transporten, eftersom bostaden måste vara tömd innan städningen kan börja.",
+      ],
+      praktiskt: [
+        {
+          rubrik: "Äldre hus tar längre tid",
+          text: "Socklar, foder och nischer är fler än boytan antyder. Ange byggår om du vet det.",
+        },
+        {
+          rubrik: "Räkna utrymmen, inte bara boyta",
+          text: "Ange antal rum, våningar och vilka biutrymmen som ska ingå.",
+        },
+        {
+          rubrik: "Sträckor mot Lund",
+          text: "Ange den exakta adressen så att transportsträckan kommer med i bedömningen.",
+        },
+      ],
+      fragor: [
+        {
+          fraga: "Vad behöver jag ange för en bostad i Dalby?",
+          svar: "Bostadstyp, boyta och antal rum. Är det ett hus: även antal våningar och vilka biutrymmen som ska städas.",
+        },
+        {
+          fraga: "Kan jag boka både flytt och flyttstädning?",
+          svar: "Ja, och det är oftast smidigast. Välj flytt och städ i formuläret, då planeras städningen efter att bostaden är tömd.",
+        },
+      ],
+    },
   },
   {
     slug: "sodra-sandby",
@@ -1719,7 +2793,7 @@ export const orter: Ort[] = [
     iOrt: "Södra Sandby",
     lan: "Skåne län",
     metaBeskrivning:
-      "Flyttfirma Södra Sandby – boka bohagsflytt och flyttstädning via Nyflytt. Beskriv din bostad och ditt datum och få en tydlig offert. Uppdraget utförs av en samarbetspartner.",
+      "Flyttfirma Södra Sandby – boka bohagsflytt och flyttstädning via Nyflytt. Beskriv din bostad och ditt datum och få en tydlig offert.",
     ingress:
       "Ska du flytta i Södra Sandby? Beskriv bostaden och ditt datum, så får du en offert med tydlig omfattning.",
     omOrten: [
@@ -1755,6 +2829,41 @@ export const orter: Ort[] = [
     ],
     narliggande: ["lund", "dalby", "veberod"],
     narmasteStorstad: "lund",
+    stad: {
+      metaBeskrivning:
+        "Flyttstädning i Södra Sandby inför överlämning och besiktning. Beskriv bostaden och ditt datum och få en tydlig offert från Nyflytt.",
+      ingress:
+        "Ska du flyttstäda i Södra Sandby? Beskriv bostaden och datumet och få en offert där omfattningen framgår.",
+      omStadningen: [
+        "Bebyggelsen i Södra Sandby beskrivs som tätort med övervägande villor och radhus, samt några flerbostadsområden. Det avgör vad en flyttstädning omfattar – ett hus har utrymmen utanför boytan, som garage och förråd, medan en lägenhet har mer förutsägbara ytor där kök och badrum väger tyngst.",
+        "Eftersom beståndet i Södra Sandby är blandat kan två adresser i samma ort kräva olika mycket. Ange bostadstyp tillsammans med boytan: för hus behöver det framgå vilka biutrymmen som ska ingå, för lägenhet är det kök, badrum, fönster och golv som styr omfattningen.",
+        "Vanliga flyttsträckor här går inom orten och mot Lund. Ska flyttstädningen göras nära flyttdagen behöver tidsplanen ta hänsyn till transporten, eftersom bostaden måste vara tömd innan städningen kan börja.",
+      ],
+      praktiskt: [
+        {
+          rubrik: "Ange bostadstyp, inte bara yta",
+          text: "Beståndet i Södra Sandby är blandat – lägenhet och hus kräver olika mycket även vid samma boyta.",
+        },
+        {
+          rubrik: "Räkna utrymmen, inte bara boyta",
+          text: "Ange antal rum, våningar och vilka biutrymmen som ska ingå.",
+        },
+        {
+          rubrik: "Sträckor mot Lund",
+          text: "Ange den exakta adressen så att transportsträckan kommer med i bedömningen.",
+        },
+      ],
+      fragor: [
+        {
+          fraga: "Vad behöver jag ange för en bostad i Södra Sandby?",
+          svar: "Bostadstyp, boyta och antal rum. Är det ett hus: även antal våningar och vilka biutrymmen som ska städas.",
+        },
+        {
+          fraga: "Kan jag boka både flytt och flyttstädning?",
+          svar: "Ja, och det är oftast smidigast. Välj flytt och städ i formuläret, då planeras städningen efter att bostaden är tömd.",
+        },
+      ],
+    },
   },
   {
     slug: "veberod",
@@ -1763,7 +2872,7 @@ export const orter: Ort[] = [
     iOrt: "Veberöd",
     lan: "Skåne län",
     metaBeskrivning:
-      "Flyttfirma Veberöd – boka bohagsflytt och flyttstädning via Nyflytt. Beskriv din bostad och ditt datum och få en tydlig offert. Uppdraget utförs av en samarbetspartner.",
+      "Flyttfirma Veberöd – boka bohagsflytt och flyttstädning via Nyflytt. Beskriv din bostad och ditt datum och få en tydlig offert.",
     ingress:
       "Ska du flytta i Veberöd? Beskriv bostaden och ditt datum, så får du en offert med tydlig omfattning.",
     omOrten: [
@@ -1799,6 +2908,41 @@ export const orter: Ort[] = [
     ],
     narliggande: ["lund", "dalby", "sjobo"],
     narmasteStorstad: "lund",
+    stad: {
+      metaBeskrivning:
+        "Flyttstädning i Veberöd inför överlämning och besiktning. Beskriv bostaden och ditt datum och få en tydlig offert från Nyflytt.",
+      ingress:
+        "Ska du flyttstäda i Veberöd? Beskriv bostaden och datumet och få en offert där omfattningen framgår.",
+      omStadningen: [
+        "Bebyggelsen i Veberöd beskrivs som tätort med villabebyggelse och mindre flerbostadshus. Det avgör vad en flyttstädning omfattar – ett hus har utrymmen utanför boytan, som garage och förråd, medan en lägenhet har mer förutsägbara ytor där kök och badrum väger tyngst.",
+        "Eftersom beståndet i Veberöd är blandat kan två adresser i samma ort kräva olika mycket. Ange bostadstyp tillsammans med boytan: för hus behöver det framgå vilka biutrymmen som ska ingå, för lägenhet är det kök, badrum, fönster och golv som styr omfattningen.",
+        "Vanliga flyttsträckor här går inom orten och mot Lund. Ska flyttstädningen göras nära flyttdagen behöver tidsplanen ta hänsyn till transporten, eftersom bostaden måste vara tömd innan städningen kan börja.",
+      ],
+      praktiskt: [
+        {
+          rubrik: "Ange bostadstyp, inte bara yta",
+          text: "Beståndet i Veberöd är blandat – lägenhet och hus kräver olika mycket även vid samma boyta.",
+        },
+        {
+          rubrik: "Räkna utrymmen, inte bara boyta",
+          text: "Ange antal rum, våningar och vilka biutrymmen som ska ingå.",
+        },
+        {
+          rubrik: "Sträckor mot Lund",
+          text: "Ange den exakta adressen så att transportsträckan kommer med i bedömningen.",
+        },
+      ],
+      fragor: [
+        {
+          fraga: "Vad behöver jag ange för en bostad i Veberöd?",
+          svar: "Bostadstyp, boyta och antal rum. Är det ett hus: även antal våningar och vilka biutrymmen som ska städas.",
+        },
+        {
+          fraga: "Kan jag boka både flytt och flyttstädning?",
+          svar: "Ja, och det är oftast smidigast. Välj flytt och städ i formuläret, då planeras städningen efter att bostaden är tömd.",
+        },
+      ],
+    },
   },
   {
     slug: "genarp",
@@ -1807,7 +2951,7 @@ export const orter: Ort[] = [
     iOrt: "Genarp",
     lan: "Skåne län",
     metaBeskrivning:
-      "Flyttfirma Genarp – boka bohagsflytt och flyttstädning via Nyflytt. Beskriv din bostad och ditt datum och få en tydlig offert. Uppdraget utförs av en samarbetspartner.",
+      "Flyttfirma Genarp – boka bohagsflytt och flyttstädning via Nyflytt. Beskriv din bostad och ditt datum och få en tydlig offert.",
     ingress:
       "Ska du flytta i Genarp? Beskriv bostaden och ditt datum, så får du en offert med tydlig omfattning.",
     omOrten: [
@@ -1843,6 +2987,41 @@ export const orter: Ort[] = [
     ],
     narliggande: ["lund", "svedala", "dalby"],
     narmasteStorstad: "lund",
+    stad: {
+      metaBeskrivning:
+        "Flyttstädning i Genarp inför överlämning och besiktning. Beskriv bostaden och ditt datum och få en tydlig offert från Nyflytt.",
+      ingress:
+        "Ska du flyttstäda i Genarp? Beskriv bostaden och datumet och få en offert där omfattningen framgår.",
+      omStadningen: [
+        "Bebyggelsen i Genarp beskrivs som mindre tätort med villabebyggelse, omgiven av jordbrukslandskap. Det avgör vad en flyttstädning omfattar – ett hus har utrymmen utanför boytan, som garage och förråd, medan en lägenhet har mer förutsägbara ytor där kök och badrum väger tyngst.",
+        "I ett hus ligger en stor del av arbetet utanför boytan. Garage, förråd, pannrum och tvättstuga är egna utrymmen som inte ingår automatiskt, och fönstren är fler än i en lägenhet. Ange antal våningar och vilka biutrymmen som ska städas, så framgår omfattningen av offerten.",
+        "Vanliga flyttsträckor här går inom orten och mot Lund. Ska flyttstädningen göras nära flyttdagen behöver tidsplanen ta hänsyn till transporten, eftersom bostaden måste vara tömd innan städningen kan börja.",
+      ],
+      praktiskt: [
+        {
+          rubrik: "Ange bostadstyp, inte bara yta",
+          text: "Beståndet i Genarp är blandat – lägenhet och hus kräver olika mycket även vid samma boyta.",
+        },
+        {
+          rubrik: "Biutrymmen ingår inte automatiskt",
+          text: "Garage, förråd och uteplats behöver anges separat för att komma med i offerten.",
+        },
+        {
+          rubrik: "Sträckor mot Lund",
+          text: "Ange den exakta adressen så att transportsträckan kommer med i bedömningen.",
+        },
+      ],
+      fragor: [
+        {
+          fraga: "Ingår garage och förråd i Genarp?",
+          svar: "Inte automatiskt. Ange i förfrågan vilka utrymmen som ska städas, så framgår det av offerten vad som ingår.",
+        },
+        {
+          fraga: "Hur anger jag storleken på ett hus?",
+          svar: "Ange boyta, antal rum och antal våningar, och lista biutrymmena separat. Det ger ett bättre underlag än boytan ensam.",
+        },
+      ],
+    },
   },
   {
     slug: "staffanstorp",
@@ -1851,7 +3030,7 @@ export const orter: Ort[] = [
     iOrt: "Staffanstorp",
     lan: "Skåne län",
     metaBeskrivning:
-      "Flyttfirma Staffanstorp – boka bohagsflytt och flyttstädning via Nyflytt. Beskriv din bostad och ditt datum och få en tydlig offert. Uppdraget utförs av en samarbetspartner.",
+      "Flyttfirma Staffanstorp – boka bohagsflytt och flyttstädning via Nyflytt. Beskriv din bostad och ditt datum och få en tydlig offert.",
     ingress:
       "Ska du flytta i Staffanstorp? Beskriv bostaden och ditt datum, så får du en offert med tydlig omfattning.",
     omOrten: [
@@ -1887,6 +3066,41 @@ export const orter: Ort[] = [
     ],
     narliggande: ["lund", "malmo", "hjarup"],
     narmasteStorstad: "lund",
+    stad: {
+      metaBeskrivning:
+        "Flyttstädning i Staffanstorp inför överlämning och besiktning. Beskriv bostaden och ditt datum och få en tydlig offert från Nyflytt.",
+      ingress:
+        "Ska du flyttstäda i Staffanstorp? Beskriv bostaden och datumet och få en offert där omfattningen framgår.",
+      omStadningen: [
+        "Bebyggelsen i Staffanstorp beskrivs som centralort med blandad bebyggelse: villor, radhus och flerbostadshus. Äldre hus har fler detaljytor än boytan antyder – höga socklar, dörrfoder, djupa fönsternischer och ibland originalgolv som inte tål vilka medel som helst. Två bostäder med samma yta kan därför kräva olika mycket arbete.",
+        "Eftersom beståndet i Staffanstorp är blandat kan två adresser i samma ort kräva olika mycket. Ange bostadstyp tillsammans med boytan: för hus behöver det framgå vilka biutrymmen som ska ingå, för lägenhet är det kök, badrum, fönster och golv som styr omfattningen.",
+        "Vanliga flyttsträckor här går inom orten och mot Lund. Ska flyttstädningen göras nära flyttdagen behöver tidsplanen ta hänsyn till transporten, eftersom bostaden måste vara tömd innan städningen kan börja.",
+      ],
+      praktiskt: [
+        {
+          rubrik: "Äldre hus tar längre tid",
+          text: "Socklar, foder och nischer är fler än boytan antyder. Ange byggår om du vet det.",
+        },
+        {
+          rubrik: "Räkna utrymmen, inte bara boyta",
+          text: "Ange antal rum, våningar och vilka biutrymmen som ska ingå.",
+        },
+        {
+          rubrik: "Sträckor mot Lund",
+          text: "Ange den exakta adressen så att transportsträckan kommer med i bedömningen.",
+        },
+      ],
+      fragor: [
+        {
+          fraga: "Vad behöver jag ange för en bostad i Staffanstorp?",
+          svar: "Bostadstyp, boyta och antal rum. Är det ett hus: även antal våningar och vilka biutrymmen som ska städas.",
+        },
+        {
+          fraga: "Kan jag boka både flytt och flyttstädning?",
+          svar: "Ja, och det är oftast smidigast. Välj flytt och städ i formuläret, då planeras städningen efter att bostaden är tömd.",
+        },
+      ],
+    },
   },
   {
     slug: "hjarup",
@@ -1895,7 +3109,7 @@ export const orter: Ort[] = [
     iOrt: "Hjärup",
     lan: "Skåne län",
     metaBeskrivning:
-      "Flyttfirma Hjärup – boka bohagsflytt och flyttstädning via Nyflytt. Beskriv din bostad och ditt datum och få en tydlig offert. Uppdraget utförs av en samarbetspartner.",
+      "Flyttfirma Hjärup – boka bohagsflytt och flyttstädning via Nyflytt. Beskriv din bostad och ditt datum och få en tydlig offert.",
     ingress:
       "Ska du flytta i Hjärup? Beskriv bostaden och ditt datum, så får du en offert med tydlig omfattning.",
     omOrten: [
@@ -1931,6 +3145,41 @@ export const orter: Ort[] = [
     ],
     narliggande: ["staffanstorp", "lund", "akarp"],
     narmasteStorstad: "lund",
+    stad: {
+      metaBeskrivning:
+        "Flyttstädning i Hjärup inför överlämning och besiktning. Beskriv bostaden och ditt datum och få en tydlig offert från Nyflytt.",
+      ingress:
+        "Ska du flyttstäda i Hjärup? Beskriv bostaden och datumet och få en offert där omfattningen framgår.",
+      omStadningen: [
+        "Bebyggelsen i Hjärup beskrivs som villa- och radhusdominerad pendlingsort med nyare bebyggelse kring stationen. I nyare hus ligger tyngdpunkten på glas och blanka ytor snarare än på snickerier: duschväggar, vitvaror som ska dras ut och golvbrunnar med avtagbara insatser är det som tar tid.",
+        "I ett hus ligger en stor del av arbetet utanför boytan. Garage, förråd, pannrum och tvättstuga är egna utrymmen som inte ingår automatiskt, och fönstren är fler än i en lägenhet. Ange antal våningar och vilka biutrymmen som ska städas, så framgår omfattningen av offerten.",
+        "Hjärup har stationsläge, och en del av flyttarna här är pendlingsflyttar. Ska städningen ske i anslutning till flyttdagen måste bostaden vara tömd först – lägg marginal mellan de två momenten så att städningen inte behöver avbrytas halvvägs.",
+      ],
+      praktiskt: [
+        {
+          rubrik: "Glas och blanka ytor",
+          text: "I nyare bostäder är det duschväggar, vitvaror och blanka ytor som tar tid, inte snickerier.",
+        },
+        {
+          rubrik: "Biutrymmen ingår inte automatiskt",
+          text: "Garage, förråd och uteplats behöver anges separat för att komma med i offerten.",
+        },
+        {
+          rubrik: "Pendlingsflytt",
+          text: "Vid flytt till annan ort behöver städningen läggas efter att bostaden är tömd. Ange önskad ordning i förfrågan.",
+        },
+      ],
+      fragor: [
+        {
+          fraga: "Ingår garage och förråd i Hjärup?",
+          svar: "Inte automatiskt. Ange i förfrågan vilka utrymmen som ska städas, så framgår det av offerten vad som ingår.",
+        },
+        {
+          fraga: "Hur anger jag storleken på ett hus?",
+          svar: "Ange boyta, antal rum och antal våningar, och lista biutrymmena separat. Det ger ett bättre underlag än boytan ensam.",
+        },
+      ],
+    },
   },
   {
     slug: "akarp",
@@ -1939,7 +3188,7 @@ export const orter: Ort[] = [
     iOrt: "Åkarp",
     lan: "Skåne län",
     metaBeskrivning:
-      "Flyttfirma Åkarp – boka bohagsflytt och flyttstädning via Nyflytt. Beskriv din bostad och ditt datum och få en tydlig offert. Uppdraget utförs av en samarbetspartner.",
+      "Flyttfirma Åkarp – boka bohagsflytt och flyttstädning via Nyflytt. Beskriv din bostad och ditt datum och få en tydlig offert.",
     ingress:
       "Ska du flytta i Åkarp? Beskriv bostaden och ditt datum, så får du en offert med tydlig omfattning.",
     omOrten: [
@@ -1975,6 +3224,41 @@ export const orter: Ort[] = [
     ],
     narliggande: ["hjarup", "malmo", "lomma"],
     narmasteStorstad: "malmo",
+    stad: {
+      metaBeskrivning:
+        "Flyttstädning i Åkarp inför överlämning och besiktning. Beskriv bostaden och ditt datum och få en tydlig offert från Nyflytt.",
+      ingress:
+        "Ska du flyttstäda i Åkarp? Beskriv bostaden och datumet och få en offert där omfattningen framgår.",
+      omStadningen: [
+        "Bebyggelsen i Åkarp beskrivs som villadominerad ort med nyare bebyggelse kring stationsområdet. I nyare hus ligger tyngdpunkten på glas och blanka ytor snarare än på snickerier: duschväggar, vitvaror som ska dras ut och golvbrunnar med avtagbara insatser är det som tar tid.",
+        "I ett hus ligger en stor del av arbetet utanför boytan. Garage, förråd, pannrum och tvättstuga är egna utrymmen som inte ingår automatiskt, och fönstren är fler än i en lägenhet. Ange antal våningar och vilka biutrymmen som ska städas, så framgår omfattningen av offerten.",
+        "Åkarp har stationsläge, och en del av flyttarna här är pendlingsflyttar. Ska städningen ske i anslutning till flyttdagen måste bostaden vara tömd först – lägg marginal mellan de två momenten så att städningen inte behöver avbrytas halvvägs.",
+      ],
+      praktiskt: [
+        {
+          rubrik: "Glas och blanka ytor",
+          text: "I nyare bostäder är det duschväggar, vitvaror och blanka ytor som tar tid, inte snickerier.",
+        },
+        {
+          rubrik: "Biutrymmen ingår inte automatiskt",
+          text: "Garage, förråd och uteplats behöver anges separat för att komma med i offerten.",
+        },
+        {
+          rubrik: "Pendlingsflytt",
+          text: "Vid flytt till annan ort behöver städningen läggas efter att bostaden är tömd. Ange önskad ordning i förfrågan.",
+        },
+      ],
+      fragor: [
+        {
+          fraga: "Ingår garage och förråd i Åkarp?",
+          svar: "Inte automatiskt. Ange i förfrågan vilka utrymmen som ska städas, så framgår det av offerten vad som ingår.",
+        },
+        {
+          fraga: "Hur anger jag storleken på ett hus?",
+          svar: "Ange boyta, antal rum och antal våningar, och lista biutrymmena separat. Det ger ett bättre underlag än boytan ensam.",
+        },
+      ],
+    },
   },
   {
     slug: "kavlinge",
@@ -1983,7 +3267,7 @@ export const orter: Ort[] = [
     iOrt: "Kävlinge",
     lan: "Skåne län",
     metaBeskrivning:
-      "Flyttfirma Kävlinge – boka bohagsflytt och flyttstädning via Nyflytt. Beskriv din bostad och ditt datum och få en tydlig offert. Uppdraget utförs av en samarbetspartner.",
+      "Flyttfirma Kävlinge – boka bohagsflytt och flyttstädning via Nyflytt. Beskriv din bostad och ditt datum och få en tydlig offert.",
     ingress:
       "Ska du flytta i Kävlinge? Beskriv bostaden och ditt datum, så får du en offert med tydlig omfattning.",
     omOrten: [
@@ -2019,6 +3303,41 @@ export const orter: Ort[] = [
     ],
     narliggande: ["furulund", "loddekopinge", "lomma"],
     narmasteStorstad: "lund",
+    stad: {
+      metaBeskrivning:
+        "Flyttstädning i Kävlinge inför överlämning och besiktning. Beskriv bostaden och ditt datum och få en tydlig offert från Nyflytt.",
+      ingress:
+        "Ska du flyttstäda i Kävlinge? Beskriv bostaden och datumet och få en offert där omfattningen framgår.",
+      omStadningen: [
+        "Bebyggelsen i Kävlinge beskrivs som centralort med flerbostadshus i centrum och villaområden runtomkring. I nyare hus ligger tyngdpunkten på glas och blanka ytor snarare än på snickerier: duschväggar, vitvaror som ska dras ut och golvbrunnar med avtagbara insatser är det som tar tid.",
+        "Eftersom beståndet i Kävlinge är blandat kan två adresser i samma ort kräva olika mycket. Ange bostadstyp tillsammans med boytan: för hus behöver det framgå vilka biutrymmen som ska ingå, för lägenhet är det kök, badrum, fönster och golv som styr omfattningen.",
+        "Kävlinge har stationsläge, och en del av flyttarna här är pendlingsflyttar. Ska städningen ske i anslutning till flyttdagen måste bostaden vara tömd först – lägg marginal mellan de två momenten så att städningen inte behöver avbrytas halvvägs.",
+      ],
+      praktiskt: [
+        {
+          rubrik: "Glas och blanka ytor",
+          text: "I nyare bostäder är det duschväggar, vitvaror och blanka ytor som tar tid, inte snickerier.",
+        },
+        {
+          rubrik: "Räkna utrymmen, inte bara boyta",
+          text: "Ange antal rum, våningar och vilka biutrymmen som ska ingå.",
+        },
+        {
+          rubrik: "Pendlingsflytt",
+          text: "Vid flytt till annan ort behöver städningen läggas efter att bostaden är tömd. Ange önskad ordning i förfrågan.",
+        },
+      ],
+      fragor: [
+        {
+          fraga: "Vad behöver jag ange för en bostad i Kävlinge?",
+          svar: "Bostadstyp, boyta och antal rum. Är det ett hus: även antal våningar och vilka biutrymmen som ska städas.",
+        },
+        {
+          fraga: "Kan jag boka både flytt och flyttstädning?",
+          svar: "Ja, och det är oftast smidigast. Välj flytt och städ i formuläret, då planeras städningen efter att bostaden är tömd.",
+        },
+      ],
+    },
   },
   {
     slug: "furulund",
@@ -2027,7 +3346,7 @@ export const orter: Ort[] = [
     iOrt: "Furulund",
     lan: "Skåne län",
     metaBeskrivning:
-      "Flyttfirma Furulund – boka bohagsflytt och flyttstädning via Nyflytt. Beskriv din bostad och ditt datum och få en tydlig offert. Uppdraget utförs av en samarbetspartner.",
+      "Flyttfirma Furulund – boka bohagsflytt och flyttstädning via Nyflytt. Beskriv din bostad och ditt datum och få en tydlig offert.",
     ingress:
       "Ska du flytta i Furulund? Beskriv bostaden och ditt datum, så får du en offert med tydlig omfattning.",
     omOrten: [
@@ -2063,6 +3382,41 @@ export const orter: Ort[] = [
     ],
     narliggande: ["kavlinge", "loddekopinge", "lomma"],
     narmasteStorstad: "lund",
+    stad: {
+      metaBeskrivning:
+        "Flyttstädning i Furulund inför överlämning och besiktning. Beskriv bostaden och ditt datum och få en tydlig offert från Nyflytt.",
+      ingress:
+        "Ska du flyttstäda i Furulund? Beskriv bostaden och datumet och få en offert där omfattningen framgår.",
+      omStadningen: [
+        "Bebyggelsen i Furulund beskrivs som mindre tätort med villor och radhus. Det avgör vad en flyttstädning omfattar – ett hus har utrymmen utanför boytan, som garage och förråd, medan en lägenhet har mer förutsägbara ytor där kök och badrum väger tyngst.",
+        "I ett hus ligger en stor del av arbetet utanför boytan. Garage, förråd, pannrum och tvättstuga är egna utrymmen som inte ingår automatiskt, och fönstren är fler än i en lägenhet. Ange antal våningar och vilka biutrymmen som ska städas, så framgår omfattningen av offerten.",
+        "Vanliga flyttsträckor här går inom orten och mot Kävlinge. Ska flyttstädningen göras nära flyttdagen behöver tidsplanen ta hänsyn till transporten, eftersom bostaden måste vara tömd innan städningen kan börja.",
+      ],
+      praktiskt: [
+        {
+          rubrik: "Ange bostadstyp, inte bara yta",
+          text: "Beståndet i Furulund är blandat – lägenhet och hus kräver olika mycket även vid samma boyta.",
+        },
+        {
+          rubrik: "Biutrymmen ingår inte automatiskt",
+          text: "Garage, förråd och uteplats behöver anges separat för att komma med i offerten.",
+        },
+        {
+          rubrik: "Sträckor mot Kävlinge",
+          text: "Ange den exakta adressen så att transportsträckan kommer med i bedömningen.",
+        },
+      ],
+      fragor: [
+        {
+          fraga: "Ingår garage och förråd i Furulund?",
+          svar: "Inte automatiskt. Ange i förfrågan vilka utrymmen som ska städas, så framgår det av offerten vad som ingår.",
+        },
+        {
+          fraga: "Hur anger jag storleken på ett hus?",
+          svar: "Ange boyta, antal rum och antal våningar, och lista biutrymmena separat. Det ger ett bättre underlag än boytan ensam.",
+        },
+      ],
+    },
   },
   {
     slug: "loddekopinge",
@@ -2071,7 +3425,7 @@ export const orter: Ort[] = [
     iOrt: "Löddeköpinge",
     lan: "Skåne län",
     metaBeskrivning:
-      "Flyttfirma Löddeköpinge – boka bohagsflytt och flyttstädning via Nyflytt. Beskriv din bostad och ditt datum och få en tydlig offert. Uppdraget utförs av en samarbetspartner.",
+      "Flyttfirma Löddeköpinge – boka bohagsflytt och flyttstädning via Nyflytt. Beskriv din bostad och ditt datum och få en tydlig offert.",
     ingress:
       "Ska du flytta i Löddeköpinge? Beskriv bostaden och ditt datum, så får du en offert med tydlig omfattning.",
     omOrten: [
@@ -2107,6 +3461,41 @@ export const orter: Ort[] = [
     ],
     narliggande: ["kavlinge", "lomma", "landskrona"],
     narmasteStorstad: "landskrona",
+    stad: {
+      metaBeskrivning:
+        "Flyttstädning i Löddeköpinge inför överlämning och besiktning. Beskriv bostaden och ditt datum och få en tydlig offert från Nyflytt.",
+      ingress:
+        "Ska du flyttstäda i Löddeköpinge? Beskriv bostaden och datumet och få en offert där omfattningen framgår.",
+      omStadningen: [
+        "Bebyggelsen i Löddeköpinge beskrivs som tätort med villor, radhus och ett större handelsområde. Det avgör vad en flyttstädning omfattar – ett hus har utrymmen utanför boytan, som garage och förråd, medan en lägenhet har mer förutsägbara ytor där kök och badrum väger tyngst.",
+        "I ett hus ligger en stor del av arbetet utanför boytan. Garage, förråd, pannrum och tvättstuga är egna utrymmen som inte ingår automatiskt, och fönstren är fler än i en lägenhet. Ange antal våningar och vilka biutrymmen som ska städas, så framgår omfattningen av offerten.",
+        "Vanliga flyttsträckor här går inom orten och mot Kävlinge. Ska flyttstädningen göras nära flyttdagen behöver tidsplanen ta hänsyn till transporten, eftersom bostaden måste vara tömd innan städningen kan börja.",
+      ],
+      praktiskt: [
+        {
+          rubrik: "Ange bostadstyp, inte bara yta",
+          text: "Beståndet i Löddeköpinge är blandat – lägenhet och hus kräver olika mycket även vid samma boyta.",
+        },
+        {
+          rubrik: "Biutrymmen ingår inte automatiskt",
+          text: "Garage, förråd och uteplats behöver anges separat för att komma med i offerten.",
+        },
+        {
+          rubrik: "Sträckor mot Kävlinge",
+          text: "Ange den exakta adressen så att transportsträckan kommer med i bedömningen.",
+        },
+      ],
+      fragor: [
+        {
+          fraga: "Ingår garage och förråd i Löddeköpinge?",
+          svar: "Inte automatiskt. Ange i förfrågan vilka utrymmen som ska städas, så framgår det av offerten vad som ingår.",
+        },
+        {
+          fraga: "Hur anger jag storleken på ett hus?",
+          svar: "Ange boyta, antal rum och antal våningar, och lista biutrymmena separat. Det ger ett bättre underlag än boytan ensam.",
+        },
+      ],
+    },
   },
   {
     slug: "lomma",
@@ -2115,7 +3504,7 @@ export const orter: Ort[] = [
     iOrt: "Lomma",
     lan: "Skåne län",
     metaBeskrivning:
-      "Flyttfirma Lomma – boka bohagsflytt och flyttstädning via Nyflytt. Beskriv din bostad och ditt datum och få en tydlig offert. Uppdraget utförs av en samarbetspartner.",
+      "Flyttfirma Lomma – boka bohagsflytt och flyttstädning via Nyflytt. Beskriv din bostad och ditt datum och få en tydlig offert.",
     ingress:
       "Ska du flytta i Lomma? Beskriv bostaden och ditt datum, så får du en offert med tydlig omfattning.",
     omOrten: [
@@ -2151,6 +3540,41 @@ export const orter: Ort[] = [
     ],
     narliggande: ["bjarred", "malmo", "kavlinge"],
     narmasteStorstad: "malmo",
+    stad: {
+      metaBeskrivning:
+        "Flyttstädning i Lomma inför överlämning och besiktning. Beskriv bostaden och ditt datum och få en tydlig offert från Nyflytt.",
+      ingress:
+        "Ska du flyttstäda i Lomma? Beskriv bostaden och datumet och få en offert där omfattningen framgår.",
+      omStadningen: [
+        "Bebyggelsen i Lomma beskrivs som kustort med blandad bebyggelse, från äldre villor till nyproduktion i hamnområdet. Äldre hus har fler detaljytor än boytan antyder – höga socklar, dörrfoder, djupa fönsternischer och ibland originalgolv som inte tål vilka medel som helst. Två bostäder med samma yta kan därför kräva olika mycket arbete.",
+        "Läget nära kusten har en praktisk följd för fönsterputsen: salt från havsluften lägger sig på utsidan och syns tydligt i motljus. Putsa därför fönstren nära överlämningsdagen snarare än veckan före. Har bostaden använts som fritidshus och stått stängd en period finns ofta mer damm, och ibland fukt – fuktsanering är inte flyttstädning utan bedöms separat.",
+        "Vanliga flyttsträckor här går inom orten och mot Bjärred. Ska flyttstädningen göras nära flyttdagen behöver tidsplanen ta hänsyn till transporten, eftersom bostaden måste vara tömd innan städningen kan börja.",
+      ],
+      praktiskt: [
+        {
+          rubrik: "Äldre hus tar längre tid",
+          text: "Socklar, foder och nischer är fler än boytan antyder. Ange byggår om du vet det.",
+        },
+        {
+          rubrik: "Salt på fönstren",
+          text: "Nära havet blir fönstrens utsida snabbt smutsig igen. Lägg fönsterputsen nära överlämningen.",
+        },
+        {
+          rubrik: "Sträckor mot Bjärred",
+          text: "Ange den exakta adressen så att transportsträckan kommer med i bedömningen.",
+        },
+      ],
+      fragor: [
+        {
+          fraga: "När bör fönsterputsen göras?",
+          svar: "Så nära överlämningen som möjligt. I kustläge lägger sig salt på utsidan inom kort tid och syns tydligt i motljus.",
+        },
+        {
+          fraga: "Räknas städning av ett länge obebott hus som flyttstädning?",
+          svar: "Inte alltid. Har huset stått stängt länge kan mer omfattande rengöring krävas. Beskriv förutsättningarna så bedöms det innan offerten lämnas.",
+        },
+      ],
+    },
   },
   {
     slug: "bjarred",
@@ -2159,7 +3583,7 @@ export const orter: Ort[] = [
     iOrt: "Bjärred",
     lan: "Skåne län",
     metaBeskrivning:
-      "Flyttfirma Bjärred – boka bohagsflytt och flyttstädning via Nyflytt. Beskriv din bostad och ditt datum och få en tydlig offert. Uppdraget utförs av en samarbetspartner.",
+      "Flyttfirma Bjärred – boka bohagsflytt och flyttstädning via Nyflytt. Beskriv din bostad och ditt datum och få en tydlig offert.",
     ingress:
       "Ska du flytta i Bjärred? Beskriv bostaden och ditt datum, så får du en offert med tydlig omfattning.",
     omOrten: [
@@ -2195,6 +3619,41 @@ export const orter: Ort[] = [
     ],
     narliggande: ["lomma", "lund", "kavlinge"],
     narmasteStorstad: "malmo",
+    stad: {
+      metaBeskrivning:
+        "Flyttstädning i Bjärred inför överlämning och besiktning. Beskriv bostaden och ditt datum och få en tydlig offert från Nyflytt.",
+      ingress:
+        "Ska du flyttstäda i Bjärred? Beskriv bostaden och datumet och få en offert där omfattningen framgår.",
+      omStadningen: [
+        "Bebyggelsen i Bjärred beskrivs som villadominerad kustort med inslag av äldre badortsbebyggelse. Äldre hus har fler detaljytor än boytan antyder – höga socklar, dörrfoder, djupa fönsternischer och ibland originalgolv som inte tål vilka medel som helst. Två bostäder med samma yta kan därför kräva olika mycket arbete.",
+        "Läget nära kusten har en praktisk följd för fönsterputsen: salt från havsluften lägger sig på utsidan och syns tydligt i motljus. Putsa därför fönstren nära överlämningsdagen snarare än veckan före. Har bostaden använts som fritidshus och stått stängd en period finns ofta mer damm, och ibland fukt – fuktsanering är inte flyttstädning utan bedöms separat.",
+        "Vanliga flyttsträckor här går inom orten och mot Lomma. Ska flyttstädningen göras nära flyttdagen behöver tidsplanen ta hänsyn till transporten, eftersom bostaden måste vara tömd innan städningen kan börja.",
+      ],
+      praktiskt: [
+        {
+          rubrik: "Äldre hus tar längre tid",
+          text: "Socklar, foder och nischer är fler än boytan antyder. Ange byggår om du vet det.",
+        },
+        {
+          rubrik: "Salt på fönstren",
+          text: "Nära havet blir fönstrens utsida snabbt smutsig igen. Lägg fönsterputsen nära överlämningen.",
+        },
+        {
+          rubrik: "Sträckor mot Lomma",
+          text: "Ange den exakta adressen så att transportsträckan kommer med i bedömningen.",
+        },
+      ],
+      fragor: [
+        {
+          fraga: "När bör fönsterputsen göras?",
+          svar: "Så nära överlämningen som möjligt. I kustläge lägger sig salt på utsidan inom kort tid och syns tydligt i motljus.",
+        },
+        {
+          fraga: "Räknas städning av ett länge obebott hus som flyttstädning?",
+          svar: "Inte alltid. Har huset stått stängt länge kan mer omfattande rengöring krävas. Beskriv förutsättningarna så bedöms det innan offerten lämnas.",
+        },
+      ],
+    },
   },
   {
     slug: "oxie",
@@ -2239,6 +3698,41 @@ export const orter: Ort[] = [
     ],
     narliggande: ["malmo", "svedala", "trelleborg"],
     narmasteStorstad: "malmo",
+    stad: {
+      metaBeskrivning:
+        "Flyttstädning i Oxie inför överlämning och besiktning. Beskriv bostaden och ditt datum och få en tydlig offert från Nyflytt.",
+      ingress:
+        "Ska du flyttstäda i Oxie? Beskriv bostaden och datumet och få en offert där omfattningen framgår.",
+      omStadningen: [
+        "Bebyggelsen i Oxie beskrivs som villa- och radhusdominerad stadsdel med inslag av flerbostadshus. Det avgör vad en flyttstädning omfattar – ett hus har utrymmen utanför boytan, som garage och förråd, medan en lägenhet har mer förutsägbara ytor där kök och badrum väger tyngst.",
+        "Eftersom beståndet i Oxie är blandat kan två adresser i samma ort kräva olika mycket. Ange bostadstyp tillsammans med boytan: för hus behöver det framgå vilka biutrymmen som ska ingå, för lägenhet är det kök, badrum, fönster och golv som styr omfattningen.",
+        "Oxie har stationsläge, och en del av flyttarna här är pendlingsflyttar. Ska städningen ske i anslutning till flyttdagen måste bostaden vara tömd först – lägg marginal mellan de två momenten så att städningen inte behöver avbrytas halvvägs.",
+      ],
+      praktiskt: [
+        {
+          rubrik: "Ange bostadstyp, inte bara yta",
+          text: "Beståndet i Oxie är blandat – lägenhet och hus kräver olika mycket även vid samma boyta.",
+        },
+        {
+          rubrik: "Räkna utrymmen, inte bara boyta",
+          text: "Ange antal rum, våningar och vilka biutrymmen som ska ingå.",
+        },
+        {
+          rubrik: "Pendlingsflytt",
+          text: "Vid flytt till annan ort behöver städningen läggas efter att bostaden är tömd. Ange önskad ordning i förfrågan.",
+        },
+      ],
+      fragor: [
+        {
+          fraga: "Vad behöver jag ange för en bostad i Oxie?",
+          svar: "Bostadstyp, boyta och antal rum. Är det ett hus: även antal våningar och vilka biutrymmen som ska städas.",
+        },
+        {
+          fraga: "Kan jag boka både flytt och flyttstädning?",
+          svar: "Ja, och det är oftast smidigast. Välj flytt och städ i formuläret, då planeras städningen efter att bostaden är tömd.",
+        },
+      ],
+    },
   },
   {
     slug: "bunkeflostrand",
@@ -2247,7 +3741,7 @@ export const orter: Ort[] = [
     iOrt: "Bunkeflostrand",
     lan: "Skåne län",
     metaBeskrivning:
-      "Flyttfirma Bunkeflostrand – boka bohagsflytt och flyttstädning via Nyflytt. Beskriv din bostad och ditt datum och få en tydlig offert. Uppdraget utförs av en samarbetspartner.",
+      "Flyttfirma Bunkeflostrand – boka bohagsflytt och flyttstädning via Nyflytt. Beskriv din bostad och ditt datum och få en tydlig offert.",
     ingress:
       "Ska du flytta i Bunkeflostrand? Beskriv bostaden och ditt datum, så får du en offert med tydlig omfattning.",
     omOrten: [
@@ -2283,6 +3777,41 @@ export const orter: Ort[] = [
     ],
     narliggande: ["malmo", "vellinge", "tygelsjo"],
     narmasteStorstad: "malmo",
+    stad: {
+      metaBeskrivning:
+        "Flyttstädning i Bunkeflostrand inför överlämning och besiktning. Beskriv bostaden och ditt datum och få en tydlig offert från Nyflytt.",
+      ingress:
+        "Ska du flyttstäda i Bunkeflostrand? Beskriv bostaden och datumet och få en offert där omfattningen framgår.",
+      omStadningen: [
+        "Bebyggelsen i Bunkeflostrand beskrivs som villa- och radhusområden samt nyare flerbostadshus. Ett bestånd från 1990-talet är i städsammanhang förhållandevis tacksamt: släta dörrar, raka socklar och fönster som oftast går att öppna och putsa från båda sidor. Tidsåtgången för en flyttstädning följer därför boytan tätare än i hus med mycket snickerier.",
+        "Eftersom beståndet i Bunkeflostrand är blandat kan två adresser i samma ort kräva olika mycket. Ange bostadstyp tillsammans med boytan: för hus behöver det framgå vilka biutrymmen som ska ingå, för lägenhet är det kök, badrum, fönster och golv som styr omfattningen.",
+        "Vanliga flyttsträckor här går inom orten och mot Malmo. Ska flyttstädningen göras nära flyttdagen behöver tidsplanen ta hänsyn till transporten, eftersom bostaden måste vara tömd innan städningen kan börja.",
+      ],
+      praktiskt: [
+        {
+          rubrik: "Bestånd från 1990-talet",
+          text: "Raka ytor och öppningsbara fönster gör omfattningen lättare att bedöma. Ange boyta och antal rum, så räcker det långt.",
+        },
+        {
+          rubrik: "Räkna utrymmen, inte bara boyta",
+          text: "Ange antal rum, våningar och vilka biutrymmen som ska ingå.",
+        },
+        {
+          rubrik: "Sträckor mot Malmo",
+          text: "Ange den exakta adressen så att transportsträckan kommer med i bedömningen.",
+        },
+      ],
+      fragor: [
+        {
+          fraga: "Vad behöver jag ange för en bostad i Bunkeflostrand?",
+          svar: "Bostadstyp, boyta och antal rum. Är det ett hus: även antal våningar och vilka biutrymmen som ska städas.",
+        },
+        {
+          fraga: "Kan jag boka både flytt och flyttstädning?",
+          svar: "Ja, och det är oftast smidigast. Välj flytt och städ i formuläret, då planeras städningen efter att bostaden är tömd.",
+        },
+      ],
+    },
   },
   {
     slug: "tygelsjo",
@@ -2291,7 +3820,7 @@ export const orter: Ort[] = [
     iOrt: "Tygelsjö",
     lan: "Skåne län",
     metaBeskrivning:
-      "Flyttfirma Tygelsjö – boka bohagsflytt och flyttstädning via Nyflytt. Beskriv din bostad och ditt datum och få en tydlig offert. Uppdraget utförs av en samarbetspartner.",
+      "Flyttfirma Tygelsjö – boka bohagsflytt och flyttstädning via Nyflytt. Beskriv din bostad och ditt datum och få en tydlig offert.",
     ingress:
       "Ska du flytta i Tygelsjö? Beskriv bostaden och ditt datum, så får du en offert med tydlig omfattning.",
     omOrten: [
@@ -2327,6 +3856,41 @@ export const orter: Ort[] = [
     ],
     narliggande: ["malmo", "bunkeflostrand", "vellinge"],
     narmasteStorstad: "malmo",
+    stad: {
+      metaBeskrivning:
+        "Flyttstädning i Tygelsjö inför överlämning och besiktning. Beskriv bostaden och ditt datum och få en tydlig offert från Nyflytt.",
+      ingress:
+        "Ska du flyttstäda i Tygelsjö? Beskriv bostaden och datumet och få en offert där omfattningen framgår.",
+      omStadningen: [
+        "Bebyggelsen i Tygelsjö beskrivs som mindre stadsdel med övervägande villor och radhus. Det avgör vad en flyttstädning omfattar – ett hus har utrymmen utanför boytan, som garage och förråd, medan en lägenhet har mer förutsägbara ytor där kök och badrum väger tyngst.",
+        "I ett hus ligger en stor del av arbetet utanför boytan. Garage, förråd, pannrum och tvättstuga är egna utrymmen som inte ingår automatiskt, och fönstren är fler än i en lägenhet. Ange antal våningar och vilka biutrymmen som ska städas, så framgår omfattningen av offerten.",
+        "Vanliga flyttsträckor här går inom orten och mot Malmo. Ska flyttstädningen göras nära flyttdagen behöver tidsplanen ta hänsyn till transporten, eftersom bostaden måste vara tömd innan städningen kan börja.",
+      ],
+      praktiskt: [
+        {
+          rubrik: "Ange bostadstyp, inte bara yta",
+          text: "Beståndet i Tygelsjö är blandat – lägenhet och hus kräver olika mycket även vid samma boyta.",
+        },
+        {
+          rubrik: "Biutrymmen ingår inte automatiskt",
+          text: "Garage, förråd och uteplats behöver anges separat för att komma med i offerten.",
+        },
+        {
+          rubrik: "Sträckor mot Malmo",
+          text: "Ange den exakta adressen så att transportsträckan kommer med i bedömningen.",
+        },
+      ],
+      fragor: [
+        {
+          fraga: "Ingår garage och förråd i Tygelsjö?",
+          svar: "Inte automatiskt. Ange i förfrågan vilka utrymmen som ska städas, så framgår det av offerten vad som ingår.",
+        },
+        {
+          fraga: "Hur anger jag storleken på ett hus?",
+          svar: "Ange boyta, antal rum och antal våningar, och lista biutrymmena separat. Det ger ett bättre underlag än boytan ensam.",
+        },
+      ],
+    },
   },
   {
     slug: "vellinge",
@@ -2335,7 +3899,7 @@ export const orter: Ort[] = [
     iOrt: "Vellinge",
     lan: "Skåne län",
     metaBeskrivning:
-      "Flyttfirma Vellinge – boka bohagsflytt och flyttstädning via Nyflytt. Beskriv din bostad och ditt datum och få en tydlig offert. Uppdraget utförs av en samarbetspartner.",
+      "Flyttfirma Vellinge – boka bohagsflytt och flyttstädning via Nyflytt. Beskriv din bostad och ditt datum och få en tydlig offert.",
     ingress:
       "Ska du flytta i Vellinge? Beskriv bostaden och ditt datum, så får du en offert med tydlig omfattning.",
     omOrten: [
@@ -2371,6 +3935,41 @@ export const orter: Ort[] = [
     ],
     narliggande: ["hollviken", "skanor", "malmo"],
     narmasteStorstad: "malmo",
+    stad: {
+      metaBeskrivning:
+        "Flyttstädning i Vellinge inför överlämning och besiktning. Beskriv bostaden och ditt datum och få en tydlig offert från Nyflytt.",
+      ingress:
+        "Ska du flyttstäda i Vellinge? Beskriv bostaden och datumet och få en offert där omfattningen framgår.",
+      omStadningen: [
+        "Bebyggelsen i Vellinge beskrivs som centralort med villor, radhus och mindre flerbostadshus. Det avgör vad en flyttstädning omfattar – ett hus har utrymmen utanför boytan, som garage och förråd, medan en lägenhet har mer förutsägbara ytor där kök och badrum väger tyngst.",
+        "Eftersom beståndet i Vellinge är blandat kan två adresser i samma ort kräva olika mycket. Ange bostadstyp tillsammans med boytan: för hus behöver det framgå vilka biutrymmen som ska ingå, för lägenhet är det kök, badrum, fönster och golv som styr omfattningen.",
+        "Vanliga flyttsträckor här går inom orten och mot Höllviken. Ska flyttstädningen göras nära flyttdagen behöver tidsplanen ta hänsyn till transporten, eftersom bostaden måste vara tömd innan städningen kan börja.",
+      ],
+      praktiskt: [
+        {
+          rubrik: "Ange bostadstyp, inte bara yta",
+          text: "Beståndet i Vellinge är blandat – lägenhet och hus kräver olika mycket även vid samma boyta.",
+        },
+        {
+          rubrik: "Räkna utrymmen, inte bara boyta",
+          text: "Ange antal rum, våningar och vilka biutrymmen som ska ingå.",
+        },
+        {
+          rubrik: "Sträckor mot Höllviken",
+          text: "Ange den exakta adressen så att transportsträckan kommer med i bedömningen.",
+        },
+      ],
+      fragor: [
+        {
+          fraga: "Vad behöver jag ange för en bostad i Vellinge?",
+          svar: "Bostadstyp, boyta och antal rum. Är det ett hus: även antal våningar och vilka biutrymmen som ska städas.",
+        },
+        {
+          fraga: "Kan jag boka både flytt och flyttstädning?",
+          svar: "Ja, och det är oftast smidigast. Välj flytt och städ i formuläret, då planeras städningen efter att bostaden är tömd.",
+        },
+      ],
+    },
   },
   {
     slug: "hollviken",
@@ -2379,7 +3978,7 @@ export const orter: Ort[] = [
     iOrt: "Höllviken",
     lan: "Skåne län",
     metaBeskrivning:
-      "Flyttfirma Höllviken – boka bohagsflytt och flyttstädning via Nyflytt. Beskriv din bostad och ditt datum och få en tydlig offert. Uppdraget utförs av en samarbetspartner.",
+      "Flyttfirma Höllviken – boka bohagsflytt och flyttstädning via Nyflytt. Beskriv din bostad och ditt datum och få en tydlig offert.",
     ingress:
       "Ska du flytta i Höllviken? Beskriv bostaden och ditt datum, så får du en offert med tydlig omfattning.",
     omOrten: [
@@ -2415,6 +4014,41 @@ export const orter: Ort[] = [
     ],
     narliggande: ["skanor", "falsterbo", "ljunghusen", "vellinge"],
     narmasteStorstad: "malmo",
+    stad: {
+      metaBeskrivning:
+        "Flyttstädning i Höllviken inför överlämning och besiktning. Beskriv bostaden och ditt datum och få en tydlig offert från Nyflytt.",
+      ingress:
+        "Ska du flyttstäda i Höllviken? Beskriv bostaden och datumet och få en offert där omfattningen framgår.",
+      omStadningen: [
+        "Bebyggelsen i Höllviken beskrivs som villadominerad ort med inslag av äldre fritidshusbebyggelse. Äldre hus har fler detaljytor än boytan antyder – höga socklar, dörrfoder, djupa fönsternischer och ibland originalgolv som inte tål vilka medel som helst. Två bostäder med samma yta kan därför kräva olika mycket arbete.",
+        "Läget nära kusten har en praktisk följd för fönsterputsen: salt från havsluften lägger sig på utsidan och syns tydligt i motljus. Putsa därför fönstren nära överlämningsdagen snarare än veckan före. Har bostaden använts som fritidshus och stått stängd en period finns ofta mer damm, och ibland fukt – fuktsanering är inte flyttstädning utan bedöms separat.",
+        "Vanliga flyttsträckor här går inom orten och mot Skanör. Ska flyttstädningen göras nära flyttdagen behöver tidsplanen ta hänsyn till transporten, eftersom bostaden måste vara tömd innan städningen kan börja.",
+      ],
+      praktiskt: [
+        {
+          rubrik: "Äldre hus tar längre tid",
+          text: "Socklar, foder och nischer är fler än boytan antyder. Ange byggår om du vet det.",
+        },
+        {
+          rubrik: "Salt på fönstren",
+          text: "Nära havet blir fönstrens utsida snabbt smutsig igen. Lägg fönsterputsen nära överlämningen.",
+        },
+        {
+          rubrik: "Sträckor mot Skanör",
+          text: "Ange den exakta adressen så att transportsträckan kommer med i bedömningen.",
+        },
+      ],
+      fragor: [
+        {
+          fraga: "När bör fönsterputsen göras?",
+          svar: "Så nära överlämningen som möjligt. I kustläge lägger sig salt på utsidan inom kort tid och syns tydligt i motljus.",
+        },
+        {
+          fraga: "Räknas städning av ett länge obebott hus som flyttstädning?",
+          svar: "Inte alltid. Har huset stått stängt länge kan mer omfattande rengöring krävas. Beskriv förutsättningarna så bedöms det innan offerten lämnas.",
+        },
+      ],
+    },
   },
   {
     slug: "skanor",
@@ -2423,7 +4057,7 @@ export const orter: Ort[] = [
     iOrt: "Skanör",
     lan: "Skåne län",
     metaBeskrivning:
-      "Flyttfirma Skanör – boka bohagsflytt och flyttstädning via Nyflytt. Beskriv din bostad och ditt datum och få en tydlig offert. Uppdraget utförs av en samarbetspartner.",
+      "Flyttfirma Skanör – boka bohagsflytt och flyttstädning via Nyflytt. Beskriv din bostad och ditt datum och få en tydlig offert.",
     ingress:
       "Ska du flytta i Skanör? Beskriv bostaden och ditt datum, så får du en offert med tydlig omfattning.",
     omOrten: [
@@ -2459,6 +4093,41 @@ export const orter: Ort[] = [
     ],
     narliggande: ["falsterbo", "hollviken", "ljunghusen", "vellinge"],
     narmasteStorstad: "malmo",
+    stad: {
+      metaBeskrivning:
+        "Flyttstädning i Skanör inför överlämning och besiktning. Beskriv bostaden och ditt datum och få en tydlig offert från Nyflytt.",
+      ingress:
+        "Ska du flyttstäda i Skanör? Beskriv bostaden och datumet och få en offert där omfattningen framgår.",
+      omStadningen: [
+        "Bebyggelsen i Skanör beskrivs som historisk stadskärna med tät äldre bebyggelse samt villaområden runtomkring. Äldre hus har fler detaljytor än boytan antyder – höga socklar, dörrfoder, djupa fönsternischer och ibland originalgolv som inte tål vilka medel som helst. Två bostäder med samma yta kan därför kräva olika mycket arbete.",
+        "I ett hus ligger en stor del av arbetet utanför boytan. Garage, förråd, pannrum och tvättstuga är egna utrymmen som inte ingår automatiskt, och fönstren är fler än i en lägenhet. Ange antal våningar och vilka biutrymmen som ska städas, så framgår omfattningen av offerten.",
+        "Vanliga flyttsträckor här går inom orten och mot Falsterbo. Ska flyttstädningen göras nära flyttdagen behöver tidsplanen ta hänsyn till transporten, eftersom bostaden måste vara tömd innan städningen kan börja.",
+      ],
+      praktiskt: [
+        {
+          rubrik: "Äldre hus tar längre tid",
+          text: "Socklar, foder och nischer är fler än boytan antyder. Ange byggår om du vet det.",
+        },
+        {
+          rubrik: "Biutrymmen ingår inte automatiskt",
+          text: "Garage, förråd och uteplats behöver anges separat för att komma med i offerten.",
+        },
+        {
+          rubrik: "Sträckor mot Falsterbo",
+          text: "Ange den exakta adressen så att transportsträckan kommer med i bedömningen.",
+        },
+      ],
+      fragor: [
+        {
+          fraga: "Ingår garage och förråd i Skanör?",
+          svar: "Inte automatiskt. Ange i förfrågan vilka utrymmen som ska städas, så framgår det av offerten vad som ingår.",
+        },
+        {
+          fraga: "Hur anger jag storleken på ett hus?",
+          svar: "Ange boyta, antal rum och antal våningar, och lista biutrymmena separat. Det ger ett bättre underlag än boytan ensam.",
+        },
+      ],
+    },
   },
   {
     slug: "falsterbo",
@@ -2467,7 +4136,7 @@ export const orter: Ort[] = [
     iOrt: "Falsterbo",
     lan: "Skåne län",
     metaBeskrivning:
-      "Flyttfirma Falsterbo – boka bohagsflytt och flyttstädning via Nyflytt. Beskriv din bostad och ditt datum och få en tydlig offert. Uppdraget utförs av en samarbetspartner.",
+      "Flyttfirma Falsterbo – boka bohagsflytt och flyttstädning via Nyflytt. Beskriv din bostad och ditt datum och få en tydlig offert.",
     ingress:
       "Ska du flytta i Falsterbo? Beskriv bostaden och ditt datum, så får du en offert med tydlig omfattning.",
     omOrten: [
@@ -2503,6 +4172,41 @@ export const orter: Ort[] = [
     ],
     narliggande: ["skanor", "hollviken", "ljunghusen", "vellinge"],
     narmasteStorstad: "malmo",
+    stad: {
+      metaBeskrivning:
+        "Flyttstädning i Falsterbo inför överlämning och besiktning. Beskriv bostaden och ditt datum och få en tydlig offert från Nyflytt.",
+      ingress:
+        "Ska du flyttstäda i Falsterbo? Beskriv bostaden och datumet och få en offert där omfattningen framgår.",
+      omStadningen: [
+        "Bebyggelsen i Falsterbo beskrivs som villabebyggelse med stort inslag av äldre badortsvillor. Ett bestånd från 1900-talet är i städsammanhang förhållandevis tacksamt: släta dörrar, raka socklar och fönster som oftast går att öppna och putsa från båda sidor. Tidsåtgången för en flyttstädning följer därför boytan tätare än i hus med mycket snickerier.",
+        "I ett hus ligger en stor del av arbetet utanför boytan. Garage, förråd, pannrum och tvättstuga är egna utrymmen som inte ingår automatiskt, och fönstren är fler än i en lägenhet. Ange antal våningar och vilka biutrymmen som ska städas, så framgår omfattningen av offerten.",
+        "Vanliga flyttsträckor här går inom orten och mot Skanör. Ska flyttstädningen göras nära flyttdagen behöver tidsplanen ta hänsyn till transporten, eftersom bostaden måste vara tömd innan städningen kan börja.",
+      ],
+      praktiskt: [
+        {
+          rubrik: "Bestånd från 1900-talet",
+          text: "Raka ytor och öppningsbara fönster gör omfattningen lättare att bedöma. Ange boyta och antal rum, så räcker det långt.",
+        },
+        {
+          rubrik: "Biutrymmen ingår inte automatiskt",
+          text: "Garage, förråd och uteplats behöver anges separat för att komma med i offerten.",
+        },
+        {
+          rubrik: "Sträckor mot Skanör",
+          text: "Ange den exakta adressen så att transportsträckan kommer med i bedömningen.",
+        },
+      ],
+      fragor: [
+        {
+          fraga: "Ingår garage och förråd i Falsterbo?",
+          svar: "Inte automatiskt. Ange i förfrågan vilka utrymmen som ska städas, så framgår det av offerten vad som ingår.",
+        },
+        {
+          fraga: "Hur anger jag storleken på ett hus?",
+          svar: "Ange boyta, antal rum och antal våningar, och lista biutrymmena separat. Det ger ett bättre underlag än boytan ensam.",
+        },
+      ],
+    },
   },
   {
     slug: "svedala",
@@ -2511,7 +4215,7 @@ export const orter: Ort[] = [
     iOrt: "Svedala",
     lan: "Skåne län",
     metaBeskrivning:
-      "Flyttfirma Svedala – boka bohagsflytt och flyttstädning via Nyflytt. Beskriv din bostad och ditt datum och få en tydlig offert. Uppdraget utförs av en samarbetspartner.",
+      "Flyttfirma Svedala – boka bohagsflytt och flyttstädning via Nyflytt. Beskriv din bostad och ditt datum och få en tydlig offert.",
     ingress:
       "Ska du flytta i Svedala? Beskriv bostaden och ditt datum, så får du en offert med tydlig omfattning.",
     omOrten: [
@@ -2547,6 +4251,41 @@ export const orter: Ort[] = [
     ],
     narliggande: ["malmo", "skurup", "oxie"],
     narmasteStorstad: "malmo",
+    stad: {
+      metaBeskrivning:
+        "Flyttstädning i Svedala inför överlämning och besiktning. Beskriv bostaden och ditt datum och få en tydlig offert från Nyflytt.",
+      ingress:
+        "Ska du flyttstäda i Svedala? Beskriv bostaden och datumet och få en offert där omfattningen framgår.",
+      omStadningen: [
+        "Bebyggelsen i Svedala beskrivs som centralort med blandad bebyggelse: flerbostadshus i centrum, villor utanför. I nyare hus ligger tyngdpunkten på glas och blanka ytor snarare än på snickerier: duschväggar, vitvaror som ska dras ut och golvbrunnar med avtagbara insatser är det som tar tid.",
+        "I lägenhet är det köket och badrummet som avgör om städningen godkänns vid besiktning. Vitvarorna ska rengöras in- och utvändigt och dras ut där det går, och badrummet avkalkas med golvbrunnen rengjord. Hyr du bostaden finns ofta en checklista från hyresvärden som besiktningen följer.",
+        "Vanliga flyttsträckor här går inom orten och mot Malmo. Ska flyttstädningen göras nära flyttdagen behöver tidsplanen ta hänsyn till transporten, eftersom bostaden måste vara tömd innan städningen kan börja.",
+      ],
+      praktiskt: [
+        {
+          rubrik: "Glas och blanka ytor",
+          text: "I nyare bostäder är det duschväggar, vitvaror och blanka ytor som tar tid, inte snickerier.",
+        },
+        {
+          rubrik: "Checklista från hyresvärden",
+          text: "Har du fått en besiktningslista, nämn det i förfrågan så kan omfattningen stämmas av mot den.",
+        },
+        {
+          rubrik: "Sträckor mot Malmo",
+          text: "Ange den exakta adressen så att transportsträckan kommer med i bedömningen.",
+        },
+      ],
+      fragor: [
+        {
+          fraga: "Vi har en besiktningslista – kan den följas?",
+          svar: "Ange i förfrågan att du har en och vad som står i den. Omfattningen kan då stämmas av mot listan i stället för mot en generell standard.",
+        },
+        {
+          fraga: "Ingår fönsterputs?",
+          svar: "Ja, in- och utvändigt samt mellan rutorna där konstruktionen tillåter att fönstret öppnas. Fasta partier putsas på insidan.",
+        },
+      ],
+    },
   },
   {
     slug: "bara",
@@ -2591,6 +4330,41 @@ export const orter: Ort[] = [
     ],
     narliggande: ["svedala", "malmo", "staffanstorp"],
     narmasteStorstad: "malmo",
+    stad: {
+      metaBeskrivning:
+        "Flyttstädning i Bara inför överlämning och besiktning. Beskriv bostaden och ditt datum och få en tydlig offert från Nyflytt.",
+      ingress:
+        "Ska du flyttstäda i Bara? Beskriv bostaden och datumet och få en offert där omfattningen framgår.",
+      omStadningen: [
+        "Bebyggelsen i Bara beskrivs som mindre tätort med övervägande villor och radhus. I nyare hus ligger tyngdpunkten på glas och blanka ytor snarare än på snickerier: duschväggar, vitvaror som ska dras ut och golvbrunnar med avtagbara insatser är det som tar tid.",
+        "I ett hus ligger en stor del av arbetet utanför boytan. Garage, förråd, pannrum och tvättstuga är egna utrymmen som inte ingår automatiskt, och fönstren är fler än i en lägenhet. Ange antal våningar och vilka biutrymmen som ska städas, så framgår omfattningen av offerten.",
+        "Vanliga flyttsträckor här går inom orten och mot Svedala. Ska flyttstädningen göras nära flyttdagen behöver tidsplanen ta hänsyn till transporten, eftersom bostaden måste vara tömd innan städningen kan börja.",
+      ],
+      praktiskt: [
+        {
+          rubrik: "Glas och blanka ytor",
+          text: "I nyare bostäder är det duschväggar, vitvaror och blanka ytor som tar tid, inte snickerier.",
+        },
+        {
+          rubrik: "Biutrymmen ingår inte automatiskt",
+          text: "Garage, förråd och uteplats behöver anges separat för att komma med i offerten.",
+        },
+        {
+          rubrik: "Sträckor mot Svedala",
+          text: "Ange den exakta adressen så att transportsträckan kommer med i bedömningen.",
+        },
+      ],
+      fragor: [
+        {
+          fraga: "Ingår garage och förråd i Bara?",
+          svar: "Inte automatiskt. Ange i förfrågan vilka utrymmen som ska städas, så framgår det av offerten vad som ingår.",
+        },
+        {
+          fraga: "Hur anger jag storleken på ett hus?",
+          svar: "Ange boyta, antal rum och antal våningar, och lista biutrymmena separat. Det ger ett bättre underlag än boytan ensam.",
+        },
+      ],
+    },
   },
   {
     slug: "skurup",
@@ -2599,7 +4373,7 @@ export const orter: Ort[] = [
     iOrt: "Skurup",
     lan: "Skåne län",
     metaBeskrivning:
-      "Flyttfirma Skurup – boka bohagsflytt och flyttstädning via Nyflytt. Beskriv din bostad och ditt datum och få en tydlig offert. Uppdraget utförs av en samarbetspartner.",
+      "Flyttfirma Skurup – boka bohagsflytt och flyttstädning via Nyflytt. Beskriv din bostad och ditt datum och få en tydlig offert.",
     ingress:
       "Ska du flytta i Skurup? Beskriv bostaden och ditt datum, så får du en offert med tydlig omfattning.",
     omOrten: [
@@ -2635,6 +4409,41 @@ export const orter: Ort[] = [
     ],
     narliggande: ["svedala", "ystad", "trelleborg"],
     narmasteStorstad: "malmo",
+    stad: {
+      metaBeskrivning:
+        "Flyttstädning i Skurup inför överlämning och besiktning. Beskriv bostaden och ditt datum och få en tydlig offert från Nyflytt.",
+      ingress:
+        "Ska du flyttstäda i Skurup? Beskriv bostaden och datumet och få en offert där omfattningen framgår.",
+      omStadningen: [
+        "Bebyggelsen i Skurup beskrivs som centralort med flerbostadshus i centrum och villaområden utanför. Det avgör vad en flyttstädning omfattar – ett hus har utrymmen utanför boytan, som garage och förråd, medan en lägenhet har mer förutsägbara ytor där kök och badrum väger tyngst.",
+        "Eftersom beståndet i Skurup är blandat kan två adresser i samma ort kräva olika mycket. Ange bostadstyp tillsammans med boytan: för hus behöver det framgå vilka biutrymmen som ska ingå, för lägenhet är det kök, badrum, fönster och golv som styr omfattningen.",
+        "Vanliga flyttsträckor här går inom orten och mot Svedala. Ska flyttstädningen göras nära flyttdagen behöver tidsplanen ta hänsyn till transporten, eftersom bostaden måste vara tömd innan städningen kan börja.",
+      ],
+      praktiskt: [
+        {
+          rubrik: "Ange bostadstyp, inte bara yta",
+          text: "Beståndet i Skurup är blandat – lägenhet och hus kräver olika mycket även vid samma boyta.",
+        },
+        {
+          rubrik: "Räkna utrymmen, inte bara boyta",
+          text: "Ange antal rum, våningar och vilka biutrymmen som ska ingå.",
+        },
+        {
+          rubrik: "Sträckor mot Svedala",
+          text: "Ange den exakta adressen så att transportsträckan kommer med i bedömningen.",
+        },
+      ],
+      fragor: [
+        {
+          fraga: "Vad behöver jag ange för en bostad i Skurup?",
+          svar: "Bostadstyp, boyta och antal rum. Är det ett hus: även antal våningar och vilka biutrymmen som ska städas.",
+        },
+        {
+          fraga: "Kan jag boka både flytt och flyttstädning?",
+          svar: "Ja, och det är oftast smidigast. Välj flytt och städ i formuläret, då planeras städningen efter att bostaden är tömd.",
+        },
+      ],
+    },
   },
   {
     slug: "ystad",
@@ -2643,7 +4452,7 @@ export const orter: Ort[] = [
     iOrt: "Ystad",
     lan: "Skåne län",
     metaBeskrivning:
-      "Flyttfirma Ystad – boka bohagsflytt och flyttstädning via Nyflytt. Beskriv din bostad och ditt datum och få en tydlig offert. Uppdraget utförs av en samarbetspartner.",
+      "Flyttfirma Ystad – boka bohagsflytt och flyttstädning via Nyflytt. Beskriv din bostad och ditt datum och få en tydlig offert.",
     ingress:
       "Ska du flytta i Ystad? Beskriv bostaden och ditt datum, så får du en offert med tydlig omfattning.",
     omOrten: [
@@ -2679,6 +4488,41 @@ export const orter: Ort[] = [
     ],
     narliggande: ["simrishamn", "tomelilla", "skurup"],
     narmasteStorstad: "kristianstad",
+    stad: {
+      metaBeskrivning:
+        "Flyttstädning i Ystad inför överlämning och besiktning. Beskriv bostaden och ditt datum och få en tydlig offert från Nyflytt.",
+      ingress:
+        "Ska du flyttstäda i Ystad? Beskriv bostaden och datumet och få en offert där omfattningen framgår.",
+      omStadningen: [
+        "Bebyggelsen i Ystad beskrivs som medeltida stadskärna med korsvirkeshus, flerbostadshus och villaområden utanför. Äldre hus har fler detaljytor än boytan antyder – höga socklar, dörrfoder, djupa fönsternischer och ibland originalgolv som inte tål vilka medel som helst. Två bostäder med samma yta kan därför kräva olika mycket arbete.",
+        "Eftersom beståndet i Ystad är blandat kan två adresser i samma ort kräva olika mycket. Ange bostadstyp tillsammans med boytan: för hus behöver det framgå vilka biutrymmen som ska ingå, för lägenhet är det kök, badrum, fönster och golv som styr omfattningen.",
+        "Vanliga flyttsträckor här går inom orten och mot Simrishamn. Ska flyttstädningen göras nära flyttdagen behöver tidsplanen ta hänsyn till transporten, eftersom bostaden måste vara tömd innan städningen kan börja.",
+      ],
+      praktiskt: [
+        {
+          rubrik: "Äldre hus tar längre tid",
+          text: "Socklar, foder och nischer är fler än boytan antyder. Ange byggår om du vet det.",
+        },
+        {
+          rubrik: "Räkna utrymmen, inte bara boyta",
+          text: "Ange antal rum, våningar och vilka biutrymmen som ska ingå.",
+        },
+        {
+          rubrik: "Sträckor mot Simrishamn",
+          text: "Ange den exakta adressen så att transportsträckan kommer med i bedömningen.",
+        },
+      ],
+      fragor: [
+        {
+          fraga: "Vad behöver jag ange för en bostad i Ystad?",
+          svar: "Bostadstyp, boyta och antal rum. Är det ett hus: även antal våningar och vilka biutrymmen som ska städas.",
+        },
+        {
+          fraga: "Kan jag boka både flytt och flyttstädning?",
+          svar: "Ja, och det är oftast smidigast. Välj flytt och städ i formuläret, då planeras städningen efter att bostaden är tömd.",
+        },
+      ],
+    },
   },
   {
     slug: "simrishamn",
@@ -2687,7 +4531,7 @@ export const orter: Ort[] = [
     iOrt: "Simrishamn",
     lan: "Skåne län",
     metaBeskrivning:
-      "Flyttfirma Simrishamn – boka bohagsflytt och flyttstädning via Nyflytt. Beskriv din bostad och ditt datum och få en tydlig offert. Uppdraget utförs av en samarbetspartner.",
+      "Flyttfirma Simrishamn – boka bohagsflytt och flyttstädning via Nyflytt. Beskriv din bostad och ditt datum och få en tydlig offert.",
     ingress:
       "Ska du flytta i Simrishamn? Beskriv bostaden och ditt datum, så får du en offert med tydlig omfattning.",
     omOrten: [
@@ -2723,6 +4567,41 @@ export const orter: Ort[] = [
     ],
     narliggande: ["tomelilla", "ystad", "kristianstad"],
     narmasteStorstad: "kristianstad",
+    stad: {
+      metaBeskrivning:
+        "Flyttstädning i Simrishamn inför överlämning och besiktning. Beskriv bostaden och ditt datum och få en tydlig offert från Nyflytt.",
+      ingress:
+        "Ska du flyttstäda i Simrishamn? Beskriv bostaden och datumet och få en offert där omfattningen framgår.",
+      omStadningen: [
+        "Bebyggelsen i Simrishamn beskrivs som äldre småstadsbebyggelse i centrum, villaområden utanför och fritidshus längs kusten. Äldre hus har fler detaljytor än boytan antyder – höga socklar, dörrfoder, djupa fönsternischer och ibland originalgolv som inte tål vilka medel som helst. Två bostäder med samma yta kan därför kräva olika mycket arbete.",
+        "Läget nära kusten har en praktisk följd för fönsterputsen: salt från havsluften lägger sig på utsidan och syns tydligt i motljus. Putsa därför fönstren nära överlämningsdagen snarare än veckan före. Har bostaden använts som fritidshus och stått stängd en period finns ofta mer damm, och ibland fukt – fuktsanering är inte flyttstädning utan bedöms separat.",
+        "Vanliga flyttsträckor här går inom orten och mot Tomelilla. Ska flyttstädningen göras nära flyttdagen behöver tidsplanen ta hänsyn till transporten, eftersom bostaden måste vara tömd innan städningen kan börja.",
+      ],
+      praktiskt: [
+        {
+          rubrik: "Äldre hus tar längre tid",
+          text: "Socklar, foder och nischer är fler än boytan antyder. Ange byggår om du vet det.",
+        },
+        {
+          rubrik: "Salt på fönstren",
+          text: "Nära havet blir fönstrens utsida snabbt smutsig igen. Lägg fönsterputsen nära överlämningen.",
+        },
+        {
+          rubrik: "Sträckor mot Tomelilla",
+          text: "Ange den exakta adressen så att transportsträckan kommer med i bedömningen.",
+        },
+      ],
+      fragor: [
+        {
+          fraga: "När bör fönsterputsen göras?",
+          svar: "Så nära överlämningen som möjligt. I kustläge lägger sig salt på utsidan inom kort tid och syns tydligt i motljus.",
+        },
+        {
+          fraga: "Räknas städning av ett länge obebott hus som flyttstädning?",
+          svar: "Inte alltid. Har huset stått stängt länge kan mer omfattande rengöring krävas. Beskriv förutsättningarna så bedöms det innan offerten lämnas.",
+        },
+      ],
+    },
   },
   {
     slug: "tomelilla",
@@ -2731,7 +4610,7 @@ export const orter: Ort[] = [
     iOrt: "Tomelilla",
     lan: "Skåne län",
     metaBeskrivning:
-      "Flyttfirma Tomelilla – boka bohagsflytt och flyttstädning via Nyflytt. Beskriv din bostad och ditt datum och få en tydlig offert. Uppdraget utförs av en samarbetspartner.",
+      "Flyttfirma Tomelilla – boka bohagsflytt och flyttstädning via Nyflytt. Beskriv din bostad och ditt datum och få en tydlig offert.",
     ingress:
       "Ska du flytta i Tomelilla? Beskriv bostaden och ditt datum, så får du en offert med tydlig omfattning.",
     omOrten: [
@@ -2767,6 +4646,41 @@ export const orter: Ort[] = [
     ],
     narliggande: ["simrishamn", "ystad", "sjobo"],
     narmasteStorstad: "kristianstad",
+    stad: {
+      metaBeskrivning:
+        "Flyttstädning i Tomelilla inför överlämning och besiktning. Beskriv bostaden och ditt datum och få en tydlig offert från Nyflytt.",
+      ingress:
+        "Ska du flyttstäda i Tomelilla? Beskriv bostaden och datumet och få en offert där omfattningen framgår.",
+      omStadningen: [
+        "Bebyggelsen i Tomelilla beskrivs som centralort med låg bebyggelse: villor och mindre flerbostadshus. Det avgör vad en flyttstädning omfattar – ett hus har utrymmen utanför boytan, som garage och förråd, medan en lägenhet har mer förutsägbara ytor där kök och badrum väger tyngst.",
+        "I lägenhet är det köket och badrummet som avgör om städningen godkänns vid besiktning. Vitvarorna ska rengöras in- och utvändigt och dras ut där det går, och badrummet avkalkas med golvbrunnen rengjord. Hyr du bostaden finns ofta en checklista från hyresvärden som besiktningen följer.",
+        "Tomelilla har stationsläge, och en del av flyttarna här är pendlingsflyttar. Ska städningen ske i anslutning till flyttdagen måste bostaden vara tömd först – lägg marginal mellan de två momenten så att städningen inte behöver avbrytas halvvägs.",
+      ],
+      praktiskt: [
+        {
+          rubrik: "Ange bostadstyp, inte bara yta",
+          text: "Beståndet i Tomelilla är blandat – lägenhet och hus kräver olika mycket även vid samma boyta.",
+        },
+        {
+          rubrik: "Checklista från hyresvärden",
+          text: "Har du fått en besiktningslista, nämn det i förfrågan så kan omfattningen stämmas av mot den.",
+        },
+        {
+          rubrik: "Pendlingsflytt",
+          text: "Vid flytt till annan ort behöver städningen läggas efter att bostaden är tömd. Ange önskad ordning i förfrågan.",
+        },
+      ],
+      fragor: [
+        {
+          fraga: "Vi har en besiktningslista – kan den följas?",
+          svar: "Ange i förfrågan att du har en och vad som står i den. Omfattningen kan då stämmas av mot listan i stället för mot en generell standard.",
+        },
+        {
+          fraga: "Ingår fönsterputs?",
+          svar: "Ja, in- och utvändigt samt mellan rutorna där konstruktionen tillåter att fönstret öppnas. Fasta partier putsas på insidan.",
+        },
+      ],
+    },
   },
   {
     slug: "sjobo",
@@ -2775,7 +4689,7 @@ export const orter: Ort[] = [
     iOrt: "Sjöbo",
     lan: "Skåne län",
     metaBeskrivning:
-      "Flyttfirma Sjöbo – boka bohagsflytt och flyttstädning via Nyflytt. Beskriv din bostad och ditt datum och få en tydlig offert. Uppdraget utförs av en samarbetspartner.",
+      "Flyttfirma Sjöbo – boka bohagsflytt och flyttstädning via Nyflytt. Beskriv din bostad och ditt datum och få en tydlig offert.",
     ingress:
       "Ska du flytta i Sjöbo? Beskriv bostaden och ditt datum, så får du en offert med tydlig omfattning.",
     omOrten: [
@@ -2811,6 +4725,41 @@ export const orter: Ort[] = [
     ],
     narliggande: ["veberod", "tomelilla", "horby"],
     narmasteStorstad: "lund",
+    stad: {
+      metaBeskrivning:
+        "Flyttstädning i Sjöbo inför överlämning och besiktning. Beskriv bostaden och ditt datum och få en tydlig offert från Nyflytt.",
+      ingress:
+        "Ska du flyttstäda i Sjöbo? Beskriv bostaden och datumet och få en offert där omfattningen framgår.",
+      omStadningen: [
+        "Bebyggelsen i Sjöbo beskrivs som centralort med villor och mindre flerbostadshus, omgiven av skogs- och jordbruksbygd. Det avgör vad en flyttstädning omfattar – ett hus har utrymmen utanför boytan, som garage och förråd, medan en lägenhet har mer förutsägbara ytor där kök och badrum väger tyngst.",
+        "I lägenhet är det köket och badrummet som avgör om städningen godkänns vid besiktning. Vitvarorna ska rengöras in- och utvändigt och dras ut där det går, och badrummet avkalkas med golvbrunnen rengjord. Hyr du bostaden finns ofta en checklista från hyresvärden som besiktningen följer.",
+        "Vanliga flyttsträckor här går inom orten och mot Veberöd. Ska flyttstädningen göras nära flyttdagen behöver tidsplanen ta hänsyn till transporten, eftersom bostaden måste vara tömd innan städningen kan börja.",
+      ],
+      praktiskt: [
+        {
+          rubrik: "Ange bostadstyp, inte bara yta",
+          text: "Beståndet i Sjöbo är blandat – lägenhet och hus kräver olika mycket även vid samma boyta.",
+        },
+        {
+          rubrik: "Checklista från hyresvärden",
+          text: "Har du fått en besiktningslista, nämn det i förfrågan så kan omfattningen stämmas av mot den.",
+        },
+        {
+          rubrik: "Sträckor mot Veberöd",
+          text: "Ange den exakta adressen så att transportsträckan kommer med i bedömningen.",
+        },
+      ],
+      fragor: [
+        {
+          fraga: "Vi har en besiktningslista – kan den följas?",
+          svar: "Ange i förfrågan att du har en och vad som står i den. Omfattningen kan då stämmas av mot listan i stället för mot en generell standard.",
+        },
+        {
+          fraga: "Ingår fönsterputs?",
+          svar: "Ja, in- och utvändigt samt mellan rutorna där konstruktionen tillåter att fönstret öppnas. Fasta partier putsas på insidan.",
+        },
+      ],
+    },
   },
   {
     slug: "horby",
@@ -2819,7 +4768,7 @@ export const orter: Ort[] = [
     iOrt: "Hörby",
     lan: "Skåne län",
     metaBeskrivning:
-      "Flyttfirma Hörby – boka bohagsflytt och flyttstädning via Nyflytt. Beskriv din bostad och ditt datum och få en tydlig offert. Uppdraget utförs av en samarbetspartner.",
+      "Flyttfirma Hörby – boka bohagsflytt och flyttstädning via Nyflytt. Beskriv din bostad och ditt datum och få en tydlig offert.",
     ingress:
       "Ska du flytta i Hörby? Beskriv bostaden och ditt datum, så får du en offert med tydlig omfattning.",
     omOrten: [
@@ -2855,6 +4804,41 @@ export const orter: Ort[] = [
     ],
     narliggande: ["hoor", "sjobo", "eslov"],
     narmasteStorstad: "lund",
+    stad: {
+      metaBeskrivning:
+        "Flyttstädning i Hörby inför överlämning och besiktning. Beskriv bostaden och ditt datum och få en tydlig offert från Nyflytt.",
+      ingress:
+        "Ska du flyttstäda i Hörby? Beskriv bostaden och datumet och få en offert där omfattningen framgår.",
+      omStadningen: [
+        "Bebyggelsen i Hörby beskrivs som centralort med låg bebyggelse: villor och mindre flerbostadshus. Det avgör vad en flyttstädning omfattar – ett hus har utrymmen utanför boytan, som garage och förråd, medan en lägenhet har mer förutsägbara ytor där kök och badrum väger tyngst.",
+        "I lägenhet är det köket och badrummet som avgör om städningen godkänns vid besiktning. Vitvarorna ska rengöras in- och utvändigt och dras ut där det går, och badrummet avkalkas med golvbrunnen rengjord. Hyr du bostaden finns ofta en checklista från hyresvärden som besiktningen följer.",
+        "Vanliga flyttsträckor här går inom orten och mot Höör. Ska flyttstädningen göras nära flyttdagen behöver tidsplanen ta hänsyn till transporten, eftersom bostaden måste vara tömd innan städningen kan börja.",
+      ],
+      praktiskt: [
+        {
+          rubrik: "Ange bostadstyp, inte bara yta",
+          text: "Beståndet i Hörby är blandat – lägenhet och hus kräver olika mycket även vid samma boyta.",
+        },
+        {
+          rubrik: "Checklista från hyresvärden",
+          text: "Har du fått en besiktningslista, nämn det i förfrågan så kan omfattningen stämmas av mot den.",
+        },
+        {
+          rubrik: "Sträckor mot Höör",
+          text: "Ange den exakta adressen så att transportsträckan kommer med i bedömningen.",
+        },
+      ],
+      fragor: [
+        {
+          fraga: "Vi har en besiktningslista – kan den följas?",
+          svar: "Ange i förfrågan att du har en och vad som står i den. Omfattningen kan då stämmas av mot listan i stället för mot en generell standard.",
+        },
+        {
+          fraga: "Ingår fönsterputs?",
+          svar: "Ja, in- och utvändigt samt mellan rutorna där konstruktionen tillåter att fönstret öppnas. Fasta partier putsas på insidan.",
+        },
+      ],
+    },
   },
   {
     slug: "hoor",
@@ -2899,6 +4883,41 @@ export const orter: Ort[] = [
     ],
     narliggande: ["horby", "eslov", "hassleholm"],
     narmasteStorstad: "lund",
+    stad: {
+      metaBeskrivning:
+        "Flyttstädning i Höör inför överlämning och besiktning. Beskriv bostaden och ditt datum och få en tydlig offert från Nyflytt.",
+      ingress:
+        "Ska du flyttstäda i Höör? Beskriv bostaden och datumet och få en offert där omfattningen framgår.",
+      omStadningen: [
+        "Bebyggelsen i Höör beskrivs som centralort med villor, radhus och flerbostadshus kring stationen. Det avgör vad en flyttstädning omfattar – ett hus har utrymmen utanför boytan, som garage och förråd, medan en lägenhet har mer förutsägbara ytor där kök och badrum väger tyngst.",
+        "Eftersom beståndet i Höör är blandat kan två adresser i samma ort kräva olika mycket. Ange bostadstyp tillsammans med boytan: för hus behöver det framgå vilka biutrymmen som ska ingå, för lägenhet är det kök, badrum, fönster och golv som styr omfattningen.",
+        "Höör har stationsläge, och en del av flyttarna här är pendlingsflyttar. Ska städningen ske i anslutning till flyttdagen måste bostaden vara tömd först – lägg marginal mellan de två momenten så att städningen inte behöver avbrytas halvvägs.",
+      ],
+      praktiskt: [
+        {
+          rubrik: "Ange bostadstyp, inte bara yta",
+          text: "Beståndet i Höör är blandat – lägenhet och hus kräver olika mycket även vid samma boyta.",
+        },
+        {
+          rubrik: "Räkna utrymmen, inte bara boyta",
+          text: "Ange antal rum, våningar och vilka biutrymmen som ska ingå.",
+        },
+        {
+          rubrik: "Pendlingsflytt",
+          text: "Vid flytt till annan ort behöver städningen läggas efter att bostaden är tömd. Ange önskad ordning i förfrågan.",
+        },
+      ],
+      fragor: [
+        {
+          fraga: "Vad behöver jag ange för en bostad i Höör?",
+          svar: "Bostadstyp, boyta och antal rum. Är det ett hus: även antal våningar och vilka biutrymmen som ska städas.",
+        },
+        {
+          fraga: "Kan jag boka både flytt och flyttstädning?",
+          svar: "Ja, och det är oftast smidigast. Välj flytt och städ i formuläret, då planeras städningen efter att bostaden är tömd.",
+        },
+      ],
+    },
   },
   {
     slug: "eslov",
@@ -2907,7 +4926,7 @@ export const orter: Ort[] = [
     iOrt: "Eslöv",
     lan: "Skåne län",
     metaBeskrivning:
-      "Flyttfirma Eslöv – boka bohagsflytt och flyttstädning via Nyflytt. Beskriv din bostad och ditt datum och få en tydlig offert. Uppdraget utförs av en samarbetspartner.",
+      "Flyttfirma Eslöv – boka bohagsflytt och flyttstädning via Nyflytt. Beskriv din bostad och ditt datum och få en tydlig offert.",
     ingress:
       "Ska du flytta i Eslöv? Beskriv bostaden och ditt datum, så får du en offert med tydlig omfattning.",
     omOrten: [
@@ -2943,6 +4962,41 @@ export const orter: Ort[] = [
     ],
     narliggande: ["lund", "hoor", "kavlinge"],
     narmasteStorstad: "lund",
+    stad: {
+      metaBeskrivning:
+        "Flyttstädning i Eslöv inför överlämning och besiktning. Beskriv bostaden och ditt datum och få en tydlig offert från Nyflytt.",
+      ingress:
+        "Ska du flyttstäda i Eslöv? Beskriv bostaden och datumet och få en offert där omfattningen framgår.",
+      omStadningen: [
+        "Bebyggelsen i Eslöv beskrivs som centralort med flerbostadshus i centrum och villaområden utanför. Ett bestånd från 1900-talet är i städsammanhang förhållandevis tacksamt: släta dörrar, raka socklar och fönster som oftast går att öppna och putsa från båda sidor. Tidsåtgången för en flyttstädning följer därför boytan tätare än i hus med mycket snickerier.",
+        "Eftersom beståndet i Eslöv är blandat kan två adresser i samma ort kräva olika mycket. Ange bostadstyp tillsammans med boytan: för hus behöver det framgå vilka biutrymmen som ska ingå, för lägenhet är det kök, badrum, fönster och golv som styr omfattningen.",
+        "Eslöv har stationsläge, och en del av flyttarna här är pendlingsflyttar. Ska städningen ske i anslutning till flyttdagen måste bostaden vara tömd först – lägg marginal mellan de två momenten så att städningen inte behöver avbrytas halvvägs.",
+      ],
+      praktiskt: [
+        {
+          rubrik: "Bestånd från 1900-talet",
+          text: "Raka ytor och öppningsbara fönster gör omfattningen lättare att bedöma. Ange boyta och antal rum, så räcker det långt.",
+        },
+        {
+          rubrik: "Räkna utrymmen, inte bara boyta",
+          text: "Ange antal rum, våningar och vilka biutrymmen som ska ingå.",
+        },
+        {
+          rubrik: "Pendlingsflytt",
+          text: "Vid flytt till annan ort behöver städningen läggas efter att bostaden är tömd. Ange önskad ordning i förfrågan.",
+        },
+      ],
+      fragor: [
+        {
+          fraga: "Vad behöver jag ange för en bostad i Eslöv?",
+          svar: "Bostadstyp, boyta och antal rum. Är det ett hus: även antal våningar och vilka biutrymmen som ska städas.",
+        },
+        {
+          fraga: "Kan jag boka både flytt och flyttstädning?",
+          svar: "Ja, och det är oftast smidigast. Välj flytt och städ i formuläret, då planeras städningen efter att bostaden är tömd.",
+        },
+      ],
+    },
   },
   {
     slug: "svalov",
@@ -2951,7 +5005,7 @@ export const orter: Ort[] = [
     iOrt: "Svalöv",
     lan: "Skåne län",
     metaBeskrivning:
-      "Flyttfirma Svalöv – boka bohagsflytt och flyttstädning via Nyflytt. Beskriv din bostad och ditt datum och få en tydlig offert. Uppdraget utförs av en samarbetspartner.",
+      "Flyttfirma Svalöv – boka bohagsflytt och flyttstädning via Nyflytt. Beskriv din bostad och ditt datum och få en tydlig offert.",
     ingress:
       "Ska du flytta i Svalöv? Beskriv bostaden och ditt datum, så får du en offert med tydlig omfattning.",
     omOrten: [
@@ -2987,6 +5041,41 @@ export const orter: Ort[] = [
     ],
     narliggande: ["landskrona", "klippan", "kavlinge"],
     narmasteStorstad: "landskrona",
+    stad: {
+      metaBeskrivning:
+        "Flyttstädning i Svalöv inför överlämning och besiktning. Beskriv bostaden och ditt datum och få en tydlig offert från Nyflytt.",
+      ingress:
+        "Ska du flyttstäda i Svalöv? Beskriv bostaden och datumet och få en offert där omfattningen framgår.",
+      omStadningen: [
+        "Bebyggelsen i Svalöv beskrivs som centralort med villor och mindre flerbostadshus, omgiven av jordbruksbygd. Det avgör vad en flyttstädning omfattar – ett hus har utrymmen utanför boytan, som garage och förråd, medan en lägenhet har mer förutsägbara ytor där kök och badrum väger tyngst.",
+        "I lägenhet är det köket och badrummet som avgör om städningen godkänns vid besiktning. Vitvarorna ska rengöras in- och utvändigt och dras ut där det går, och badrummet avkalkas med golvbrunnen rengjord. Hyr du bostaden finns ofta en checklista från hyresvärden som besiktningen följer.",
+        "Vanliga flyttsträckor här går inom orten och mot Landskrona. Ska flyttstädningen göras nära flyttdagen behöver tidsplanen ta hänsyn till transporten, eftersom bostaden måste vara tömd innan städningen kan börja.",
+      ],
+      praktiskt: [
+        {
+          rubrik: "Ange bostadstyp, inte bara yta",
+          text: "Beståndet i Svalöv är blandat – lägenhet och hus kräver olika mycket även vid samma boyta.",
+        },
+        {
+          rubrik: "Checklista från hyresvärden",
+          text: "Har du fått en besiktningslista, nämn det i förfrågan så kan omfattningen stämmas av mot den.",
+        },
+        {
+          rubrik: "Sträckor mot Landskrona",
+          text: "Ange den exakta adressen så att transportsträckan kommer med i bedömningen.",
+        },
+      ],
+      fragor: [
+        {
+          fraga: "Vi har en besiktningslista – kan den följas?",
+          svar: "Ange i förfrågan att du har en och vad som står i den. Omfattningen kan då stämmas av mot listan i stället för mot en generell standard.",
+        },
+        {
+          fraga: "Ingår fönsterputs?",
+          svar: "Ja, in- och utvändigt samt mellan rutorna där konstruktionen tillåter att fönstret öppnas. Fasta partier putsas på insidan.",
+        },
+      ],
+    },
   },
   {
     slug: "ahus",
@@ -3031,6 +5120,41 @@ export const orter: Ort[] = [
     ],
     narliggande: ["kristianstad", "hammar", "tollarp"],
     narmasteStorstad: "kristianstad",
+    stad: {
+      metaBeskrivning:
+        "Flyttstädning i Åhus inför överlämning och besiktning. Beskriv bostaden och ditt datum och få en tydlig offert från Nyflytt.",
+      ingress:
+        "Ska du flyttstäda i Åhus? Beskriv bostaden och datumet och få en offert där omfattningen framgår.",
+      omStadningen: [
+        "Bebyggelsen i Åhus beskrivs som gammal köping med tät äldre kärna, villaområden och omfattande fritidshusbebyggelse. Äldre hus har fler detaljytor än boytan antyder – höga socklar, dörrfoder, djupa fönsternischer och ibland originalgolv som inte tål vilka medel som helst. Två bostäder med samma yta kan därför kräva olika mycket arbete.",
+        "Läget nära kusten har en praktisk följd för fönsterputsen: salt från havsluften lägger sig på utsidan och syns tydligt i motljus. Putsa därför fönstren nära överlämningsdagen snarare än veckan före. Har bostaden använts som fritidshus och stått stängd en period finns ofta mer damm, och ibland fukt – fuktsanering är inte flyttstädning utan bedöms separat.",
+        "Vanliga flyttsträckor här går inom orten och mot Kristianstad. Ska flyttstädningen göras nära flyttdagen behöver tidsplanen ta hänsyn till transporten, eftersom bostaden måste vara tömd innan städningen kan börja.",
+      ],
+      praktiskt: [
+        {
+          rubrik: "Äldre hus tar längre tid",
+          text: "Socklar, foder och nischer är fler än boytan antyder. Ange byggår om du vet det.",
+        },
+        {
+          rubrik: "Salt på fönstren",
+          text: "Nära havet blir fönstrens utsida snabbt smutsig igen. Lägg fönsterputsen nära överlämningen.",
+        },
+        {
+          rubrik: "Sträckor mot Kristianstad",
+          text: "Ange den exakta adressen så att transportsträckan kommer med i bedömningen.",
+        },
+      ],
+      fragor: [
+        {
+          fraga: "När bör fönsterputsen göras?",
+          svar: "Så nära överlämningen som möjligt. I kustläge lägger sig salt på utsidan inom kort tid och syns tydligt i motljus.",
+        },
+        {
+          fraga: "Räknas städning av ett länge obebott hus som flyttstädning?",
+          svar: "Inte alltid. Har huset stått stängt länge kan mer omfattande rengöring krävas. Beskriv förutsättningarna så bedöms det innan offerten lämnas.",
+        },
+      ],
+    },
   },
   {
     slug: "hammar",
@@ -3039,7 +5163,7 @@ export const orter: Ort[] = [
     iOrt: "Hammar",
     lan: "Skåne län",
     metaBeskrivning:
-      "Flyttfirma Hammar – boka bohagsflytt och flyttstädning via Nyflytt. Beskriv din bostad och ditt datum och få en tydlig offert. Uppdraget utförs av en samarbetspartner.",
+      "Flyttfirma Hammar – boka bohagsflytt och flyttstädning via Nyflytt. Beskriv din bostad och ditt datum och få en tydlig offert.",
     ingress:
       "Ska du flytta i Hammar? Beskriv bostaden och ditt datum, så får du en offert med tydlig omfattning.",
     omOrten: [
@@ -3075,6 +5199,41 @@ export const orter: Ort[] = [
     ],
     narliggande: ["kristianstad", "ahus", "tollarp"],
     narmasteStorstad: "kristianstad",
+    stad: {
+      metaBeskrivning:
+        "Flyttstädning i Hammar inför överlämning och besiktning. Beskriv bostaden och ditt datum och få en tydlig offert från Nyflytt.",
+      ingress:
+        "Ska du flyttstäda i Hammar? Beskriv bostaden och datumet och få en offert där omfattningen framgår.",
+      omStadningen: [
+        "Bebyggelsen i Hammar beskrivs som villaområde i kristianstads södra utkant. Det avgör vad en flyttstädning omfattar – ett hus har utrymmen utanför boytan, som garage och förråd, medan en lägenhet har mer förutsägbara ytor där kök och badrum väger tyngst.",
+        "I ett hus ligger en stor del av arbetet utanför boytan. Garage, förråd, pannrum och tvättstuga är egna utrymmen som inte ingår automatiskt, och fönstren är fler än i en lägenhet. Ange antal våningar och vilka biutrymmen som ska städas, så framgår omfattningen av offerten.",
+        "Vanliga flyttsträckor här går inom orten och mot Kristianstad. Ska flyttstädningen göras nära flyttdagen behöver tidsplanen ta hänsyn till transporten, eftersom bostaden måste vara tömd innan städningen kan börja.",
+      ],
+      praktiskt: [
+        {
+          rubrik: "Ange bostadstyp, inte bara yta",
+          text: "Beståndet i Hammar är blandat – lägenhet och hus kräver olika mycket även vid samma boyta.",
+        },
+        {
+          rubrik: "Biutrymmen ingår inte automatiskt",
+          text: "Garage, förråd och uteplats behöver anges separat för att komma med i offerten.",
+        },
+        {
+          rubrik: "Sträckor mot Kristianstad",
+          text: "Ange den exakta adressen så att transportsträckan kommer med i bedömningen.",
+        },
+      ],
+      fragor: [
+        {
+          fraga: "Ingår garage och förråd i Hammar?",
+          svar: "Inte automatiskt. Ange i förfrågan vilka utrymmen som ska städas, så framgår det av offerten vad som ingår.",
+        },
+        {
+          fraga: "Hur anger jag storleken på ett hus?",
+          svar: "Ange boyta, antal rum och antal våningar, och lista biutrymmena separat. Det ger ett bättre underlag än boytan ensam.",
+        },
+      ],
+    },
   },
   {
     slug: "tollarp",
@@ -3083,7 +5242,7 @@ export const orter: Ort[] = [
     iOrt: "Tollarp",
     lan: "Skåne län",
     metaBeskrivning:
-      "Flyttfirma Tollarp – boka bohagsflytt och flyttstädning via Nyflytt. Beskriv din bostad och ditt datum och få en tydlig offert. Uppdraget utförs av en samarbetspartner.",
+      "Flyttfirma Tollarp – boka bohagsflytt och flyttstädning via Nyflytt. Beskriv din bostad och ditt datum och få en tydlig offert.",
     ingress:
       "Ska du flytta i Tollarp? Beskriv bostaden och ditt datum, så får du en offert med tydlig omfattning.",
     omOrten: [
@@ -3119,6 +5278,41 @@ export const orter: Ort[] = [
     ],
     narliggande: ["kristianstad", "hammar", "horby"],
     narmasteStorstad: "kristianstad",
+    stad: {
+      metaBeskrivning:
+        "Flyttstädning i Tollarp inför överlämning och besiktning. Beskriv bostaden och ditt datum och få en tydlig offert från Nyflytt.",
+      ingress:
+        "Ska du flyttstäda i Tollarp? Beskriv bostaden och datumet och få en offert där omfattningen framgår.",
+      omStadningen: [
+        "Bebyggelsen i Tollarp beskrivs som tätort med villor och mindre flerbostadshus. Det avgör vad en flyttstädning omfattar – ett hus har utrymmen utanför boytan, som garage och förråd, medan en lägenhet har mer förutsägbara ytor där kök och badrum väger tyngst.",
+        "I lägenhet är det köket och badrummet som avgör om städningen godkänns vid besiktning. Vitvarorna ska rengöras in- och utvändigt och dras ut där det går, och badrummet avkalkas med golvbrunnen rengjord. Hyr du bostaden finns ofta en checklista från hyresvärden som besiktningen följer.",
+        "Vanliga flyttsträckor här går inom orten och mot Kristianstad. Ska flyttstädningen göras nära flyttdagen behöver tidsplanen ta hänsyn till transporten, eftersom bostaden måste vara tömd innan städningen kan börja.",
+      ],
+      praktiskt: [
+        {
+          rubrik: "Ange bostadstyp, inte bara yta",
+          text: "Beståndet i Tollarp är blandat – lägenhet och hus kräver olika mycket även vid samma boyta.",
+        },
+        {
+          rubrik: "Checklista från hyresvärden",
+          text: "Har du fått en besiktningslista, nämn det i förfrågan så kan omfattningen stämmas av mot den.",
+        },
+        {
+          rubrik: "Sträckor mot Kristianstad",
+          text: "Ange den exakta adressen så att transportsträckan kommer med i bedömningen.",
+        },
+      ],
+      fragor: [
+        {
+          fraga: "Vi har en besiktningslista – kan den följas?",
+          svar: "Ange i förfrågan att du har en och vad som står i den. Omfattningen kan då stämmas av mot listan i stället för mot en generell standard.",
+        },
+        {
+          fraga: "Ingår fönsterputs?",
+          svar: "Ja, in- och utvändigt samt mellan rutorna där konstruktionen tillåter att fönstret öppnas. Fasta partier putsas på insidan.",
+        },
+      ],
+    },
   },
   {
     slug: "bromolla",
@@ -3127,7 +5321,7 @@ export const orter: Ort[] = [
     iOrt: "Bromölla",
     lan: "Skåne län",
     metaBeskrivning:
-      "Flyttfirma Bromölla – boka bohagsflytt och flyttstädning via Nyflytt. Beskriv din bostad och ditt datum och få en tydlig offert. Uppdraget utförs av en samarbetspartner.",
+      "Flyttfirma Bromölla – boka bohagsflytt och flyttstädning via Nyflytt. Beskriv din bostad och ditt datum och få en tydlig offert.",
     ingress:
       "Ska du flytta i Bromölla? Beskriv bostaden och ditt datum, så får du en offert med tydlig omfattning.",
     omOrten: [
@@ -3163,6 +5357,41 @@ export const orter: Ort[] = [
     ],
     narliggande: ["kristianstad", "knislinge", "osby"],
     narmasteStorstad: "kristianstad",
+    stad: {
+      metaBeskrivning:
+        "Flyttstädning i Bromölla inför överlämning och besiktning. Beskriv bostaden och ditt datum och få en tydlig offert från Nyflytt.",
+      ingress:
+        "Ska du flyttstäda i Bromölla? Beskriv bostaden och datumet och få en offert där omfattningen framgår.",
+      omStadningen: [
+        "Bebyggelsen i Bromölla beskrivs som industriort med flerbostadshus i centrum och villaområden runtomkring. Det avgör vad en flyttstädning omfattar – ett hus har utrymmen utanför boytan, som garage och förråd, medan en lägenhet har mer förutsägbara ytor där kök och badrum väger tyngst.",
+        "Eftersom beståndet i Bromölla är blandat kan två adresser i samma ort kräva olika mycket. Ange bostadstyp tillsammans med boytan: för hus behöver det framgå vilka biutrymmen som ska ingå, för lägenhet är det kök, badrum, fönster och golv som styr omfattningen.",
+        "Vanliga flyttsträckor här går inom orten och mot Kristianstad. Ska flyttstädningen göras nära flyttdagen behöver tidsplanen ta hänsyn till transporten, eftersom bostaden måste vara tömd innan städningen kan börja.",
+      ],
+      praktiskt: [
+        {
+          rubrik: "Ange bostadstyp, inte bara yta",
+          text: "Beståndet i Bromölla är blandat – lägenhet och hus kräver olika mycket även vid samma boyta.",
+        },
+        {
+          rubrik: "Räkna utrymmen, inte bara boyta",
+          text: "Ange antal rum, våningar och vilka biutrymmen som ska ingå.",
+        },
+        {
+          rubrik: "Sträckor mot Kristianstad",
+          text: "Ange den exakta adressen så att transportsträckan kommer med i bedömningen.",
+        },
+      ],
+      fragor: [
+        {
+          fraga: "Vad behöver jag ange för en bostad i Bromölla?",
+          svar: "Bostadstyp, boyta och antal rum. Är det ett hus: även antal våningar och vilka biutrymmen som ska städas.",
+        },
+        {
+          fraga: "Kan jag boka både flytt och flyttstädning?",
+          svar: "Ja, och det är oftast smidigast. Välj flytt och städ i formuläret, då planeras städningen efter att bostaden är tömd.",
+        },
+      ],
+    },
   },
   {
     slug: "knislinge",
@@ -3171,7 +5400,7 @@ export const orter: Ort[] = [
     iOrt: "Knislinge",
     lan: "Skåne län",
     metaBeskrivning:
-      "Flyttfirma Knislinge – boka bohagsflytt och flyttstädning via Nyflytt. Beskriv din bostad och ditt datum och få en tydlig offert. Uppdraget utförs av en samarbetspartner.",
+      "Flyttfirma Knislinge – boka bohagsflytt och flyttstädning via Nyflytt. Beskriv din bostad och ditt datum och få en tydlig offert.",
     ingress:
       "Ska du flytta i Knislinge? Beskriv bostaden och ditt datum, så får du en offert med tydlig omfattning.",
     omOrten: [
@@ -3207,6 +5436,41 @@ export const orter: Ort[] = [
     ],
     narliggande: ["broby", "kristianstad", "hassleholm"],
     narmasteStorstad: "kristianstad",
+    stad: {
+      metaBeskrivning:
+        "Flyttstädning i Knislinge inför överlämning och besiktning. Beskriv bostaden och ditt datum och få en tydlig offert från Nyflytt.",
+      ingress:
+        "Ska du flyttstäda i Knislinge? Beskriv bostaden och datumet och få en offert där omfattningen framgår.",
+      omStadningen: [
+        "Bebyggelsen i Knislinge beskrivs som tätort med villor och mindre flerbostadshus. Det avgör vad en flyttstädning omfattar – ett hus har utrymmen utanför boytan, som garage och förråd, medan en lägenhet har mer förutsägbara ytor där kök och badrum väger tyngst.",
+        "I lägenhet är det köket och badrummet som avgör om städningen godkänns vid besiktning. Vitvarorna ska rengöras in- och utvändigt och dras ut där det går, och badrummet avkalkas med golvbrunnen rengjord. Hyr du bostaden finns ofta en checklista från hyresvärden som besiktningen följer.",
+        "Vanliga flyttsträckor här går inom orten och mot Broby. Ska flyttstädningen göras nära flyttdagen behöver tidsplanen ta hänsyn till transporten, eftersom bostaden måste vara tömd innan städningen kan börja.",
+      ],
+      praktiskt: [
+        {
+          rubrik: "Ange bostadstyp, inte bara yta",
+          text: "Beståndet i Knislinge är blandat – lägenhet och hus kräver olika mycket även vid samma boyta.",
+        },
+        {
+          rubrik: "Checklista från hyresvärden",
+          text: "Har du fått en besiktningslista, nämn det i förfrågan så kan omfattningen stämmas av mot den.",
+        },
+        {
+          rubrik: "Sträckor mot Broby",
+          text: "Ange den exakta adressen så att transportsträckan kommer med i bedömningen.",
+        },
+      ],
+      fragor: [
+        {
+          fraga: "Vi har en besiktningslista – kan den följas?",
+          svar: "Ange i förfrågan att du har en och vad som står i den. Omfattningen kan då stämmas av mot listan i stället för mot en generell standard.",
+        },
+        {
+          fraga: "Ingår fönsterputs?",
+          svar: "Ja, in- och utvändigt samt mellan rutorna där konstruktionen tillåter att fönstret öppnas. Fasta partier putsas på insidan.",
+        },
+      ],
+    },
   },
   {
     slug: "broby",
@@ -3215,7 +5479,7 @@ export const orter: Ort[] = [
     iOrt: "Broby",
     lan: "Skåne län",
     metaBeskrivning:
-      "Flyttfirma Broby – boka bohagsflytt och flyttstädning via Nyflytt. Beskriv din bostad och ditt datum och få en tydlig offert. Uppdraget utförs av en samarbetspartner.",
+      "Flyttfirma Broby – boka bohagsflytt och flyttstädning via Nyflytt. Beskriv din bostad och ditt datum och få en tydlig offert.",
     ingress:
       "Ska du flytta i Broby? Beskriv bostaden och ditt datum, så får du en offert med tydlig omfattning.",
     omOrten: [
@@ -3251,6 +5515,41 @@ export const orter: Ort[] = [
     ],
     narliggande: ["knislinge", "osby", "hassleholm"],
     narmasteStorstad: "kristianstad",
+    stad: {
+      metaBeskrivning:
+        "Flyttstädning i Broby inför överlämning och besiktning. Beskriv bostaden och ditt datum och få en tydlig offert från Nyflytt.",
+      ingress:
+        "Ska du flyttstäda i Broby? Beskriv bostaden och datumet och få en offert där omfattningen framgår.",
+      omStadningen: [
+        "Bebyggelsen i Broby beskrivs som centralort i kommunen med villor och mindre flerbostadshus. Det avgör vad en flyttstädning omfattar – ett hus har utrymmen utanför boytan, som garage och förråd, medan en lägenhet har mer förutsägbara ytor där kök och badrum väger tyngst.",
+        "I lägenhet är det köket och badrummet som avgör om städningen godkänns vid besiktning. Vitvarorna ska rengöras in- och utvändigt och dras ut där det går, och badrummet avkalkas med golvbrunnen rengjord. Hyr du bostaden finns ofta en checklista från hyresvärden som besiktningen följer.",
+        "Vanliga flyttsträckor här går inom orten och mot Knislinge. Ska flyttstädningen göras nära flyttdagen behöver tidsplanen ta hänsyn till transporten, eftersom bostaden måste vara tömd innan städningen kan börja.",
+      ],
+      praktiskt: [
+        {
+          rubrik: "Ange bostadstyp, inte bara yta",
+          text: "Beståndet i Broby är blandat – lägenhet och hus kräver olika mycket även vid samma boyta.",
+        },
+        {
+          rubrik: "Checklista från hyresvärden",
+          text: "Har du fått en besiktningslista, nämn det i förfrågan så kan omfattningen stämmas av mot den.",
+        },
+        {
+          rubrik: "Sträckor mot Knislinge",
+          text: "Ange den exakta adressen så att transportsträckan kommer med i bedömningen.",
+        },
+      ],
+      fragor: [
+        {
+          fraga: "Vi har en besiktningslista – kan den följas?",
+          svar: "Ange i förfrågan att du har en och vad som står i den. Omfattningen kan då stämmas av mot listan i stället för mot en generell standard.",
+        },
+        {
+          fraga: "Ingår fönsterputs?",
+          svar: "Ja, in- och utvändigt samt mellan rutorna där konstruktionen tillåter att fönstret öppnas. Fasta partier putsas på insidan.",
+        },
+      ],
+    },
   },
   {
     slug: "osby",
@@ -3295,6 +5594,41 @@ export const orter: Ort[] = [
     ],
     narliggande: ["broby", "hassleholm", "bromolla"],
     narmasteStorstad: "kristianstad",
+    stad: {
+      metaBeskrivning:
+        "Flyttstädning i Osby inför överlämning och besiktning. Beskriv bostaden och ditt datum och få en tydlig offert från Nyflytt.",
+      ingress:
+        "Ska du flyttstäda i Osby? Beskriv bostaden och datumet och få en offert där omfattningen framgår.",
+      omStadningen: [
+        "Bebyggelsen i Osby beskrivs som centralort med villor och flerbostadshus kring stationen. Det avgör vad en flyttstädning omfattar – ett hus har utrymmen utanför boytan, som garage och förråd, medan en lägenhet har mer förutsägbara ytor där kök och badrum väger tyngst.",
+        "I lägenhet är det köket och badrummet som avgör om städningen godkänns vid besiktning. Vitvarorna ska rengöras in- och utvändigt och dras ut där det går, och badrummet avkalkas med golvbrunnen rengjord. Hyr du bostaden finns ofta en checklista från hyresvärden som besiktningen följer.",
+        "Osby har stationsläge, och en del av flyttarna här är pendlingsflyttar. Ska städningen ske i anslutning till flyttdagen måste bostaden vara tömd först – lägg marginal mellan de två momenten så att städningen inte behöver avbrytas halvvägs.",
+      ],
+      praktiskt: [
+        {
+          rubrik: "Ange bostadstyp, inte bara yta",
+          text: "Beståndet i Osby är blandat – lägenhet och hus kräver olika mycket även vid samma boyta.",
+        },
+        {
+          rubrik: "Checklista från hyresvärden",
+          text: "Har du fått en besiktningslista, nämn det i förfrågan så kan omfattningen stämmas av mot den.",
+        },
+        {
+          rubrik: "Pendlingsflytt",
+          text: "Vid flytt till annan ort behöver städningen läggas efter att bostaden är tömd. Ange önskad ordning i förfrågan.",
+        },
+      ],
+      fragor: [
+        {
+          fraga: "Vi har en besiktningslista – kan den följas?",
+          svar: "Ange i förfrågan att du har en och vad som står i den. Omfattningen kan då stämmas av mot listan i stället för mot en generell standard.",
+        },
+        {
+          fraga: "Ingår fönsterputs?",
+          svar: "Ja, in- och utvändigt samt mellan rutorna där konstruktionen tillåter att fönstret öppnas. Fasta partier putsas på insidan.",
+        },
+      ],
+    },
   },
   {
     slug: "bjarnum",
@@ -3303,7 +5637,7 @@ export const orter: Ort[] = [
     iOrt: "Bjärnum",
     lan: "Skåne län",
     metaBeskrivning:
-      "Flyttfirma Bjärnum – boka bohagsflytt och flyttstädning via Nyflytt. Beskriv din bostad och ditt datum och få en tydlig offert. Uppdraget utförs av en samarbetspartner.",
+      "Flyttfirma Bjärnum – boka bohagsflytt och flyttstädning via Nyflytt. Beskriv din bostad och ditt datum och få en tydlig offert.",
     ingress:
       "Ska du flytta i Bjärnum? Beskriv bostaden och ditt datum, så får du en offert med tydlig omfattning.",
     omOrten: [
@@ -3339,6 +5673,41 @@ export const orter: Ort[] = [
     ],
     narliggande: ["hassleholm", "vinslov", "tyringe"],
     narmasteStorstad: "kristianstad",
+    stad: {
+      metaBeskrivning:
+        "Flyttstädning i Bjärnum inför överlämning och besiktning. Beskriv bostaden och ditt datum och få en tydlig offert från Nyflytt.",
+      ingress:
+        "Ska du flyttstäda i Bjärnum? Beskriv bostaden och datumet och få en offert där omfattningen framgår.",
+      omStadningen: [
+        "Bebyggelsen i Bjärnum beskrivs som tätort med villor och mindre flerbostadshus, med bakgrund i möbelindustrin. Det avgör vad en flyttstädning omfattar – ett hus har utrymmen utanför boytan, som garage och förråd, medan en lägenhet har mer förutsägbara ytor där kök och badrum väger tyngst.",
+        "I lägenhet är det köket och badrummet som avgör om städningen godkänns vid besiktning. Vitvarorna ska rengöras in- och utvändigt och dras ut där det går, och badrummet avkalkas med golvbrunnen rengjord. Hyr du bostaden finns ofta en checklista från hyresvärden som besiktningen följer.",
+        "Vanliga flyttsträckor här går inom orten och mot Hassleholm. Ska flyttstädningen göras nära flyttdagen behöver tidsplanen ta hänsyn till transporten, eftersom bostaden måste vara tömd innan städningen kan börja.",
+      ],
+      praktiskt: [
+        {
+          rubrik: "Ange bostadstyp, inte bara yta",
+          text: "Beståndet i Bjärnum är blandat – lägenhet och hus kräver olika mycket även vid samma boyta.",
+        },
+        {
+          rubrik: "Checklista från hyresvärden",
+          text: "Har du fått en besiktningslista, nämn det i förfrågan så kan omfattningen stämmas av mot den.",
+        },
+        {
+          rubrik: "Sträckor mot Hassleholm",
+          text: "Ange den exakta adressen så att transportsträckan kommer med i bedömningen.",
+        },
+      ],
+      fragor: [
+        {
+          fraga: "Vi har en besiktningslista – kan den följas?",
+          svar: "Ange i förfrågan att du har en och vad som står i den. Omfattningen kan då stämmas av mot listan i stället för mot en generell standard.",
+        },
+        {
+          fraga: "Ingår fönsterputs?",
+          svar: "Ja, in- och utvändigt samt mellan rutorna där konstruktionen tillåter att fönstret öppnas. Fasta partier putsas på insidan.",
+        },
+      ],
+    },
   },
   {
     slug: "tyringe",
@@ -3347,7 +5716,7 @@ export const orter: Ort[] = [
     iOrt: "Tyringe",
     lan: "Skåne län",
     metaBeskrivning:
-      "Flyttfirma Tyringe – boka bohagsflytt och flyttstädning via Nyflytt. Beskriv din bostad och ditt datum och få en tydlig offert. Uppdraget utförs av en samarbetspartner.",
+      "Flyttfirma Tyringe – boka bohagsflytt och flyttstädning via Nyflytt. Beskriv din bostad och ditt datum och få en tydlig offert.",
     ingress:
       "Ska du flytta i Tyringe? Beskriv bostaden och ditt datum, så får du en offert med tydlig omfattning.",
     omOrten: [
@@ -3383,6 +5752,41 @@ export const orter: Ort[] = [
     ],
     narliggande: ["hassleholm", "bjarnum", "perstorp"],
     narmasteStorstad: "kristianstad",
+    stad: {
+      metaBeskrivning:
+        "Flyttstädning i Tyringe inför överlämning och besiktning. Beskriv bostaden och ditt datum och få en tydlig offert från Nyflytt.",
+      ingress:
+        "Ska du flyttstäda i Tyringe? Beskriv bostaden och datumet och få en offert där omfattningen framgår.",
+      omStadningen: [
+        "Bebyggelsen i Tyringe beskrivs som tätort med villor och mindre flerbostadshus. Det avgör vad en flyttstädning omfattar – ett hus har utrymmen utanför boytan, som garage och förråd, medan en lägenhet har mer förutsägbara ytor där kök och badrum väger tyngst.",
+        "I lägenhet är det köket och badrummet som avgör om städningen godkänns vid besiktning. Vitvarorna ska rengöras in- och utvändigt och dras ut där det går, och badrummet avkalkas med golvbrunnen rengjord. Hyr du bostaden finns ofta en checklista från hyresvärden som besiktningen följer.",
+        "Vanliga flyttsträckor här går inom orten och mot Hassleholm. Ska flyttstädningen göras nära flyttdagen behöver tidsplanen ta hänsyn till transporten, eftersom bostaden måste vara tömd innan städningen kan börja.",
+      ],
+      praktiskt: [
+        {
+          rubrik: "Ange bostadstyp, inte bara yta",
+          text: "Beståndet i Tyringe är blandat – lägenhet och hus kräver olika mycket även vid samma boyta.",
+        },
+        {
+          rubrik: "Checklista från hyresvärden",
+          text: "Har du fått en besiktningslista, nämn det i förfrågan så kan omfattningen stämmas av mot den.",
+        },
+        {
+          rubrik: "Sträckor mot Hassleholm",
+          text: "Ange den exakta adressen så att transportsträckan kommer med i bedömningen.",
+        },
+      ],
+      fragor: [
+        {
+          fraga: "Vi har en besiktningslista – kan den följas?",
+          svar: "Ange i förfrågan att du har en och vad som står i den. Omfattningen kan då stämmas av mot listan i stället för mot en generell standard.",
+        },
+        {
+          fraga: "Ingår fönsterputs?",
+          svar: "Ja, in- och utvändigt samt mellan rutorna där konstruktionen tillåter att fönstret öppnas. Fasta partier putsas på insidan.",
+        },
+      ],
+    },
   },
   {
     slug: "vinslov",
@@ -3391,7 +5795,7 @@ export const orter: Ort[] = [
     iOrt: "Vinslöv",
     lan: "Skåne län",
     metaBeskrivning:
-      "Flyttfirma Vinslöv – boka bohagsflytt och flyttstädning via Nyflytt. Beskriv din bostad och ditt datum och få en tydlig offert. Uppdraget utförs av en samarbetspartner.",
+      "Flyttfirma Vinslöv – boka bohagsflytt och flyttstädning via Nyflytt. Beskriv din bostad och ditt datum och få en tydlig offert.",
     ingress:
       "Ska du flytta i Vinslöv? Beskriv bostaden och ditt datum, så får du en offert med tydlig omfattning.",
     omOrten: [
@@ -3427,6 +5831,41 @@ export const orter: Ort[] = [
     ],
     narliggande: ["hassleholm", "kristianstad", "bjarnum"],
     narmasteStorstad: "kristianstad",
+    stad: {
+      metaBeskrivning:
+        "Flyttstädning i Vinslöv inför överlämning och besiktning. Beskriv bostaden och ditt datum och få en tydlig offert från Nyflytt.",
+      ingress:
+        "Ska du flyttstäda i Vinslöv? Beskriv bostaden och datumet och få en offert där omfattningen framgår.",
+      omStadningen: [
+        "Bebyggelsen i Vinslöv beskrivs som tätort med villor och mindre flerbostadshus. Det avgör vad en flyttstädning omfattar – ett hus har utrymmen utanför boytan, som garage och förråd, medan en lägenhet har mer förutsägbara ytor där kök och badrum väger tyngst.",
+        "I lägenhet är det köket och badrummet som avgör om städningen godkänns vid besiktning. Vitvarorna ska rengöras in- och utvändigt och dras ut där det går, och badrummet avkalkas med golvbrunnen rengjord. Hyr du bostaden finns ofta en checklista från hyresvärden som besiktningen följer.",
+        "Vanliga flyttsträckor här går inom orten och mot Hassleholm. Ska flyttstädningen göras nära flyttdagen behöver tidsplanen ta hänsyn till transporten, eftersom bostaden måste vara tömd innan städningen kan börja.",
+      ],
+      praktiskt: [
+        {
+          rubrik: "Ange bostadstyp, inte bara yta",
+          text: "Beståndet i Vinslöv är blandat – lägenhet och hus kräver olika mycket även vid samma boyta.",
+        },
+        {
+          rubrik: "Checklista från hyresvärden",
+          text: "Har du fått en besiktningslista, nämn det i förfrågan så kan omfattningen stämmas av mot den.",
+        },
+        {
+          rubrik: "Sträckor mot Hassleholm",
+          text: "Ange den exakta adressen så att transportsträckan kommer med i bedömningen.",
+        },
+      ],
+      fragor: [
+        {
+          fraga: "Vi har en besiktningslista – kan den följas?",
+          svar: "Ange i förfrågan att du har en och vad som står i den. Omfattningen kan då stämmas av mot listan i stället för mot en generell standard.",
+        },
+        {
+          fraga: "Ingår fönsterputs?",
+          svar: "Ja, in- och utvändigt samt mellan rutorna där konstruktionen tillåter att fönstret öppnas. Fasta partier putsas på insidan.",
+        },
+      ],
+    },
   },
   {
     slug: "haljarp",
@@ -3435,7 +5874,7 @@ export const orter: Ort[] = [
     iOrt: "Häljarp",
     lan: "Skåne län",
     metaBeskrivning:
-      "Flyttfirma Häljarp – boka bohagsflytt och flyttstädning via Nyflytt. Beskriv din bostad och ditt datum och få en tydlig offert. Uppdraget utförs av en samarbetspartner.",
+      "Flyttfirma Häljarp – boka bohagsflytt och flyttstädning via Nyflytt. Beskriv din bostad och ditt datum och få en tydlig offert.",
     ingress:
       "Ska du flytta i Häljarp? Beskriv bostaden och ditt datum, så får du en offert med tydlig omfattning.",
     omOrten: [
@@ -3471,6 +5910,41 @@ export const orter: Ort[] = [
     ],
     narliggande: ["landskrona", "kavlinge", "furulund"],
     narmasteStorstad: "landskrona",
+    stad: {
+      metaBeskrivning:
+        "Flyttstädning i Häljarp inför överlämning och besiktning. Beskriv bostaden och ditt datum och få en tydlig offert från Nyflytt.",
+      ingress:
+        "Ska du flyttstäda i Häljarp? Beskriv bostaden och datumet och få en offert där omfattningen framgår.",
+      omStadningen: [
+        "Bebyggelsen i Häljarp beskrivs som mindre tätort med villor och radhus. Det avgör vad en flyttstädning omfattar – ett hus har utrymmen utanför boytan, som garage och förråd, medan en lägenhet har mer förutsägbara ytor där kök och badrum väger tyngst.",
+        "I ett hus ligger en stor del av arbetet utanför boytan. Garage, förråd, pannrum och tvättstuga är egna utrymmen som inte ingår automatiskt, och fönstren är fler än i en lägenhet. Ange antal våningar och vilka biutrymmen som ska städas, så framgår omfattningen av offerten.",
+        "Vanliga flyttsträckor här går inom orten och mot Landskrona. Ska flyttstädningen göras nära flyttdagen behöver tidsplanen ta hänsyn till transporten, eftersom bostaden måste vara tömd innan städningen kan börja.",
+      ],
+      praktiskt: [
+        {
+          rubrik: "Ange bostadstyp, inte bara yta",
+          text: "Beståndet i Häljarp är blandat – lägenhet och hus kräver olika mycket även vid samma boyta.",
+        },
+        {
+          rubrik: "Biutrymmen ingår inte automatiskt",
+          text: "Garage, förråd och uteplats behöver anges separat för att komma med i offerten.",
+        },
+        {
+          rubrik: "Sträckor mot Landskrona",
+          text: "Ange den exakta adressen så att transportsträckan kommer med i bedömningen.",
+        },
+      ],
+      fragor: [
+        {
+          fraga: "Ingår garage och förråd i Häljarp?",
+          svar: "Inte automatiskt. Ange i förfrågan vilka utrymmen som ska städas, så framgår det av offerten vad som ingår.",
+        },
+        {
+          fraga: "Hur anger jag storleken på ett hus?",
+          svar: "Ange boyta, antal rum och antal våningar, och lista biutrymmena separat. Det ger ett bättre underlag än boytan ensam.",
+        },
+      ],
+    },
   },
   {
     slug: "hofterup",
@@ -3479,7 +5953,7 @@ export const orter: Ort[] = [
     iOrt: "Hofterup",
     lan: "Skåne län",
     metaBeskrivning:
-      "Flyttfirma Hofterup – boka bohagsflytt och flyttstädning via Nyflytt. Beskriv din bostad och ditt datum och få en tydlig offert. Uppdraget utförs av en samarbetspartner.",
+      "Flyttfirma Hofterup – boka bohagsflytt och flyttstädning via Nyflytt. Beskriv din bostad och ditt datum och få en tydlig offert.",
     ingress:
       "Ska du flytta i Hofterup? Beskriv bostaden och ditt datum, så får du en offert med tydlig omfattning.",
     omOrten: [
@@ -3515,6 +5989,41 @@ export const orter: Ort[] = [
     ],
     narliggande: ["kavlinge", "loddekopinge", "landskrona"],
     narmasteStorstad: "landskrona",
+    stad: {
+      metaBeskrivning:
+        "Flyttstädning i Hofterup inför överlämning och besiktning. Beskriv bostaden och ditt datum och få en tydlig offert från Nyflytt.",
+      ingress:
+        "Ska du flyttstäda i Hofterup? Beskriv bostaden och datumet och få en offert där omfattningen framgår.",
+      omStadningen: [
+        "Bebyggelsen i Hofterup beskrivs som villaområde med inslag av äldre fritidshusbebyggelse. Äldre hus har fler detaljytor än boytan antyder – höga socklar, dörrfoder, djupa fönsternischer och ibland originalgolv som inte tål vilka medel som helst. Två bostäder med samma yta kan därför kräva olika mycket arbete.",
+        "Läget nära kusten har en praktisk följd för fönsterputsen: salt från havsluften lägger sig på utsidan och syns tydligt i motljus. Putsa därför fönstren nära överlämningsdagen snarare än veckan före. Har bostaden använts som fritidshus och stått stängd en period finns ofta mer damm, och ibland fukt – fuktsanering är inte flyttstädning utan bedöms separat.",
+        "Vanliga flyttsträckor här går inom orten och mot Kävlinge. Ska flyttstädningen göras nära flyttdagen behöver tidsplanen ta hänsyn till transporten, eftersom bostaden måste vara tömd innan städningen kan börja.",
+      ],
+      praktiskt: [
+        {
+          rubrik: "Äldre hus tar längre tid",
+          text: "Socklar, foder och nischer är fler än boytan antyder. Ange byggår om du vet det.",
+        },
+        {
+          rubrik: "Salt på fönstren",
+          text: "Nära havet blir fönstrens utsida snabbt smutsig igen. Lägg fönsterputsen nära överlämningen.",
+        },
+        {
+          rubrik: "Sträckor mot Kävlinge",
+          text: "Ange den exakta adressen så att transportsträckan kommer med i bedömningen.",
+        },
+      ],
+      fragor: [
+        {
+          fraga: "När bör fönsterputsen göras?",
+          svar: "Så nära överlämningen som möjligt. I kustläge lägger sig salt på utsidan inom kort tid och syns tydligt i motljus.",
+        },
+        {
+          fraga: "Räknas städning av ett länge obebott hus som flyttstädning?",
+          svar: "Inte alltid. Har huset stått stängt länge kan mer omfattande rengöring krävas. Beskriv förutsättningarna så bedöms det innan offerten lämnas.",
+        },
+      ],
+    },
   },
   {
     slug: "ljunghusen",
@@ -3523,7 +6032,7 @@ export const orter: Ort[] = [
     iOrt: "Ljunghusen",
     lan: "Skåne län",
     metaBeskrivning:
-      "Flyttfirma Ljunghusen – boka bohagsflytt och flyttstädning via Nyflytt. Beskriv din bostad och ditt datum och få en tydlig offert. Uppdraget utförs av en samarbetspartner.",
+      "Flyttfirma Ljunghusen – boka bohagsflytt och flyttstädning via Nyflytt. Beskriv din bostad och ditt datum och få en tydlig offert.",
     ingress:
       "Ska du flytta i Ljunghusen? Beskriv bostaden och ditt datum, så får du en offert med tydlig omfattning.",
     omOrten: [
@@ -3559,6 +6068,41 @@ export const orter: Ort[] = [
     ],
     narliggande: ["hollviken", "skanor", "vellinge"],
     narmasteStorstad: "malmo",
+    stad: {
+      metaBeskrivning:
+        "Flyttstädning i Ljunghusen inför överlämning och besiktning. Beskriv bostaden och ditt datum och få en tydlig offert från Nyflytt.",
+      ingress:
+        "Ska du flyttstäda i Ljunghusen? Beskriv bostaden och datumet och få en offert där omfattningen framgår.",
+      omStadningen: [
+        "Bebyggelsen i Ljunghusen beskrivs som villabebyggelse i tallskogsmiljö, med inslag av äldre fritidshus. Äldre hus har fler detaljytor än boytan antyder – höga socklar, dörrfoder, djupa fönsternischer och ibland originalgolv som inte tål vilka medel som helst. Två bostäder med samma yta kan därför kräva olika mycket arbete.",
+        "Läget nära kusten har en praktisk följd för fönsterputsen: salt från havsluften lägger sig på utsidan och syns tydligt i motljus. Putsa därför fönstren nära överlämningsdagen snarare än veckan före. Har bostaden använts som fritidshus och stått stängd en period finns ofta mer damm, och ibland fukt – fuktsanering är inte flyttstädning utan bedöms separat.",
+        "Vanliga flyttsträckor här går inom orten och mot Höllviken. Ska flyttstädningen göras nära flyttdagen behöver tidsplanen ta hänsyn till transporten, eftersom bostaden måste vara tömd innan städningen kan börja.",
+      ],
+      praktiskt: [
+        {
+          rubrik: "Äldre hus tar längre tid",
+          text: "Socklar, foder och nischer är fler än boytan antyder. Ange byggår om du vet det.",
+        },
+        {
+          rubrik: "Salt på fönstren",
+          text: "Nära havet blir fönstrens utsida snabbt smutsig igen. Lägg fönsterputsen nära överlämningen.",
+        },
+        {
+          rubrik: "Sträckor mot Höllviken",
+          text: "Ange den exakta adressen så att transportsträckan kommer med i bedömningen.",
+        },
+      ],
+      fragor: [
+        {
+          fraga: "När bör fönsterputsen göras?",
+          svar: "Så nära överlämningen som möjligt. I kustläge lägger sig salt på utsidan inom kort tid och syns tydligt i motljus.",
+        },
+        {
+          fraga: "Räknas städning av ett länge obebott hus som flyttstädning?",
+          svar: "Inte alltid. Har huset stått stängt länge kan mer omfattande rengöring krävas. Beskriv förutsättningarna så bedöms det innan offerten lämnas.",
+        },
+      ],
+    },
   },
 ];
 
@@ -3581,6 +6125,43 @@ export function ortPath(ort: Pick<Ort, "slug" | "typ">): string {
   return ort.typ === "storstad"
     ? `/flyttfirma-${ort.slug}`
     : `/flyttfirma/${ort.slug}`;
+}
+
+/**
+ * URL till en orts FLYTTSTÄDNINGS-sida.
+ *
+ * Samma mönster som `ortPath`: storstäder i rooten utan snedstreck,
+ * mindre orter under /flyttstadning/.
+ *
+ *   storstad → /flyttstadning-helsingborg
+ *   mindre   → /flyttstadning/odakra
+ */
+export function stadPath(ort: Pick<Ort, "slug" | "typ">): string {
+  return ort.typ === "storstad"
+    ? `/flyttstadning-${ort.slug}`
+    : `/flyttstadning/${ort.slug}`;
+}
+
+/** Orter som har städinnehåll och därmed en egen flyttstädningssida. */
+export const orterMedStad = orter.filter((o) => o.stad);
+
+/** Storstäder med städsida. */
+export const storstaderMedStad = storstader.filter((o) => o.stad);
+
+/** Mindre orter med städsida. */
+export const mindreOrterMedStad = mindreOrter.filter((o) => o.stad);
+
+/**
+ * Mindre orter med städsida grupperade under sin närmaste storstad.
+ * Driver översiktssidan /flyttstadning-orter.
+ */
+export function stadOrterPerStorstad(): { storstad: Ort; mindre: Ort[] }[] {
+  return storstaderMedStad.map((storstad) => ({
+    storstad,
+    mindre: mindreOrterMedStad.filter(
+      (o) => o.narmasteStorstad === storstad.slug,
+    ),
+  }));
 }
 
 /**

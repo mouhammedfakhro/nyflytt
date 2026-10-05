@@ -21,7 +21,7 @@ import { aktivaTjanster } from "@/lib/tjanster";
 export const metadata: Metadata = buildMetadata({
   title: "Flytthjälp och flyttstädning – boka flytt och städ på ett ställe",
   description:
-    "Nyflytt hjälper privatpersoner och företag att boka flytthjälp och flyttstädning. Beskriv ditt behov, få en tydlig offert och låt en samarbetspartner utföra jobbet. Verksam i Skåne och Halland.",
+    "Boka flytthjälp och flyttstädning via Nyflytt. Beskriv ditt behov och få en tydlig offert – utan att binda dig. Verksam i Skåne och Halland.",
   path: "/",
   absolutTitel: true,
 });

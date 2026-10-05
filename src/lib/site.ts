@@ -14,7 +14,7 @@ export const siteConfig = {
   locale: "sv_SE",
   lang: "sv",
   description:
-    "Nyflytt hjälper privatpersoner och företag att boka flytt och flyttstädning. Beskriv ditt behov, få en tydlig offert och låt en av våra samarbetspartners utföra jobbet.",
+    "Nyflytt hjälper privatpersoner och företag att boka flytt och flyttstädning. Beskriv ditt behov och få en tydlig offert – utan att binda dig.",
 
   /** Kortversion som används i navigation, footer och OG-bild. */
   tagline: "Flytt och flyttstädning – bokat på ett ställe",

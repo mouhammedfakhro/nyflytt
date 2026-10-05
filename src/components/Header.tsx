@@ -6,14 +6,15 @@ import { useEffect, useRef, useState } from "react";
 import { Ikon } from "@/components/Ikon";
 import { KnappLank } from "@/components/Knapp";
 import { Logo } from "@/components/Logo";
-import { ortPath, storstader } from "@/lib/orter";
+import { type Ort, ortPath, stadPath, storstader } from "@/lib/orter";
 
 /**
  * Sajtheader.
  *
- * Bohagsflytt och Flyttstädning har varsin meny som visar orterna. Båda pekar
- * på samma ortssidor (/flyttfirma/[stad]) eftersom varje ortssida täcker både
- * flytt och städ – vi skapar inte tunna tjänst+ort-kombinationer.
+ * Bohagsflytt och Flyttstädning har varsin meny som visar orterna, och varje
+ * meny pekar på SIN tjänsts ortssidor: flyttmenyn till /flyttfirma-<ort> och
+ * städmenyn till /flyttstadning-<ort>. Vilken funktion som används styrs av
+ * `ortLank` på menyn.
  *
  * Menyn öppnas vid hover på desktop och vid klick/tangentbord. Hover ensamt
  * räcker inte: den som navigerar med tangentbord eller pekskärm måste kunna
@@ -28,18 +29,22 @@ const tjansteMenyer: {
   /** Tjänstesidan som rubriken länkar vidare till. */
   sidPath: string;
   beskrivning: string;
+  /** Bygger ortslänken för just den här tjänsten. */
+  ortLank: (ort: Ort) => string;
 }[] = [
   {
     id: "bohagsflytt",
     text: "Bohagsflytt",
     sidPath: "/bohagsflytt",
     beskrivning: "Bärhjälp, transport och lastsäkring för hela bohaget.",
+    ortLank: ortPath,
   },
   {
     id: "flyttstadning",
     text: "Flyttstädning",
     sidPath: "/flyttstadning",
     beskrivning: "Städning av hela bostaden inför överlämning.",
+    ortLank: stadPath,
   },
 ];
 
@@ -201,26 +206,29 @@ export function Header() {
                         Välj ort
                       </p>
                       <ul className="grid grid-cols-3 gap-0.5">
-                        {storstader.map((ort) => (
-                          <li key={ort.slug}>
-                            <Link
-                              href={ortPath(ort)}
-                              onClick={stangAllt}
-                              aria-current={
-                                pathname === ortPath(ort)
-                                  ? "page"
-                                  : undefined
-                              }
-                              className={`block rounded-lg px-3 py-2 text-[0.9375rem] transition-colors ${
-                                pathname === ortPath(ort)
-                                  ? "bg-korall-50 font-semibold text-korall-700"
-                                  : "text-sand-700 hover:bg-sand-50 hover:text-korall-700"
-                              }`}
-                            >
-                              {ort.namn}
-                            </Link>
-                          </li>
-                        ))}
+                        {storstader.map((ort) => {
+                          // Flyttmenyn länkar till /flyttfirma-<ort>,
+                          // städmenyn till /flyttstadning-<ort>.
+                          const href = meny.ortLank(ort);
+                          const harAktiv = pathname === href;
+
+                          return (
+                            <li key={ort.slug}>
+                              <Link
+                                href={href}
+                                onClick={stangAllt}
+                                aria-current={harAktiv ? "page" : undefined}
+                                className={`block rounded-lg px-3 py-2 text-[0.9375rem] transition-colors ${
+                                  harAktiv
+                                    ? "bg-korall-50 font-semibold text-korall-700"
+                                    : "text-sand-700 hover:bg-sand-50 hover:text-korall-700"
+                                }`}
+                              >
+                                {ort.namn}
+                              </Link>
+                            </li>
+                          );
+                        })}
                       </ul>
                     </div>
                   </div>
@@ -305,30 +313,44 @@ export function Header() {
             )}
           </ul>
 
-          {/* Orterna listas direkt på mobil – ingen extra nivå att öppna */}
-          <p className="px-4 pb-1 pt-5 font-sans text-xs font-semibold uppercase tracking-[0.12em] text-sand-500">
-            Flyttfirma i din ort
-          </p>
-          <ul className="grid grid-cols-2 gap-1">
-            {storstader.map((ort) => (
-              <li key={ort.slug}>
-                <Link
-                  href={ortPath(ort)}
-                  onClick={stangAllt}
-                  aria-current={
-                    pathname === ortPath(ort) ? "page" : undefined
-                  }
-                  className={`flex min-h-11 items-center rounded-xl px-4 text-[0.9375rem] font-medium transition-colors ${
-                    pathname === ortPath(ort)
-                      ? "bg-korall-50 text-korall-700"
-                      : "text-sand-800 hover:bg-sand-100"
-                  }`}
-                >
-                  {ort.namn}
-                </Link>
-              </li>
-            ))}
-          </ul>
+          {/*
+            Orterna listas direkt på mobil – ingen extra nivå att öppna.
+            Båda tjänsterna får en egen lista så att städsidorna är nåbara
+            även här, inte bara via desktopmenyn.
+          */}
+          {[
+            { rubrik: "Flyttfirma i din ort", lank: ortPath },
+            { rubrik: "Flyttstädning i din ort", lank: stadPath },
+          ].map((grupp) => (
+            <div key={grupp.rubrik}>
+              <p className="px-4 pb-1 pt-5 font-sans text-xs font-semibold uppercase tracking-[0.12em] text-sand-500">
+                {grupp.rubrik}
+              </p>
+              <ul className="grid grid-cols-2 gap-1">
+                {storstader.map((ort) => {
+                  const href = grupp.lank(ort);
+                  const harAktiv = pathname === href;
+
+                  return (
+                    <li key={ort.slug}>
+                      <Link
+                        href={href}
+                        onClick={stangAllt}
+                        aria-current={harAktiv ? "page" : undefined}
+                        className={`flex min-h-11 items-center rounded-xl px-4 text-[0.9375rem] font-medium transition-colors ${
+                          harAktiv
+                            ? "bg-korall-50 text-korall-700"
+                            : "text-sand-800 hover:bg-sand-100"
+                        }`}
+                      >
+                        {ort.namn}
+                      </Link>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+          ))}
 
           <p className="px-4 pb-1 pt-5 font-sans text-xs font-semibold uppercase tracking-[0.12em] text-sand-500">
             Om Nyflytt

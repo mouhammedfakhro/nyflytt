@@ -1,5 +1,5 @@
 import type { MetadataRoute } from "next";
-import { orter, ortPath } from "@/lib/orter";
+import { orter, orterMedStad, ortPath, stadPath } from "@/lib/orter";
 import { absoluteUrl } from "@/lib/site";
 import { aktivaTjanster } from "@/lib/tjanster";
 
@@ -42,7 +42,15 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.8,
   }));
 
-  return [...statiska, ...tjanstSidor, ...ortSidor].map((post) => ({
+  // Flyttstädningssidor per ort. Bara orter med städinnehåll – övriga
+  // har ingen sida att indexera.
+  const stadOrtSidor: MetadataRoute.Sitemap = orterMedStad.map((o) => ({
+    url: absoluteUrl(stadPath(o)),
+    changeFrequency: "monthly",
+    priority: 0.8,
+  }));
+
+  return [...statiska, ...tjanstSidor, ...ortSidor, ...stadOrtSidor].map((post) => ({
     ...post,
     lastModified: nu,
   }));

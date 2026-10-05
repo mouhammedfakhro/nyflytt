@@ -27,7 +27,7 @@ export async function generateMetadata(
   if (!ort || ort.typ !== "mindre") return {};
 
   return buildMetadata({
-    title: `Flyttfirma ${ort.iOrt} – bohagsflytt och flyttstädning`,
+    title: `Flyttfirma ${ort.iOrt} – flytt och flyttstädning`,
     description: ort.metaBeskrivning,
     path: `/flyttfirma/${ort.slug}`,
   });
